@@ -1,0 +1,305 @@
+/* =========================================================================
+   Noah Charnow Portfolio
+   Brand tokens follow the noah-charnow-brand skill, with the canvas color
+   set to the portfolio-specific near-white variant (#FAF9F4) instead of
+   the default paper cream (#F4EFE6).
+   ========================================================================= */
+
+@import url("https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700,800,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* Canvas */
+  --paper: #faf9f4;
+  --paper-deep: #f1ede2;
+
+  /* Ink */
+  --ink: #0f0e0d;
+  --ink-soft: #2a2724;
+  --ink-mute: #6f6a62;
+
+  /* Accent */
+  --accent: #ee4d1b;
+  --accent-deep: #c73d11;
+
+  /* Layout */
+  --container-max: 1320px;
+  --container-pad: 40px;
+  --container-pad-mobile: 24px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.55, 0.05, 0.25, 1);
+
+  /* Type */
+  --font-sans: "Switzer", -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ----- Type scale ----- */
+.hero-display {
+  font-size: clamp(64px, 11vw, 168px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.section-title {
+  font-size: clamp(40px, 6vw, 88px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.sub-headline {
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ----- Container ----- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--container-pad-mobile);
+    padding-right: var(--container-pad-mobile);
+  }
+}
+
+/* ----- Section ----- */
+.section {
+  padding: 100px 0;
+
+}
+
+.section--no-border {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 64px 0;
+  }
+}
+
+/* ----- Section header (mono number + title) ----- */
+.section-header {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 48px;
+  margin-bottom: 80px;
+  align-items: start;
+}
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .section-num {
+    padding-top: 0;
+  }
+}
+
+/* ----- Marquee ----- */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--ink);
+
+  background: var(--paper);
+}
+
+.marquee--alt {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
+
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 32s linear infinite;
+  padding: 20px 0;
+}
+
+.marquee-set {
+  display: inline-flex;
+  align-items: center;
+  gap: 40px;
+  padding-right: 40px;
+}
+
+.marquee span {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.marquee-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.marquee--alt .marquee-dot {
+  background: var(--paper);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.3333%);
+  }
+}
+
+/* gotcha: hide section border-bottom when it's directly above the orange marquee */
+.section:has(+ .marquee--alt) {
+  border-bottom: none;
+}
+.marquee--alt + .section {
+  border-top: none;
+}
+
+/* ----- Cursor reveal preview ----- */
+.preview-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--paper-deep);
+}
+
+.preview-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ----- Page-end utilities ----- */
+.balance {
+  text-wrap: balance;
+}
+
+/* ----- View Transitions (cinematic project hero) ----- */
+::view-transition-old(project-hero),
+::view-transition-new(project-hero) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  ::view-transition-old(project-hero),
+  ::view-transition-new(project-hero),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.001s;
+  }
+}
