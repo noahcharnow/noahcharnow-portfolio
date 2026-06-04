@@ -34,7 +34,7 @@ export function WorkSection({ projects }: WorkSectionProps) {
   const router = useRouter();
   const previewImgRef = useRef<HTMLImageElement>(null);
 
-  const [active, setActive] = useState<LensId>("big-brands");
+  const [active, setActive] = useState<LensId>("big-campaigns");
   const [hovered, setHovered] = useState<number | null>(null);
 
   const mouseX = useMotionValue(0);

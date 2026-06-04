@@ -2,14 +2,14 @@ import type { Lens } from "@/types";
 
 export const LENSES: Lens[] = [
   {
-    id: "big-brands",
-    title: "Big Brands",
-    blurb: "Brand systems for companies people have heard of.",
-  },
-  {
     id: "big-campaigns",
     title: "Big Campaigns",
     blurb: "The moments where a brand had to show up loudest.",
+  },
+  {
+    id: "big-brands",
+    title: "Big Brands",
+    blurb: "Brand systems for companies people have heard of.",
   },
   {
     id: "smaller-weirder-things",
