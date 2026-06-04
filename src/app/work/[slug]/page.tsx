@@ -62,6 +62,8 @@ export default async function ProjectPage({ params }: { params: Params }) {
   const pairLeft = gallery[4];
   const pairRight = gallery[5];
   const breakout = gallery[6];
+  // Video breakouts (Fitbit) lead the chapter; image breakouts (Heath, McLaren) keep their later slot.
+  const breakoutIsVideo = !!breakout && isVideoSrc(breakout);
   const finalLeft = gallery[7];
   const finalMid = gallery[8];
   const finalRight = gallery[9];
@@ -202,6 +204,11 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </section>
       )}
 
+      {/* Video breakout leads the chapter (Fitbit only) */}
+      {breakout && breakoutIsVideo && (
+        <BreakoutMedia src={breakout} caption={captions[6]} />
+      )}
+
       {/* Asymmetric pair */}
       {pairLeft && pairRight && (
         <section style={{ paddingBottom: 96 }}>
@@ -225,30 +232,9 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </section>
       )}
 
-      {/* Full-bleed breakout */}
-      {breakout && (
-        <section style={{ marginBottom: 96 }}>
-          {isVideoSrc(breakout) ? (
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={posterFor(breakout)}
-              style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }}
-            >
-              <source src={breakout} type={videoType(breakout)} />
-            </video>
-          ) : (
-            <img src={breakout} alt="" style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }} />
-          )}
-          {captions[6] && (
-            <div className="container" style={{ paddingTop: 12 }}>
-              <CaptionText>{captions[6]}</CaptionText>
-            </div>
-          )}
-        </section>
+      {/* Full-bleed breakout (image breakouts keep their later slot) */}
+      {breakout && !breakoutIsVideo && (
+        <BreakoutMedia src={breakout} caption={captions[6]} />
       )}
 
       {/* Final triptych at varied widths */}
@@ -332,6 +318,33 @@ function CaptionedImage({ src, caption, fillHeight }: { src: string; caption?: s
       )}
       {caption && (<figcaption><CaptionText>{caption}</CaptionText></figcaption>)}
     </figure>
+  );
+}
+
+function BreakoutMedia({ src, caption }: { src: string; caption?: string }) {
+  return (
+    <section style={{ marginBottom: 96 }}>
+      {isVideoSrc(src) ? (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={posterFor(src)}
+          style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }}
+        >
+          <source src={src} type={videoType(src)} />
+        </video>
+      ) : (
+        <img src={src} alt="" style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }} />
+      )}
+      {caption && (
+        <div className="container" style={{ paddingTop: 12 }}>
+          <CaptionText>{caption}</CaptionText>
+        </div>
+      )}
+    </section>
   );
 }
 
