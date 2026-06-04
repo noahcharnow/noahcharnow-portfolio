@@ -64,6 +64,35 @@ a {
   text-decoration: none;
 }
 
+/* Top-nav links: dark by default, Signal Orange when their section is active,
+   with a 1px orange underline that wipes in from the left on hover. */
+.nav-link {
+  position: relative;
+  color: #141414;
+  transition: color 180ms ease-out;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: #ee4d1b;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease-out;
+}
+.nav-link:hover {
+  color: #141414;
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+.nav-link[data-active="true"] {
+  color: #ee4d1b;
+}
+
 img,
 svg {
   display: block;
