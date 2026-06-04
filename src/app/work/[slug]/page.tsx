@@ -228,7 +228,21 @@ export default async function ProjectPage({ params }: { params: Params }) {
       {/* Full-bleed breakout */}
       {breakout && (
         <section style={{ marginBottom: 96 }}>
-          <img src={breakout} alt="" style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }} />
+          {isVideoSrc(breakout) ? (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={posterFor(breakout)}
+              style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }}
+            >
+              <source src={breakout} type={videoType(breakout)} />
+            </video>
+          ) : (
+            <img src={breakout} alt="" style={{ width: "100%", height: "78vh", minHeight: 520, objectFit: "cover", background: "var(--paper-deep)", display: "block" }} />
+          )}
           {captions[6] && (
             <div className="container" style={{ paddingTop: 12 }}>
               <CaptionText>{captions[6]}</CaptionText>
@@ -301,8 +315,37 @@ function CaptionText({ children }: { children: React.ReactNode }) {
 function CaptionedImage({ src, caption, fillHeight }: { src: string; caption?: string; fillHeight?: boolean }) {
   return (
     <figure style={{ margin: 0, display: "flex", flexDirection: "column", height: fillHeight ? "100%" : "auto" }}>
-      <img src={src} alt="" style={{ width: "100%", height: fillHeight ? "100%" : "auto", objectFit: fillHeight ? "cover" : "contain", background: "var(--paper-deep)", display: "block" }} />
+      {isVideoSrc(src) ? (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={posterFor(src)}
+          style={{ width: "100%", height: fillHeight ? "100%" : "auto", objectFit: "cover", background: "var(--paper-deep)", display: "block" }}
+        >
+          <source src={src} type={videoType(src)} />
+        </video>
+      ) : (
+        <img src={src} alt="" style={{ width: "100%", height: fillHeight ? "100%" : "auto", objectFit: fillHeight ? "cover" : "contain", background: "var(--paper-deep)", display: "block" }} />
+      )}
       {caption && (<figcaption><CaptionText>{caption}</CaptionText></figcaption>)}
     </figure>
   );
+}
+
+/** Gallery sources ending in .mp4/.webm render as inline looping video instead of an image. */
+const VIDEO_SRC_RE = /\.(mp4|webm)$/i;
+
+function isVideoSrc(src: string) {
+  return VIDEO_SRC_RE.test(src);
+}
+
+function posterFor(src: string) {
+  return src.replace(VIDEO_SRC_RE, "-poster.jpg");
+}
+
+function videoType(src: string) {
+  return src.toLowerCase().endsWith(".webm") ? "video/webm" : "video/mp4";
 }

@@ -11,7 +11,7 @@ export const SEED_PROJECTS: Project[] = [
     slug: "fitbit",
     title: "Fitbit",
     client: "Fitbit / Google",
-    role: "Senior Designer",
+    role: "Creative Lead",
     year: 2023,
     lens: "big-brands",
     summary:
@@ -19,7 +19,38 @@ export const SEED_PROJECTS: Project[] = [
     quote: "Made Google's least Google thing.",
     heroImage:
       "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/186f5433-edc3-428b-b23d-e770216f0e68/Frame+8.png",
-    externalLink: "https://noahcharnow.com/work/fitbit-6wdlm",
+    body: `Google bought Fitbit and then needed Fitbit to still look like Fitbit. That was the brief, more or less. Keep the brand people already trusted, work in enough Google to show who owned it now, and stop well before a fitness tracker started to feel like a settings menu.
+
+What we landed on was an 80/20 split. Eighty percent Fitbit, twenty percent Google, enough of both that nobody squinted at the shelf trying to figure out what they were holding. The first real test was Fall 2022: four products that were never meant to launch together, each with its own visual identity, all shipping at once. I built the style guide that made them behave like one family, then carried it across web, email, retail fixtures, and digital ads until the whole season matched.
+
+Retail was the part that fought back. Nobody walks over to a Fitbit display looking for a Google watch, so the point of purchase lookbook had to seat both brands on one fixture without either one elbowing the other off. Social I art directed on set, knocking out multiple shots a day with Han and Haley. The system held. Largely because somebody had to keep holding it, and that was me.`,
+    pullQuote: "Enough Google to belong, enough Fitbit to survive.",
+    chapterEyebrow: "02 / On the shelf",
+    chapterTitle: "Two brands, one shelf.",
+    gallery: [
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706470630433-L79KDAO6AM70FSHYTB55/01.jpg",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706470642769-P3GP5E1O70WPM5J7KQP3/09.jpg",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706577904211-9V31DCF2UIV647KS9E6F/0005.jpg",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706577908668-NCPNXT3CO34KLSNHWF4D/0012.jpg",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706631646813-E4P4PLT2957Y6JEJQ16Z/F23_POP_Lookbook_FINAL_083023_page-0004.jpg",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/1706631670863-2BVSQI3AK11W2ZAAW9YA/F23_POP_Lookbook_FINAL_083023_page-0010.jpg",
+      "/videos/Fitbit_Retail_Display_01.mp4",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/cd049887-ace9-4a5a-b8bf-be8fe43889ca/IMG_2973.png",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/efce39b8-c770-4ca2-b261-d643d0a499da/IMG_2975.png",
+      "https://images.squarespace-cdn.com/content/v1/519d2bc3e4b0f5d1146b0b21/ffdd598f-96a6-41ad-99ab-ae6faaeec58b/IMG_2977.png",
+    ],
+    captions: {
+      1: "Brand guidelines, 80/20 system",
+      3: "Fall 2022 style guide",
+      5: "Point of purchase lookbook",
+      8: "Social shoot, art directed on set",
+    },
+    credits: [
+      { label: "Client", name: "Fitbit / Google" },
+      { label: "Creative Lead", name: "Noah Charnow" },
+      { label: "Art Direction", name: "Han Nguyen" },
+      { label: "Art Direction", name: "Haley Bergman" },
+    ],
   },
   {
     slug: "heath-ceramics",
