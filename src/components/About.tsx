@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export function About() {
   return (
     <section className="section" id="about">
@@ -9,13 +11,27 @@ export function About() {
 
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "100px 1fr",
+            display: "flex",
+            flexWrap: "wrap",
             gap: 48,
+            alignItems: "flex-start",
           }}
         >
-          <div />
-          <div style={{ maxWidth: 720 }}>
+          <Image
+            src="/noah2-cream.jpg"
+            alt="Noah Charnow"
+            width={400}
+            height={400}
+            sizes="320px"
+            style={{
+              width: 320,
+              maxWidth: "100%",
+              height: "auto",
+              display: "block",
+              background: "#FAF9F4",
+            }}
+          />
+          <div style={{ flex: "1 1 360px", maxWidth: 720 }}>
             <p
               style={{
                 fontSize: "clamp(22px, 2.4vw, 28px)",
@@ -53,13 +69,13 @@ export function About() {
             >
               For new work, retainer or project-based, write me at{" "}
               <a
-                href="mailto:noah@noahcharnow.com"
+                href="mailto:noahcharnow@gmail.com"
                 style={{
                   color: "var(--accent)",
                   borderBottom: "1px solid var(--accent)",
                 }}
               >
-                noah@noahcharnow.com
+                noahcharnow@gmail.com
               </a>
               .
             </p>

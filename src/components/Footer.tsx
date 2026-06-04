@@ -34,7 +34,7 @@ export function Footer() {
           >
             Etsy
           </a>
-          <a href="mailto:noah@noahcharnow.com">Email</a>
+          <a href="mailto:noahcharnow@gmail.com">Email</a>
         </div>
         <span>San Diego / Available</span>
       </div>

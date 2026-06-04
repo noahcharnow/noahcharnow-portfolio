@@ -36,7 +36,7 @@ export function Nav() {
           <Link href="/#work">Work</Link>
           <Link href="/#about">About</Link>
           <a
-            href="mailto:noah@noahcharnow.com"
+            href="mailto:noahcharnow@gmail.com"
             style={{ color: "var(--accent)" }}
           >
             Contact
