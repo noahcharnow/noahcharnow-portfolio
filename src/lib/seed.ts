@@ -317,7 +317,7 @@ Evidently, "yesterday" is a real deadline in the world of creating graphics for 
     //   pullQuote: "Picked up a half-finished campaign and shipped it."
     //   chapterEyebrow: "02 / The rescue"  chapterTitle: "Made the flowers perk up."
     //   credits: Client Google; Design Basic Agency; Copywriter Andrew Couch; Creative Direction Noah Charnow
-    externalLink: "https://noahcharnow.com/work/pride-2024-fr9s7",
+    externalLink: "https://noah-charnow.squarespace.com/work/pride-2024-fr9s7",
   },
   {
     slug: "stonewall",
@@ -529,7 +529,7 @@ The work built toward a product launch, from the brand identity down to the land
     heroImage:
       "https://static1.squarespace.com/static/519d2bc3e4b0f5d1146b0b21/6967c070cbbddd42a25a0d6b/6967c072cbbddd42a25a0d78/1768407154391/SR.jpg?format=1500w",
     // TODO: KEPT BRIDGED - source page is too sparse: one line of copy ("Creative Direction for Relays Sport Wireless product launch") and only two real content images (packaging front + back). Not enough for a native page. Add gallery assets and body copy, then remove externalLink.
-    externalLink: "https://noahcharnow.com/work/sol-republic-1-7x3tt",
+    externalLink: "https://noah-charnow.squarespace.com/work/sol-republic-1-7x3tt",
   },
   {
     slug: "logos",
@@ -544,6 +544,6 @@ The work built toward a product launch, from the brand identity down to the land
     heroImage:
       "https://static1.squarespace.com/static/519d2bc3e4b0f5d1146b0b21/6967c070cbbddd42a25a0d6b/6967c073d17db30d32fe6f41/1768407155893/11_Logo.jpg?format=1500w",
     // TODO: KEPT BRIDGED - source page has 11 real logo marks but ZERO descriptive copy, so a body would have to be invented (against the rules). Image grid only. Write an intro + per-mark captions manually (filenames name real clients: Chanchos, CH/AH, Wills, Upstate, Forty Five, Low Bar, Engage, HCS, JP), then add gallery/body and remove externalLink.
-    externalLink: "https://noahcharnow.com/work/logos-1-ymrey",
+    externalLink: "https://noah-charnow.squarespace.com/work/logos-1-ymrey",
   },
 ];
