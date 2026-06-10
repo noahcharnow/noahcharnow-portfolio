@@ -67,7 +67,7 @@ export type Project = {
   eyebrow?: string;
   /** Numbered editorial sections for the story layout. */
   sections?: StorySection[];
-  /** Storefront gallery: first item spans full width, the rest pair up below. */
+  /** Storefront gallery: 2 shots sit side by side; 3+ lead with a full-width tile. */
   storefront?: StoreShot[];
   /** Featured video shown full width above the flower grid. */
   featuredVideo?: string;
@@ -84,7 +84,7 @@ export type Project = {
 export type StorySection = {
   /** Mono section number, e.g. "01 / The idea". */
   num: string;
-  /** Heading. Wrap a phrase in **double asterisks** to give it the hand-drawn marker underline. */
+  /** Heading. Plain display text — never underlined or marked (brand rule). */
   heading: string;
   /** Body paragraphs. */
   paras: string[];

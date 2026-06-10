@@ -27,8 +27,8 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
   const storefrontSec = sections[1];
   const flowersSec = sections[2];
   const store = project.storefront ?? [];
-  const storeSpan = store[0];
-  const storePair = store.slice(1);
+  // 3+ shots lead with a full-width hero tile; 2 sit side by side as equals.
+  const leadSpans = store.length >= 3;
   const flowers = project.flowers ?? [];
   const titleWords = (project.headline ?? project.title).split(" ");
 
@@ -58,10 +58,14 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
         {project.eyebrow && <div className="eyebrow pride-hero-eyebrow">{project.eyebrow}</div>}
         <h1 className="pride-hero-title">
           {titleWords.map((w, i) => (
-            <span className="pride-word" key={i} style={{ animationDelay: `${0.15 + i * 0.13}s` }}>
-              {w}
-              {i < titleWords.length - 1 ? " " : ""}
-            </span>
+            <Fragment key={i}>
+              <span className="pride-word" style={{ animationDelay: `${0.15 + i * 0.13}s` }}>
+                {w}
+              </span>
+              {/* space is a sibling text node, not inside the inline-block span,
+                  so it isn't trimmed → "Welcome All" keeps its space */}
+              {i < titleWords.length - 1 ? " " : null}
+            </Fragment>
           ))}
         </h1>
         <div className="pride-hero-sub">
@@ -95,7 +99,7 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
         <section className="container pride-section">
           <div className="pride-sec-head">
             <div className="pride-sec-num">{idea.num}</div>
-            <h2 className="pride-sec-title">{renderHeading(idea.heading)}</h2>
+            <h2 className="pride-sec-title">{idea.heading}</h2>
           </div>
           <div className="pride-copy">
             {idea.paras.map((p, i) => (
@@ -110,7 +114,7 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
         <section className="container pride-section">
           <div className="pride-sec-head">
             <div className="pride-sec-num">{storefrontSec.num}</div>
-            <h2 className="pride-sec-title">{renderHeading(storefrontSec.heading)}</h2>
+            <h2 className="pride-sec-title">{storefrontSec.heading}</h2>
           </div>
           <div className="pride-copy" style={{ marginBottom: 56 }}>
             {storefrontSec.paras.map((p, i) => (
@@ -119,15 +123,11 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
           </div>
           {store.length > 0 && (
             <div className="pride-gal">
-              {storeSpan && (
-                <figure className="pride-gal-fig span2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={storeSpan.src} alt="" />
-                  {storeSpan.tag && <span className="pride-gal-tag">{storeSpan.tag}</span>}
-                </figure>
-              )}
-              {storePair.map((shot, i) => (
-                <figure className="pride-gal-fig" key={i}>
+              {store.map((shot, i) => (
+                <figure
+                  className={`pride-gal-fig${leadSpans && i === 0 ? " span2" : ""}`}
+                  key={i}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={shot.src} alt="" />
                   {shot.tag && <span className="pride-gal-tag">{shot.tag}</span>}
@@ -143,7 +143,7 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
         <section className="container pride-section">
           <div className="pride-sec-head">
             <div className="pride-sec-num">{flowersSec.num}</div>
-            <h2 className="pride-sec-title">{renderHeading(flowersSec.heading)}</h2>
+            <h2 className="pride-sec-title">{flowersSec.heading}</h2>
           </div>
           <div className="pride-copy">
             {flowersSec.paras.map((p, i) => (
@@ -216,41 +216,6 @@ export function PrideStory({ project, prev, next, lensTitle }: PrideStoryProps) 
   );
 }
 
-/** Splits a heading on **double asterisks** and wraps the marked phrase in the hand-drawn underline. */
-function renderHeading(heading: string) {
-  const parts = heading.split(/\*\*(.+?)\*\*/g);
-  return parts.map((part, i) =>
-    i % 2 === 1 ? (
-      <span className="pride-marker" key={i}>
-        <span className="pride-marker-content">{part}</span>
-        <svg
-          className="pride-marker-svg"
-          viewBox="0 0 320 26"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <defs>
-            <filter id={`pride-rm-${i}`} x="-6%" y="-60%" width="112%" height="220%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.018 0.06" numOctaves="2" seed="6" result="n" />
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="6" />
-            </filter>
-          </defs>
-          <path
-            d="M6,13 C62,8 112,18 170,12 C224,7 272,17 314,15"
-            stroke="var(--accent)"
-            strokeWidth="13"
-            fill="none"
-            strokeLinecap="round"
-            filter={`url(#pride-rm-${i})`}
-          />
-        </svg>
-      </span>
-    ) : (
-      <Fragment key={i}>{part}</Fragment>
-    ),
-  );
-}
-
 const prideCss = `
   .pride-hero { padding-top: 72px; padding-bottom: 8px; }
   .pride-hero-eyebrow { margin-bottom: 32px; }
@@ -304,13 +269,6 @@ const prideCss = `
   .pride-copy { display: grid; grid-template-columns: 100px 1fr; gap: 48px; }
   .pride-copy p { grid-column: 2; max-width: 680px; font-size: 20px; line-height: 1.5; color: var(--ink-soft); }
   .pride-copy p + p { margin-top: 22px; }
-
-  .pride-marker { position: relative; display: inline-block; font-weight: 600; color: var(--ink); }
-  .pride-marker-content { position: relative; z-index: 2; }
-  .pride-marker-svg {
-    position: absolute; left: -12px; right: -12px; bottom: -8px; height: 30px;
-    width: calc(100% + 24px); z-index: 1; pointer-events: none; overflow: visible;
-  }
 
   .pride-gal {
     display: grid; grid-template-columns: 1fr 1fr; gap: 1px;

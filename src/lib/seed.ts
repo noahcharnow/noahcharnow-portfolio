@@ -310,7 +310,7 @@ Evidently, "yesterday" is a real deadline in the world of creating graphics for 
     summary:
       "Stepped into a half-finished Pride retail campaign, perked up the flowers, and got it out the door with Basic Agency.",
     quote: "Picked up where the last guy left off.",
-    heroImage: "/images/pride-2024/pride-01-facade-hero.jpg",
+    heroImage: "/images/pride-2024/pride-hero.jpg",
     // Native "story" layout (PrideStory): full-bleed facade + storefront gallery
     // + featured Welcome All video + five-up flower grid. Assets in public/.
     story: true,
@@ -322,7 +322,7 @@ Evidently, "yesterday" is a real deadline in the world of creating graphics for 
       {
         num: "01 / The idea",
         heading:
-          "Most Pride retail reaches for the flag. We went to **the garden** instead.",
+          "Most Pride retail reaches for the flag. We went to the garden instead.",
         paras: [
           "The identity is built entirely from flowers. Each bloom is a soft gradient shape pulled across the full spectrum, and each one carries a piece of Pride history. Welcome All was the promise. The flowers were how we kept it.",
           "One drawing language held the whole program together, from the in-store screens to the glass on the street.",
@@ -344,9 +344,8 @@ Evidently, "yesterday" is a real deadline in the world of creating graphics for 
       },
     ],
     storefront: [
-      { src: "/images/pride-2024/pride-02-entrance.jpg", tag: "Entrance / Welcome All" },
-      { src: "/images/pride-2024/pride-03-exterior.jpg", tag: "Street view" },
-      { src: "/images/pride-2024/pride-04-street.jpg", tag: "Plaza / Google Store" },
+      { src: "/images/pride-2024/pride-window-2.jpg", tag: "Entrance / Welcome All" },
+      { src: "/images/pride-2024/pride-window-1.jpg", tag: "Storefront / Google Store" },
     ],
     featuredVideo: "/videos/pride-2024/welcome-all.mp4",
     featuredVideoTitle: "Welcome All / door screen",
