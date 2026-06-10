@@ -49,4 +49,55 @@ export type Project = {
   accent?: string;
   /** Optional external link if the case study lives elsewhere. */
   externalLink?: string;
+
+  /**
+   * Opt-in flag for the bespoke "story" layout (full-bleed hero + storefront
+   * gallery + featured video + five-up flower grid). Rendered by PrideStory
+   * through the same /work/[slug] route and seed-data wiring as every other
+   * native project; the fields below only apply when this is set.
+   */
+  story?: boolean;
+  /** Giant hero headline for the story layout; falls back to `title`. */
+  headline?: string;
+  /** Lede paragraph shown beside the title on the story hero. */
+  lede?: string;
+  /** Caption under the full-bleed hero image (story layout). */
+  heroCaption?: string;
+  /** Eyebrow line above the title (e.g. "Google Store / Pride 2024 / Retail identity"). */
+  eyebrow?: string;
+  /** Numbered editorial sections for the story layout. */
+  sections?: StorySection[];
+  /** Storefront gallery: first item spans full width, the rest pair up below. */
+  storefront?: StoreShot[];
+  /** Featured video shown full width above the flower grid. */
+  featuredVideo?: string;
+  /** Caption title for the featured video (e.g. "Welcome All / door screen"). */
+  featuredVideoTitle?: string;
+  /** Caption meta for the featured video (e.g. "In-store motion · 13s loop"). */
+  featuredVideoMeta?: string;
+  /** Five-up looping video grid, one entry per bloom. */
+  flowers?: Flower[];
+  /** Marquee phrases scrolled in the accent band. */
+  marquee?: string[];
+};
+
+export type StorySection = {
+  /** Mono section number, e.g. "01 / The idea". */
+  num: string;
+  /** Heading. Wrap a phrase in **double asterisks** to give it the hand-drawn marker underline. */
+  heading: string;
+  /** Body paragraphs. */
+  paras: string[];
+};
+
+export type StoreShot = {
+  src: string;
+  /** Corner tag overlaid on the image, e.g. "Install / Mountain View". */
+  tag?: string;
+};
+
+export type Flower = {
+  src: string;
+  name: string;
+  note: string;
 };

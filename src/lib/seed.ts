@@ -310,14 +310,81 @@ Evidently, "yesterday" is a real deadline in the world of creating graphics for 
     summary:
       "Stepped into a half-finished Pride retail campaign, perked up the flowers, and got it out the door with Basic Agency.",
     quote: "Picked up where the last guy left off.",
-    heroImage:
-      "https://static1.squarespace.com/static/519d2bc3e4b0f5d1146b0b21/6967c070cbbddd42a25a0d6b/6967c070a756fd2a42c26747/1768407153118/PXL_20240531_083919169.jpg?format=1500w",
-    // TODO: KEPT BRIDGED - source page has strong body copy and real credits (Basic Agency, copywriter Andrew Couch) but only 3 gallery images, too sparse for the native magazine layout (grid/pair/triptych won't fill). Add more campaign assets, then remove externalLink. Ready-to-use draft when assets land:
-    //   body: `Sometimes a project goes sideways. The Pride retail campaign was one of those. The original creative director left partway through, having locked a promising concept with Basic Agency, who were designing the work. I stepped in with the concept half-finished and got it across the line. Working with Basic and our copywriter, we turned it around against the deadline. A creative rescue, basically, and Pride still shipped on time.`
-    //   pullQuote: "Picked up a half-finished campaign and shipped it."
-    //   chapterEyebrow: "02 / The rescue"  chapterTitle: "Made the flowers perk up."
-    //   credits: Client Google; Design Basic Agency; Copywriter Andrew Couch; Creative Direction Noah Charnow
-    externalLink: "https://noah-charnow.squarespace.com/work/pride-2024-fr9s7",
+    heroImage: "/images/pride-2024/pride-01-facade-hero.jpg",
+    // Native "story" layout (PrideStory): full-bleed facade + storefront gallery
+    // + featured Welcome All video + five-up flower grid. Assets in public/.
+    story: true,
+    headline: "Welcome All",
+    eyebrow: "Google Store / Pride 2024 / Retail identity",
+    lede: "A floral identity for Pride across Google Store. One system of flowers, rooted in Pride history, scaled to every window.",
+    heroCaption: "Google Store flagship / full-facade window application",
+    sections: [
+      {
+        num: "01 / The idea",
+        heading:
+          "Most Pride retail reaches for the flag. We went to **the garden** instead.",
+        paras: [
+          "The identity is built entirely from flowers. Each bloom is a soft gradient shape pulled across the full spectrum, and each one carries a piece of Pride history. Welcome All was the promise. The flowers were how we kept it.",
+          "One drawing language held the whole program together, from the in-store screens to the glass on the street.",
+        ],
+      },
+      {
+        num: "02 / Storefront",
+        heading: "The flowers scaled to architecture.",
+        paras: [
+          "Applied as window graphics across Google Store locations, the system filled glass facades from sidewalk to ceiling. Same language at every store, from the flagship to the neighborhood shop.",
+        ],
+      },
+      {
+        num: "03 / Flower stories",
+        heading: "On the screens, each flower got its moment.",
+        paras: [
+          "Five short films, one per bloom, each pairing the gradient flower with the Pride history behind it. Quiet, looping, no sound. The welcome screen greeted everyone at the door first.",
+        ],
+      },
+    ],
+    storefront: [
+      { src: "/images/pride-2024/pride-02-entrance.jpg", tag: "Entrance / Welcome All" },
+      { src: "/images/pride-2024/pride-03-exterior.jpg", tag: "Street view" },
+      { src: "/images/pride-2024/pride-04-street.jpg", tag: "Plaza / Google Store" },
+    ],
+    featuredVideo: "/videos/pride-2024/welcome-all.mp4",
+    featuredVideoTitle: "Welcome All / door screen",
+    featuredVideoMeta: "In-store motion · 13s loop",
+    flowers: [
+      {
+        src: "/videos/pride-2024/flower-violets.mp4",
+        name: "Violets",
+        note: "A token of love between women since Sappho.",
+      },
+      {
+        src: "/videos/pride-2024/flower-lavender.mp4",
+        name: "Lavender",
+        note: "Shorthand for queer identity for over a century.",
+      },
+      {
+        src: "/videos/pride-2024/flower-pansies.mp4",
+        name: "Pansies",
+        note: "A slur, reclaimed into a symbol.",
+      },
+      {
+        src: "/videos/pride-2024/flower-carnations.mp4",
+        name: "Carnations",
+        note: "Oscar Wilde's green carnation, worn as a signal.",
+      },
+      {
+        src: "/videos/pride-2024/flower-roses.mp4",
+        name: "Roses",
+        note: "The oldest language of love, meant for everyone.",
+      },
+    ],
+    marquee: ["Welcome All", "Flowers rooted in Pride history"],
+    credits: [
+      { label: "Client", name: "Google" },
+      { label: "Design", name: "Basic Agency" },
+      { label: "Copywriter", name: "Andrew Couch" },
+      { label: "Creative Direction", name: "Noah Charnow" },
+    ],
   },
   {
     slug: "stonewall",

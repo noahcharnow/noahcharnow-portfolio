@@ -5,6 +5,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ProjectHero } from "@/components/ProjectHero";
 import { ProjectNav } from "@/components/ProjectNav";
+import { PrideStory } from "@/components/PrideStory";
 import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 import { getLens } from "@/lib/lenses";
 
@@ -45,6 +46,13 @@ export default async function ProjectPage({ params }: { params: Params }) {
   const idx = inLens.findIndex((p) => p.slug === slug);
   const prev = idx > 0 ? inLens[idx - 1] : null;
   const next = idx < inLens.length - 1 ? inLens[idx + 1] : null;
+
+  // Story layout (e.g. Pride 2024): same route + seed wiring, bespoke body.
+  if (project.story) {
+    return (
+      <PrideStory project={project} prev={prev} next={next} lensTitle={lens?.title ?? ""} />
+    );
+  }
 
   const bodyParas = (project.body ?? "")
     .split(/\n{2,}/)
