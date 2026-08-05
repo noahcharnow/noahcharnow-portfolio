@@ -1,0 +1,602 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heath Ceramics / Noah Charnow</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root{--w-display:600;
+    --dark:#0B0907;--cream:#F0ECE4;--cream-2:#9C948A;--accent:#EE4D1B;
+    --ease:cubic-bezier(0.19,1,0.22,1);--gutter:clamp(24px,4.4vw,88px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:'General Sans',system-ui,sans-serif;background:var(--dark);color:var(--cream);line-height:1.45;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img,video{display:block;width:100%;height:100%;object-fit:cover}
+  .wrap{max-width:1660px;margin:0 auto;padding:0 var(--gutter)}
+
+  .frame{position:relative;overflow:hidden;background:#161010}
+  .frame .mask{position:absolute;inset:0;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.15s var(--ease)}
+  .frame.in .mask{clip-path:inset(0 0 0 0)}
+  .frame .par{position:absolute;inset:-9% 0;will-change:transform}
+  .frame.contain img{object-fit:contain;background:#0F0C0A}
+  .frame.contain .par{position:absolute;inset:0;transform:none!important}
+  .frame.noimg::after{content:attr(data-alt);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(45deg,#1b1412,#1b1412 12px,#221916 12px,#221916 24px);
+    color:var(--accent);font-weight:600;font-size:15px;text-align:center;padding:20px;z-index:3}
+
+  .clip{overflow:hidden;padding-bottom:.14em}
+  .clip>.ci{display:block;transform:translateY(112%);will-change:transform}
+  .clip.in>.ci{transform:translateY(0);transition:transform 1.05s var(--ease)}
+  .clip.scrub>.ci{transition:none}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  .stag w{display:inline-block;opacity:0;transform:translateY(.5em);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .stag.in w{opacity:1;transform:none}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:20px var(--gutter);mix-blend-mode:difference}
+  .wordmark{font-weight:var(--w-display);font-size:clamp(19px,1.7vw,42px);letter-spacing:-.03em;color:#fff}
+  .back{font-size:clamp(14px,0.78vw,21px);font-weight:600;color:#fff}
+  .rail{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:95;width:0}
+
+  .hero-track{position:relative;height:185vh}
+  .hero-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .hero-media{position:absolute;inset:0;will-change:transform}
+  .hero-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,9,7,.5) 0%,rgba(11,9,7,.15) 38%,rgba(11,9,7,.95) 100%)}
+  .hero-copy{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(40px,7vh,90px);z-index:2;will-change:transform}
+  .hero-kicker{font-size:clamp(14px,0.95vw,24px);font-weight:600;color:var(--accent);margin-bottom:clamp(12px,1.1vw,22px)}
+  .hero-h{font-weight:var(--w-display);font-size:clamp(40px,8.6vw,220px);line-height:.9;letter-spacing:-.065em;color:#fff}
+  .hero-sub{margin-top:clamp(16px,1.6vw,32px);max-width:40ch;font-size:clamp(16px,1.25vw,28px);line-height:1.4;color:#D9D3C9}
+
+  .meta{padding:clamp(44px,6vh,86px) 0 clamp(36px,5vh,70px)}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(20px,2.4vw,48px);border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.4vw,44px)}
+  .meta-k{font-size:clamp(14px,0.95vw,23px);font-weight:600;color:var(--accent);margin-bottom:clamp(8px,0.6vw,14px)}
+  .meta-v{font-size:clamp(16px,1.15vw,27px);font-weight:500;line-height:1.3}
+
+  .split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,3vw,70px);align-items:start;padding:clamp(30px,5vh,70px) 0 clamp(50px,8vh,110px)}
+  @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}}
+  .split-sticky{position:sticky;top:clamp(90px,16vh,190px)}
+  @media(max-width:900px){.split-sticky{position:static}}
+  .sec-h{font-weight:var(--w-display);font-size:clamp(30px,5.2vw,124px);line-height:.9;letter-spacing:-.06em;margin-bottom:clamp(18px,1.8vw,34px)}
+  .lead{font-weight:500;font-size:clamp(18px,1.7vw,38px);line-height:1.16;letter-spacing:-.025em;max-width:26ch}
+  .lead + .lead{margin-top:clamp(16px,1.4vw,30px)}
+  .split-media{display:grid;gap:clamp(14px,1.6vw,32px)}
+  
+  
+  .cap-on{position:absolute;left:clamp(16px,1.4vw,30px);bottom:clamp(14px,1.2vw,26px);z-index:4;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+
+  
+
+  .quote{padding:clamp(56px,10vh,130px) 0}
+  .quote p{font-weight:var(--w-display);font-size:clamp(30px,6.4vw,164px);line-height:.95;letter-spacing:-.065em}
+  .quote p em{font-style:normal;color:var(--accent)}
+
+  /* horizontal pinned scroller */
+  .hs-track{position:relative}
+  .hs-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+  .hs-row{display:flex;gap:clamp(14px,1.8vw,36px);padding:0 var(--gutter);will-change:transform;align-items:flex-start}
+  .hs-item{flex:none;width:clamp(230px,30vw,560px)}
+  
+  
+  .hs-item h4{margin-top:clamp(10px,0.9vw,20px);font-weight:700;font-size:clamp(17px,1.5vw,34px);letter-spacing:-.04em}
+  .hs-item p{margin-top:clamp(4px,0.4vw,9px);font-size:clamp(13px,0.88vw,20px);color:var(--cream-2);font-weight:500;line-height:1.35;max-width:24ch}
+  .hs-head{position:absolute;top:clamp(72px,11vh,124px);left:var(--gutter);z-index:5;font-weight:var(--w-display);font-size:clamp(22px,2.6vw,62px);letter-spacing:-.05em;pointer-events:none;max-width:60vw}
+  .hs-head span{display:block;font-size:clamp(13px,0.88vw,20px);font-weight:500;color:var(--cream-2);letter-spacing:0;margin-top:8px}
+  .hs-count{position:absolute;bottom:clamp(30px,5vh,66px);right:var(--gutter);z-index:5;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+
+  /* pinned stack */
+  .stack-track{position:relative;height:290vh}
+  .stack-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .stack-head{position:absolute;top:clamp(76px,12vh,132px);left:var(--gutter);z-index:6;font-weight:var(--w-display);font-size:clamp(28px,4.6vw,110px);letter-spacing:-.06em;line-height:.9;pointer-events:none}
+  .stack-stage{position:absolute;left:var(--gutter);right:var(--gutter);top:clamp(146px,23vh,280px);bottom:clamp(68px,10vh,124px)}
+  .stack-item{position:absolute;inset:0;overflow:hidden;border-radius:4px;clip-path:inset(100% 0 0 0);will-change:clip-path,transform}
+  .stack-cap{position:absolute;left:var(--gutter);bottom:clamp(28px,4.6vh,58px);z-index:6;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:var(--cream-2)}
+  .stack-idx{position:absolute;right:var(--gutter);bottom:clamp(28px,4.6vh,58px);z-index:6;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+
+  /* big number device */
+  .num-track{position:relative;height:170vh}
+  .num-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
+  .num-bg{position:absolute;inset:0}
+  .num-bg::after{content:'';position:absolute;inset:0;background:rgba(11,9,7,.66)}
+  .num-inner{position:relative;z-index:3;width:100%;padding:0 var(--gutter)}
+  .num-big{font-weight:var(--w-display);font-size:clamp(90px,19vw,400px);line-height:.8;letter-spacing:-.08em;color:#fff;font-variant-numeric:tabular-nums}
+  .num-big i{font-style:normal;color:var(--accent)}
+  .num-lab{margin-top:clamp(14px,1.6vw,34px);font-weight:var(--w-display);font-size:clamp(20px,2.6vw,64px);letter-spacing:-.045em;color:var(--cream);max-width:22ch;line-height:.98}
+
+  /* plain grid */
+  .grid{display:grid;gap:clamp(14px,1.6vw,32px)}
+  .grid.c2{grid-template-columns:repeat(2,1fr)}
+  .grid.c3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:900px){.grid.c3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.grid.c2,.grid.c3{grid-template-columns:1fr}}
+  
+
+  .pager{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.2vw,44px);border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(46px,7vh,104px) 0 clamp(36px,5vh,80px)}
+  @media(max-width:760px){.pager{grid-template-columns:1fr;gap:34px}}
+  .pager a small{display:block;font-size:clamp(13px,0.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:clamp(10px,0.9vw,18px)}
+  .pager a h3{font-weight:var(--w-display);font-size:clamp(24px,3.2vw,74px);line-height:.94;letter-spacing:-.055em;transition:color .4s var(--ease)}
+  .pager a:hover h3{color:var(--accent)}
+  .pager .r{text-align:right}
+  @media(max-width:760px){.pager .r{text-align:left}}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-bottom:50px;font-size:clamp(13px,0.8vw,20px);color:var(--cream-2);font-weight:500}
+  .foot a:hover{color:var(--cream)}
+
+  @media(max-width:760px){
+    .hs-track{height:auto!important}
+    .hs-pin{position:static;height:auto;display:block;padding:clamp(30px,6vh,60px) 0}
+    .hs-row{flex-wrap:wrap;transform:none!important;gap:30px}
+    .hs-item{width:100%}
+    .hs-head{position:static;margin:0 var(--gutter) 22px;max-width:none}
+    .hs-count{display:none}
+    .stack-track{height:auto}
+    .stack-pin{position:static;height:auto;padding:clamp(30px,6vh,60px) 0}
+    .stack-head{position:static;margin:0 var(--gutter) 20px}
+    .stack-stage{position:static;height:auto}
+    .stack-item{position:relative;inset:auto;clip-path:none!important;transform:none!important;margin-bottom:16px}
+    .stack-cap,.stack-idx{position:static;margin:0 var(--gutter)}
+    .num-track{height:auto}
+    .num-pin{position:static;height:auto;padding:clamp(50px,9vh,110px) 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{transition-duration:.001ms!important;animation:none!important}
+    .frame .mask{clip-path:none}.clip>.ci{transform:none}.rv{opacity:1;transform:none}.stag w{opacity:1;transform:none}
+    .hero-track{height:auto}.hero-pin{position:static;height:auto}
+  }
+
+  /* ===== ratio-aware media (retrofit) ================================== */
+  /* A media box never declares its own shape. --ar is the real ratio of the
+     image inside, set from naturalWidth at runtime. Nothing gets recropped. */
+  .frame{aspect-ratio:var(--ar,1.5)!important;height:auto!important}
+  .split-media .frame,.split-media .frame.tall,
+  .hs-item .frame,.hs-item.port .frame,
+  .grid .frame{aspect-ratio:var(--ar,1.5)!important}
+
+  /* full-width band: wide images run edge to edge, tall images narrow to fit
+     the height instead of being sliced to a letterbox */
+  .frame.bleed{width:min(100%,calc(92vh * var(--ar,1.7)))!important;
+        margin-left:auto;margin-right:auto;height:auto!important;
+        aspect-ratio:var(--ar,1.7)!important}
+
+  /* horizontal scroller: shared card height, width from the real ratio */
+  .hs-item{--hsh:clamp(170px,44vh,540px);width:calc(var(--ar,1.5) * var(--hsh))!important}
+
+  /* the pinned stack: art keeps its own shape and centres inside the stage
+     instead of being stretched to whatever the stage happens to be.
+     --sw and --sh are measured in JS from the stage and the art's ratio. */
+  .stack-item{aspect-ratio:auto!important;
+        width:var(--sw,100%)!important;height:var(--sh,100%)!important;
+        left:calc((100% - var(--sw,100%)) / 2)!important;
+        top:calc((100% - var(--sh,100%)) / 2)!important;
+        right:auto!important;bottom:auto!important}
+
+  /* grids become justified rows: mixed ratios, one shared row height, no crop */
+  .grid{display:flex!important;flex-wrap:wrap;align-items:flex-start}
+  .grid>*{flex-grow:var(--ar,1.5);flex-shrink:1;
+        flex-basis:calc(var(--ar,1.5) * var(--growh,260px));
+        min-width:0;max-width:calc(var(--ar,1.5) * var(--maxh,64vh))}
+  .grid.c2{--growh:clamp(200px,26vh,340px)}
+  .grid.c3{--growh:clamp(150px,19vh,250px)}
+  @media(max-width:600px){.grid{display:block!important}.grid>*{margin-bottom:16px;max-width:none}}
+
+  /* honest hero: full bleed only while the crop stays under about 12%,
+     otherwise type on black with the picture below at its true ratio */
+  .hero-track.stacked{height:auto!important}
+  .hero-track.stacked .hero-pin{position:static;height:auto;overflow:visible;
+        padding:clamp(104px,17vh,200px) 0 0}
+  .hero-track.stacked .hero-copy{position:static;left:auto;right:auto;bottom:auto;
+        padding:0 var(--gutter);transform:none!important;opacity:1!important}
+  .hero-track.stacked .hero-media{position:relative;inset:auto;
+        aspect-ratio:var(--heroar,1.6);margin-top:clamp(26px,4.5vh,60px);transform:none!important}
+  .hero-track.stacked .hero-media::after{display:none}
+
+
+
+
+
+
+
+
+
+  /* ===== mobile hardening ==============================================
+     Placed last on purpose. Longhand padding here beats the `padding`
+     shorthand that section classes like .quote and .chap set for their
+     vertical rhythm, which was cancelling the horizontal gutter. */
+  .wrap{padding-left:var(--gutter);padding-right:var(--gutter)}
+
+  /* 44px minimum on anything you tap */
+  .nav .wordmark,.nav .back{display:inline-flex;align-items:center;min-height:44px}
+  .foot a,.pager a{display:inline-flex;align-items:center;min-height:44px}
+  .pager a{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+  .pager .r{align-items:flex-end}
+  @media(max-width:760px){.pager .r{align-items:flex-start}}
+  .foot{align-items:center}
+
+  /* readable floor for small text */
+  .cap,.win-cap,.hs-item p,.foot,.stack-cap{font-size:max(14px,var(--fs,14px))}
+  .cap,.win-cap{font-size:clamp(14px,0.85vw,20px)}
+  .hs-item p{font-size:clamp(14px,0.88vw,20px)}
+  .foot{font-size:clamp(14px,0.8vw,20px)}
+
+  /* emails and URLs must never force a container wider than the screen */
+  .foot a,.press-v,.win-url{overflow-wrap:anywhere}
+
+  /* The reveal animation needs overflow:hidden, which was slicing the tail off
+     glyphs that overhang their advance width, the y in Huckberry being the one
+     that showed. There was bottom padding for descenders but nothing
+     horizontal. Room on both sides, pulled back so nothing shifts. */
+  .clip{padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
+        margin-right:-.10em;margin-left:-.04em}
+
+  /* McLaren's graphics-sheet scroller carried its own hardcoded 3/4 slot,
+     which the first retrofit pass missed. Same rule as everywhere else:
+     shared card height, width from the asset's real shape. */
+  .sheets-row .frame{aspect-ratio:var(--ar,1.5)!important;
+        width:calc(var(--ar,1.5) * var(--sheeth))!important;--sheeth:clamp(180px,46vh,560px)}
+
+  /* Pride's flower captions sit in .film blocks, not .hs-item */
+  .film p,.film h4 + p{font-size:clamp(14px,0.88vw,20px)}
+
+  /* footer links need width as well as height to clear the 44px target */
+  .foot a{min-width:44px;justify-content:center;padding:0 2px}
+  .pager a{min-height:48px}
+  .lx-row{min-height:48px}
+
+  @media(max-width:520px){
+    /* the nav sits over artwork, so keep it compact but still tappable */
+    .nav{padding-top:10px;padding-bottom:10px}
+  }
+</style></head><body>
+<!-- build: grid-v3 -->
+<div class="rail" id="rail"></div>
+<nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
+<section class="hero-track" id="heroTrack"><div class="hero-pin">
+<div class="hero-media" id="heroMedia"><img src="images/heath-ceramics/Heath-c76d49.jpg" alt="Heath Ceramics"></div>
+<div class="hero-copy" id="heroCopy"><div class="hero-kicker">Heath Ceramics / Brand &amp; Creative Direction</div>
+<h1 class="hero-h" id="heroH">
+<span class="clip"><span class="ci">Heath</span></span>
+<span class="clip"><span class="ci">Ceramics</span></span>
+</h1><p class="hero-sub">Leading in-house design for the historic California pottery, and taking the brand somewhere it had never been: off the wheel.</p></div></div></section>
+<section class="meta"><div class="wrap"><div class="meta-grid">
+<div class="rv"><div class="meta-k">Client</div><div class="meta-v">Heath Ceramics</div></div>
+<div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Direction &amp; Design</div></div>
+<div class="rv"><div class="meta-k">Team</div><div class="meta-v">In-house designers &amp; contractors</div></div>
+<div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Identity, packaging, photography, retail, print</div></div>
+</div></div></section>
+<section class="wrap"><div class="split"><div class="split-sticky">
+<h2 class="sec-h clip"><span class="ci">The work</span></h2>
+<p class="lead stag">Heath had been pumping things out of clay since 1948. My job was everything that was not clay.</p>
+<p class="lead stag">Creative strategy for the first ever non-clay goods. Cut and sew bags, flatware, and more.</p>
+</div><div class="split-media">
+<figure class="frame" data-alt="Heath poster"><div class="mask"><div class="par"><img src="images/heath-ceramics/Heath_Poster-1ffc27.jpg" alt="Heath poster" loading="lazy"></div></div><figcaption class="cap-on">Poster system</figcaption></figure>
+<figure class="frame tall" data-alt="Heath Sews"><div class="mask"><div class="par"><img src="images/heath-ceramics/heathsews_65300437_178635499819258_1534915944353-321b49.jpg" alt="Heath Sews" loading="lazy"></div></div><figcaption class="cap-on">Heath Sews</figcaption></figure>
+</div></div></section>
+<section class="quote"><div class="wrap"><p>
+<span class="clip scrub"><span class="ci">Eat some hay,</span></span>
+<span class="clip scrub"><span class="ci">make things out of clay,</span></span>
+<span class="clip scrub"><span class="ci"><em>lay by the bay.</em></span></span>
+</p></div></section>
+<figure class="frame bleed" data-alt="Heath Ceramics product"><div class="mask"><div class="par"><img src="images/heath-ceramics/Heath-962e74.jpg" alt="Heath Ceramics product" loading="lazy"></div></div><figcaption class="cap-on">Product and lifestyle photography</figcaption></figure>
+<section class="wrap"><div class="split"><div class="split-sticky">
+<h2 class="sec-h clip"><span class="ci">Sub-brands</span></h2>
+<p class="lead stag">A brand identity system for Heath’s sub-brands, plus design systems for events across the year.</p>
+<p class="lead stag">I shot the lifestyle and product photography, built the packaging systems, and crafted the print, retail graphics and web assets.</p>
+</div><div class="split-media">
+<figure class="frame" data-alt="Heath retail"><div class="mask"><div class="par"><img src="images/heath-ceramics/65563235_501036683983348_8154760254124446794_n-9f9777.jpg" alt="Heath retail" loading="lazy"></div></div></figure>
+<figure class="frame tall" data-alt="Heath packaging"><div class="mask"><div class="par"><img src="images/heath-ceramics/IMG_0885-2db848.jpg" alt="Heath packaging" loading="lazy"></div></div></figure>
+</div></div></section>
+<section class="stack-track"><div class="stack-pin">
+<div class="stack-head">Two studios,<br>one system.</div><div class="stack-stage">
+<div class="stack-item" data-cap="Clay Studio bi-fold"><img src="images/heath-ceramics/Heath_Clay_Studio_BiFold-1d6d04.jpg" alt="Clay Studio bi-fold" loading="lazy"></div>
+<div class="stack-item" data-cap="Heath Sews bi-fold"><img src="images/heath-ceramics/Heath_Sews_BiFold-427e39.jpg" alt="Heath Sews bi-fold" loading="lazy"></div>
+</div><div class="stack-cap">Clay Studio bi-fold</div><div class="stack-idx">01 / 02</div></div></section>
+<div class="wrap"><div class="pager">
+<a href="google-playbook-case-study.html"><small>&larr; Previous</small><h3>Google Pride 2024</h3></a>
+<a class="r" href="stonewall-case-study.html"><small>Next &rarr;</small><h3>Stonewall Powered by Google</h3></a>
+</div><div class="foot"><div>&copy; Noah Charnow 2026</div>
+<div><a href="https://www.linkedin.com/in/noah-charnow/">LinkedIn</a> &nbsp; <a href="mailto:noahcharnow@gmail.com">Email</a> &nbsp; San Diego / Available</div>
+</div></div>
+<script>
+var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+function cl(v){return v<0?0:v>1?1:v;}
+function ease(t){return 1-(1-t)*(1-t);}
+function pad2(n){return (n<10?'0':'')+n;}
+
+document.querySelectorAll('.frame img,.frame video,.stack-item img').forEach(function(m){
+  m.addEventListener('error',function(){var f=m.closest('.frame')||m.closest('.stack-item'); if(f) f.classList.add('noimg');});
+});
+document.querySelectorAll('.stag').forEach(function(p){
+  p.innerHTML=p.textContent.trim().split(/\s+/).map(function(w,i){
+    return '<w style="transition-delay:'+(i*0.024).toFixed(3)+'s">'+w+'</w>';}).join(' ');
+});
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.08,rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.clip:not(.scrub),.rv,.stag,.frame').forEach(function(el){ io.observe(el); });
+})();
+window.addEventListener('load',function(){
+  document.querySelectorAll('#heroH .clip').forEach(function(el,i){
+    el.querySelector('.ci').style.transitionDelay=(0.2+i*0.1)+'s'; el.classList.add('in');});
+});
+
+function fitLines(el,maxGrow){
+  if(!el) return;
+  el.style.fontSize='';
+  var base=parseFloat(getComputedStyle(el).fontSize), avail=el.clientWidth;
+  if(!avail||!base) return;
+  function widest(){
+    var lines=el.querySelectorAll('.ci'), nat=0;
+    for(var i=0;i<lines.length;i++){
+      var l=lines[i], ws=l.style.whiteSpace, dp=l.style.display;
+      l.style.whiteSpace='nowrap'; l.style.display='inline-block';
+      nat=Math.max(nat,l.getBoundingClientRect().width);
+      l.style.whiteSpace=ws; l.style.display=dp;
+    }
+    return nat;
+  }
+  var nat=widest(); if(!nat) return;
+  var cur=base*Math.min(maxGrow,(avail*0.975)/nat);
+  el.style.fontSize=cur+'px';
+  for(var pass=0;pass<4;pass++){
+    nat=widest();
+    if(!nat||nat<=avail*0.99) break;
+    cur=cur*(avail*0.972)/nat;
+    el.style.fontSize=cur+'px';
+  }
+}
+function fitAll(){
+  fitLines(document.getElementById('heroH'),1.06);
+  document.querySelectorAll('.quote p').forEach(function(el){ fitLines(el,1.02); });
+  document.querySelectorAll('.sec-h').forEach(function(el){ fitLines(el,0.99); });
+}
+function prog(t){var m=t.offsetHeight-window.innerHeight;return m>0?cl((window.scrollY-t.offsetTop)/m):0;}
+function lerp(cur,target){var d=target-cur;return cur+d*(Math.abs(d)>0.25?0.34:0.12);}
+function revealAll(t){var f=t.querySelectorAll('.frame:not(.in)');for(var i=0;i<f.length;i++)f[i].classList.add('in');}
+
+var heroTrack=document.getElementById('heroTrack'),heroMedia=document.getElementById('heroMedia'),heroCopy=document.getElementById('heroCopy'),
+    rail=document.getElementById('rail'),S={},hsList=[],stackList=[],numList=[];
+
+document.querySelectorAll('.hs-track').forEach(function(t){
+  hsList.push({t:t,row:t.querySelector('.hs-row'),count:t.querySelector('.hs-count'),n:t.querySelectorAll('.hs-item').length,r:0,shift:0});
+});
+document.querySelectorAll('.stack-track').forEach(function(t){
+  stackList.push({t:t,items:[].slice.call(t.querySelectorAll('.stack-item')),cap:t.querySelector('.stack-cap'),idx:t.querySelector('.stack-idx'),r:0});
+});
+document.querySelectorAll('.num-track').forEach(function(t){
+  numList.push({t:t,el:t.querySelector('.num-big'),from:parseInt(t.dataset.from,10),to:parseInt(t.dataset.to,10),suffix:t.dataset.suffix||'',r:0});
+});
+
+function setup(){
+  fitAll();
+  if(heroCopy) S.copyTravel=heroCopy.offsetHeight+110;
+  hsList.forEach(function(h){ h.shift=Math.max(0,h.row.scrollWidth-window.innerWidth); });
+}
+var rHero=0;
+function frame(){
+  if(!reduce){
+    var doc=document.documentElement;
+    rail.style.width=(window.scrollY/(doc.scrollHeight-window.innerHeight)*100)+'%';
+
+    if(heroTrack){
+      var p=prog(heroTrack); rHero=lerp(rHero,p);
+      heroMedia.style.transform='scale('+(1+0.06*rHero)+')';
+      heroCopy.style.transform='translateY('+(-S.copyTravel*ease(cl(rHero/0.85)))+'px)';
+    }
+    hsList.forEach(function(h){
+      var v=prog(h.t); h.r=lerp(h.r,v);
+      if(v>0.97) revealAll(h.t);
+      h.row.style.transform='translateX('+(-h.shift*h.r)+'px)';
+      if(h.count) h.count.textContent=pad2(Math.min(h.n,Math.floor(h.r*(h.n-0.001))+1))+' / '+pad2(h.n);
+    });
+    stackList.forEach(function(s){
+      var v=prog(s.t); s.r=lerp(s.r,v);
+      var n=s.items.length, active=0;
+      for(var i=0;i<n;i++){
+        var local=cl(s.r*n-i), el=s.items[i];
+        el.style.zIndex=i+1;
+        el.style.clipPath=i===0?'inset(0 0 0 0)':'inset('+((1-local)*100).toFixed(2)+'% 0 0 0)';
+        el.style.transform='scale('+(1+0.04*(1-local)).toFixed(4)+')';
+        if(local>0.5) active=i;
+      }
+      if(s.cap) s.cap.textContent=s.items[active].getAttribute('data-cap')||'';
+      if(s.idx) s.idx.textContent=pad2(active+1)+' / '+pad2(n);
+    });
+    numList.forEach(function(nm){
+      var v=prog(nm.t); nm.r=lerp(nm.r,v);
+      var e=ease(cl(nm.r/0.9));
+      nm.el.innerHTML=Math.round(nm.from+(nm.to-nm.from)*e)+nm.suffix;
+    });
+    document.querySelectorAll('.quote p').forEach(function(qp){
+      var qr=qp.getBoundingClientRect();
+      var q=cl((window.innerHeight-qr.top)/(window.innerHeight+qr.height));
+      var qs=qp.querySelectorAll('.scrub>.ci');
+      for(var qi=0;qi<qs.length;qi++){
+        var lo=ease(cl((q-0.16-qi*0.07)/0.26));
+        qs[qi].style.transform='translateY('+((1-lo)*112).toFixed(2)+'%)';
+      }
+    });
+    document.querySelectorAll('.frame:not(.contain) .par').forEach(function(el){
+      var r=el.parentElement.parentElement.getBoundingClientRect();
+      if(r.bottom<-100||r.top>window.innerHeight+100) return;
+      var t=(r.top+r.height/2-window.innerHeight/2)/window.innerHeight;
+      el.style.transform='translateY('+(t*-8).toFixed(2)+'%)';
+    });
+  }
+  requestAnimationFrame(frame);
+}
+window.addEventListener('resize',setup);
+window.addEventListener('load',setup);
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(setup);}
+setup(); requestAnimationFrame(frame);
+
+/* ===== ratio-aware media (retrofit) ==================================== */
+(function(){
+  function box(img){ return img.closest('.frame') || img.closest('.stack-item') || img.closest('.cell'); }
+  function apply(img){
+    if(!img.naturalWidth || !img.naturalHeight) return;
+    var ar = img.naturalWidth / img.naturalHeight, el = box(img);
+    if(!el) return;
+    el.style.setProperty('--ar', ar.toFixed(5));
+    var item = img.closest('.hs-item');
+    if(item) item.style.setProperty('--ar', ar.toFixed(5));
+  }
+  function sweep(){
+    document.querySelectorAll('img').forEach(function(img){
+      if(img.complete) apply(img);
+      else img.addEventListener('load', function(){ apply(img); stageFit(); heroFit(); }, {once:true});
+    });
+  }
+
+  /* the pinned stack: give the stage the median shape of its own art */
+  function stageFit(){
+    document.querySelectorAll('.stack-stage').forEach(function(stage){
+      var rs = [];
+      stage.querySelectorAll('.stack-item img').forEach(function(i){
+        if(i.naturalWidth) rs.push(i.naturalWidth / i.naturalHeight);
+      });
+      if(!rs.length) return;
+      rs.sort(function(a,b){return a-b;});
+      var med = rs[Math.floor(rs.length/2)];
+      stage.style.setProperty('--stage-ar', med.toFixed(5));
+      /* fit a box of that shape inside the stage, centred */
+      var r = stage.getBoundingClientRect();
+      if(r.width > 2 && r.height > 2){
+        var bw = Math.min(r.width, r.height * med), bh = bw / med;
+        stage.style.setProperty('--sw', bw.toFixed(1) + 'px');
+        stage.style.setProperty('--sh', bh.toFixed(1) + 'px');
+      }
+      /* letterbox rather than crop when the set is genuinely mixed */
+      var mixed = (rs[rs.length-1] / rs[0]) > 1.35;
+      stage.querySelectorAll('.stack-item img').forEach(function(i){
+        i.style.objectFit = mixed ? 'contain' : 'cover';
+      });
+    });
+  }
+
+  function heroFit(){
+    var track = document.getElementById('heroTrack');
+    if(!track) return;
+    /* the hero may be a still or a video, so measure whichever is there */
+    var el = track.querySelector('.hero-media img, .hero-media video');
+    if(!el) return;
+    var w = el.naturalWidth || el.videoWidth, h = el.naturalHeight || el.videoHeight;
+    if(!w || !h) return;
+    var ar = w / h;
+    track.style.setProperty('--heroar', ar.toFixed(5));
+    var vp = window.innerWidth / window.innerHeight;
+    var loss = ar > vp ? (1 - vp / ar) : (1 - ar / vp);
+    var stack = loss > 0.12 || window.innerWidth <= 760;
+    track.classList.toggle('stacked', stack);
+    if(stack){
+      var m = track.querySelector('.hero-media'), c = track.querySelector('.hero-copy');
+      if(m) m.style.transform = '';
+      if(c){ c.style.transform = ''; c.style.opacity = ''; }
+    }
+  }
+
+  function all(){ sweep(); stageFit(); heroFit(); }
+  all();
+  /* video heroes report their size on metadata, not on load */
+  document.querySelectorAll('.hero-media video').forEach(function(v){
+    v.addEventListener('loadedmetadata', heroFit);
+    if(v.readyState >= 1) heroFit();
+  });
+  window.addEventListener('load', function(){ all(); setTimeout(all, 400); });
+  window.addEventListener('resize', function(){ stageFit(); heroFit(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+  window.__ratioAll = all;
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+/* ===== pinned scroller cost cap =======================================
+   The older pages hard-coded how much page height a horizontal scroller
+   consumes (style="height:422vh"), authored by eye rather than derived from
+   the content. Newer pages compute it and cap the spend at two viewports.
+   This brings the older ones onto the same rule: the row still travels its
+   full width, it just does so over less page. */
+(function(){
+  var CAP = 2.0;                       // extra viewports a scroller may cost
+  var tracks = [];
+  document.querySelectorAll('.hs-track[style*="height"], .sheets-track[style*="height"]')
+    .forEach(function(t){ tracks.push(t); t.removeAttribute('style'); });
+  if(!tracks.length) return;
+
+  function size(){
+    var vh = window.innerHeight;
+    var small = window.innerWidth <= 760 ||
+                window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    tracks.forEach(function(t){
+      if(small){ t.style.height = ''; return; }
+      var row = t.querySelector('.hs-row, .sheets-row');
+      if(!row) return;
+      var shift = Math.max(0, row.scrollWidth - window.innerWidth);
+      t.style.height = (vh + Math.min(shift, vh * CAP)) + 'px';
+    });
+  }
+  size();
+  window.addEventListener('resize', size);
+  window.addEventListener('load', function(){ size(); setTimeout(size, 500); });
+  document.querySelectorAll('.hs-row img, .sheets-row img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', size, {once:true});
+  });
+})();
+</script>
+
+<script>
+/* ===== never display an image larger than its pixels support ===========
+   A photo shown at 1970 CSS px needs 3940 real pixels to look sharp on a
+   retina screen. Almost nothing in this library has that, which is why the
+   site looked soft. Rather than upscale, each large frame is capped to the
+   width its own file can actually carry.
+
+   Target is 1.5x. Nothing shrinks below 55% of its slot, so layout holds.
+   This is self-healing: drop in a higher-resolution file and the frame is
+   allowed to grow back on its own. No code change needed. */
+(function(){
+  var TARGET = 1.5, FLOOR = 0.55;
+
+  function cap(el, img){
+    if(!img || !img.naturalWidth) return;
+    var parent = el.parentElement;
+    if(!parent) return;
+    var slot = parent.getBoundingClientRect().width;
+    if(slot < 2) return;
+    var supports = img.naturalWidth / TARGET;
+    var limit = Math.max(supports, slot * FLOOR);
+    if(limit < slot){
+      el.style.maxWidth = Math.round(limit) + 'px';
+      el.style.marginLeft = 'auto';
+      el.style.marginRight = 'auto';
+    } else {
+      el.style.maxWidth = '';
+    }
+  }
+
+  function run(){
+    document.querySelectorAll('.frame.band').forEach(function(f){
+      cap(f, f.querySelector('img'));
+    });
+    document.querySelectorAll('.win').forEach(function(w){
+      cap(w, w.querySelector('.win-view img'));
+    });
+  }
+
+  run();
+  window.addEventListener('resize', run);
+  window.addEventListener('load', function(){ run(); setTimeout(run, 400); });
+  document.querySelectorAll('.frame.band img, .win-view img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', run, {once:true});
+  });
+})();
+</script>
+</body></html>

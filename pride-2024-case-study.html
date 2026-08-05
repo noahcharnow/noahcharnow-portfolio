@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Pride 2024 / Noah Charnow</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root{--w-display:600;
+    --dark:#0B0907;--cream:#F0ECE4;--cream-2:#9C948A;--accent:#EE4D1B;
+    --ease:cubic-bezier(0.19,1,0.22,1);--gutter:clamp(24px,4.4vw,88px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:'General Sans',system-ui,sans-serif;background:var(--dark);color:var(--cream);line-height:1.45;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img,video{display:block;width:100%;height:100%;object-fit:cover}
+  .wrap{max-width:1660px;margin:0 auto;padding:0 var(--gutter)}
+
+  /* reveal system: .frame is never self-clipped so the observer can always see it */
+  .frame{position:relative;overflow:hidden;background:#161010}
+  .frame .mask{position:absolute;inset:0;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.15s var(--ease)}
+  .frame.in .mask{clip-path:inset(0 0 0 0)}
+  .frame .par{position:absolute;inset:-9% 0;will-change:transform}
+  .frame.noimg::after{content:attr(data-alt);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(45deg,#1b1412,#1b1412 12px,#221916 12px,#221916 24px);
+    color:var(--accent);font-weight:600;font-size:15px;text-align:center;padding:20px;z-index:3}
+
+  .clip{overflow:hidden;padding-bottom:.14em}
+  .clip>.ci{display:block;transform:translateY(112%);will-change:transform}
+  .clip.in>.ci{transform:translateY(0);transition:transform 1.05s var(--ease)}
+  .clip.scrub>.ci{transition:none}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  .stag w{display:inline-block;opacity:0;transform:translateY(.5em);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .stag.in w{opacity:1;transform:none}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:20px var(--gutter);mix-blend-mode:difference}
+  .wordmark{font-weight:var(--w-display);font-size:clamp(19px,1.7vw,42px);letter-spacing:-.03em;color:#fff}
+  .back{font-size:clamp(14px,0.78vw,21px);font-weight:600;color:#fff}
+  .rail{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:95;width:0}
+
+  /* HERO */
+  .hero-track{position:relative;height:185vh}
+  .hero-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .hero-media{position:absolute;inset:0;will-change:transform}
+  .hero-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,9,7,.45) 0%,rgba(11,9,7,.12) 38%,rgba(11,9,7,.95) 100%)}
+  .hero-copy{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(40px,7vh,90px);z-index:2;will-change:transform}
+  .hero-kicker{font-size:clamp(14px,0.95vw,24px);font-weight:600;color:var(--accent);margin-bottom:clamp(12px,1.1vw,22px)}
+  .hero-h{font-weight:var(--w-display);font-size:clamp(44px,9.4vw,240px);line-height:.9;letter-spacing:-.065em;color:#fff}
+  .hero-sub{margin-top:clamp(16px,1.6vw,32px);max-width:38ch;font-size:clamp(16px,1.25vw,28px);line-height:1.4;color:#D9D3C9}
+
+  /* META */
+  .meta{padding:clamp(44px,6vh,86px) 0 clamp(36px,5vh,70px)}
+  .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,48px);border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.4vw,44px)}
+  @media(max-width:820px){.meta-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+  .meta-k{font-size:clamp(14px,0.95vw,23px);font-weight:600;color:var(--accent);margin-bottom:clamp(8px,0.6vw,14px)}
+  .meta-v{font-size:clamp(16px,1.15vw,27px);font-weight:500;line-height:1.3}
+
+  /* SPLIT */
+  .split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,3vw,70px);align-items:start;padding:clamp(30px,5vh,70px) 0 clamp(50px,8vh,110px)}
+  @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}}
+  .split-sticky{position:sticky;top:clamp(90px,16vh,190px)}
+  @media(max-width:900px){.split-sticky{position:static}}
+  .sec-h{font-weight:var(--w-display);font-size:clamp(32px,5.6vw,132px);line-height:.9;letter-spacing:-.06em;margin-bottom:clamp(18px,1.8vw,34px)}
+  .lead{font-weight:500;font-size:clamp(19px,1.85vw,42px);line-height:1.14;letter-spacing:-.025em;max-width:24ch}
+  .lead + .lead{margin-top:clamp(16px,1.4vw,30px)}
+  .split-media{display:grid;gap:clamp(14px,1.6vw,32px)}
+  
+  
+  .cap-on{position:absolute;left:clamp(16px,1.4vw,30px);bottom:clamp(14px,1.2vw,26px);z-index:4;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+
+  
+
+  /* STATEMENT (scrubbed) */
+  .quote{padding:clamp(56px,10vh,130px) 0}
+  .quote p{font-weight:var(--w-display);font-size:clamp(30px,6.2vw,158px);line-height:.96;letter-spacing:-.06em}
+  .quote p em{font-style:normal;color:var(--accent)}
+
+  /* DOOR SCREEN: pinned full-bleed video */
+  .door-track{position:relative;height:170vh}
+  .door-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .door-media{position:absolute;inset:0;background:#161010}
+  .door-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,9,7,.35),rgba(11,9,7,.1) 40%,rgba(11,9,7,.85))}
+  .door-copy{position:absolute;left:var(--gutter);bottom:clamp(40px,7vh,90px);z-index:3;will-change:transform}
+  .door-copy h2{font-weight:var(--w-display);font-size:clamp(38px,8vw,200px);line-height:.9;letter-spacing:-.065em;color:#fff}
+  .door-copy p{margin-top:clamp(10px,1vw,20px);font-size:clamp(14px,0.95vw,24px);font-weight:600;color:rgba(255,255,255,.82)}
+
+  /* FLOWER FILMS: pinned horizontal */
+  .films-track{position:relative;height:340vh}
+  .films-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+  .films-row{display:flex;gap:clamp(14px,1.8vw,36px);padding:0 var(--gutter);will-change:transform;align-items:flex-start}
+  .film{flex:none;width:clamp(210px,26vw,460px)}
+  .film .frame{aspect-ratio:9/16;background:#141010}
+  .film h4{margin-top:clamp(12px,1.1vw,22px);font-weight:var(--w-display);font-size:clamp(20px,1.9vw,44px);letter-spacing:-.04em}
+  .film p{margin-top:clamp(5px,0.5vw,10px);font-size:clamp(13px,0.9vw,21px);color:var(--cream-2);font-weight:500;line-height:1.35;max-width:22ch}
+  .films-head{position:absolute;top:clamp(72px,11vh,124px);left:var(--gutter);z-index:5;font-weight:var(--w-display);font-size:clamp(22px,2.6vw,62px);letter-spacing:-.05em;pointer-events:none}
+  .films-count{position:absolute;bottom:clamp(30px,5vh,66px);right:var(--gutter);z-index:5;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+
+  /* credits / next */
+  .credits{border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(24px,2.4vw,48px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.2vw,44px)}
+  @media(max-width:820px){.credits{grid-template-columns:repeat(2,1fr);gap:26px}}
+  .pager{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.2vw,44px);border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(46px,7vh,104px) 0 clamp(36px,5vh,80px)}
+  @media(max-width:760px){.pager{grid-template-columns:1fr;gap:34px}}
+  .pager a small{display:block;font-size:clamp(13px,0.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:clamp(10px,0.9vw,18px)}
+  .pager a h3{font-weight:var(--w-display);font-size:clamp(26px,3.4vw,80px);line-height:.94;letter-spacing:-.055em;transition:color .4s var(--ease)}
+  .pager a:hover h3{color:var(--accent)}
+  .pager .r{text-align:right}
+  @media(max-width:760px){.pager .r{text-align:left}}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-bottom:50px;font-size:clamp(13px,0.8vw,20px);color:var(--cream-2);font-weight:500}
+  .foot a:hover{color:var(--cream)}
+
+  @media(max-width:760px){
+    .films-track{height:auto}
+    .films-pin{position:static;height:auto;display:block;padding:clamp(30px,6vh,60px) 0}
+    .films-row{flex-wrap:wrap;transform:none!important;gap:34px}
+    .film{width:100%}
+    .films-head{position:static;margin:0 var(--gutter) 24px}
+    .films-count{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{transition-duration:.001ms!important;animation:none!important}
+    .frame .mask{clip-path:none}.clip>.ci{transform:none}.rv{opacity:1;transform:none}.stag w{opacity:1;transform:none}
+    .hero-track,.door-track,.films-track{height:auto}
+    .hero-pin,.door-pin,.films-pin{position:static;height:auto}
+    .films-row{flex-wrap:wrap}
+  }
+
+  /* ===== ratio-aware media (retrofit) ================================== */
+  /* A media box never declares its own shape. --ar is the real ratio of the
+     image inside, set from naturalWidth at runtime. Nothing gets recropped. */
+  .frame{aspect-ratio:var(--ar,1.5)!important;height:auto!important}
+  .split-media .frame,.split-media .frame.tall,
+  .hs-item .frame,.hs-item.port .frame,
+  .grid .frame{aspect-ratio:var(--ar,1.5)!important}
+
+  /* full-width band: wide images run edge to edge, tall images narrow to fit
+     the height instead of being sliced to a letterbox */
+  .frame.bleed{width:min(100%,calc(92vh * var(--ar,1.7)))!important;
+        margin-left:auto;margin-right:auto;height:auto!important;
+        aspect-ratio:var(--ar,1.7)!important}
+
+  /* horizontal scroller: shared card height, width from the real ratio */
+  .hs-item{--hsh:clamp(170px,44vh,540px);width:calc(var(--ar,1.5) * var(--hsh))!important}
+
+  /* the pinned stack: art keeps its own shape and centres inside the stage
+     instead of being stretched to whatever the stage happens to be.
+     --sw and --sh are measured in JS from the stage and the art's ratio. */
+  .stack-item{aspect-ratio:auto!important;
+        width:var(--sw,100%)!important;height:var(--sh,100%)!important;
+        left:calc((100% - var(--sw,100%)) / 2)!important;
+        top:calc((100% - var(--sh,100%)) / 2)!important;
+        right:auto!important;bottom:auto!important}
+
+  /* grids become justified rows: mixed ratios, one shared row height, no crop */
+  .grid{display:flex!important;flex-wrap:wrap;align-items:flex-start}
+  .grid>*{flex-grow:var(--ar,1.5);flex-shrink:1;
+        flex-basis:calc(var(--ar,1.5) * var(--growh,260px));
+        min-width:0;max-width:calc(var(--ar,1.5) * var(--maxh,64vh))}
+  .grid.c2{--growh:clamp(200px,26vh,340px)}
+  .grid.c3{--growh:clamp(150px,19vh,250px)}
+  @media(max-width:600px){.grid{display:block!important}.grid>*{margin-bottom:16px;max-width:none}}
+
+  /* honest hero: full bleed only while the crop stays under about 12%,
+     otherwise type on black with the picture below at its true ratio */
+  .hero-track.stacked{height:auto!important}
+  .hero-track.stacked .hero-pin{position:static;height:auto;overflow:visible;
+        padding:clamp(104px,17vh,200px) 0 0}
+  .hero-track.stacked .hero-copy{position:static;left:auto;right:auto;bottom:auto;
+        padding:0 var(--gutter);transform:none!important;opacity:1!important}
+  .hero-track.stacked .hero-media{position:relative;inset:auto;
+        aspect-ratio:var(--heroar,1.6);margin-top:clamp(26px,4.5vh,60px);transform:none!important}
+  .hero-track.stacked .hero-media::after{display:none}
+
+
+
+
+
+
+
+
+
+  /* ===== mobile hardening ==============================================
+     Placed last on purpose. Longhand padding here beats the `padding`
+     shorthand that section classes like .quote and .chap set for their
+     vertical rhythm, which was cancelling the horizontal gutter. */
+  .wrap{padding-left:var(--gutter);padding-right:var(--gutter)}
+
+  /* 44px minimum on anything you tap */
+  .nav .wordmark,.nav .back{display:inline-flex;align-items:center;min-height:44px}
+  .foot a,.pager a{display:inline-flex;align-items:center;min-height:44px}
+  .pager a{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+  .pager .r{align-items:flex-end}
+  @media(max-width:760px){.pager .r{align-items:flex-start}}
+  .foot{align-items:center}
+
+  /* readable floor for small text */
+  .cap,.win-cap,.hs-item p,.foot,.stack-cap{font-size:max(14px,var(--fs,14px))}
+  .cap,.win-cap{font-size:clamp(14px,0.85vw,20px)}
+  .hs-item p{font-size:clamp(14px,0.88vw,20px)}
+  .foot{font-size:clamp(14px,0.8vw,20px)}
+
+  /* emails and URLs must never force a container wider than the screen */
+  .foot a,.press-v,.win-url{overflow-wrap:anywhere}
+
+  /* The reveal animation needs overflow:hidden, which was slicing the tail off
+     glyphs that overhang their advance width, the y in Huckberry being the one
+     that showed. There was bottom padding for descenders but nothing
+     horizontal. Room on both sides, pulled back so nothing shifts. */
+  .clip{padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
+        margin-right:-.10em;margin-left:-.04em}
+
+  /* McLaren's graphics-sheet scroller carried its own hardcoded 3/4 slot,
+     which the first retrofit pass missed. Same rule as everywhere else:
+     shared card height, width from the asset's real shape. */
+  .sheets-row .frame{aspect-ratio:var(--ar,1.5)!important;
+        width:calc(var(--ar,1.5) * var(--sheeth))!important;--sheeth:clamp(180px,46vh,560px)}
+
+  /* Pride's flower captions sit in .film blocks, not .hs-item */
+  .film p,.film h4 + p{font-size:clamp(14px,0.88vw,20px)}
+
+  /* footer links need width as well as height to clear the 44px target */
+  .foot a{min-width:44px;justify-content:center;padding:0 2px}
+  .pager a{min-height:48px}
+  .lx-row{min-height:48px}
+
+  @media(max-width:520px){
+    /* the nav sits over artwork, so keep it compact but still tappable */
+    .nav{padding-top:10px;padding-bottom:10px}
+  }
+</style>
+</head>
+<body>
+<!-- build: grid-v3 -->
+<div class="rail" id="rail"></div>
+<nav class="nav">
+  <a class="wordmark" href="index.html">Noah Charnow</a>
+  <a class="back" href="index.html#work">&larr; All work</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero-track" id="heroTrack">
+  <div class="hero-pin">
+    <div class="hero-media" id="heroMedia">
+      <img src="images/index/pride-hero-71d1b1.jpg" alt="Google Pride 2024 storefront facade">
+    </div>
+    <div class="hero-copy" id="heroCopy">
+      <div class="hero-kicker">Google Store / Pride 2024 / Retail identity</div>
+      <h1 class="hero-h" id="heroH">
+        <span class="clip"><span class="ci">Welcome</span></span>
+        <span class="clip"><span class="ci">All</span></span>
+      </h1>
+      <p class="hero-sub">A floral identity for Pride across Google Store. One system of flowers, rooted in Pride history, scaled to every window.</p>
+    </div>
+  </div>
+</section>
+
+<!-- META -->
+<section class="meta">
+  <div class="wrap">
+    <div class="meta-grid">
+      <div class="rv"><div class="meta-k">Client</div><div class="meta-v">Google</div></div>
+      <div class="rv"><div class="meta-k">Design</div><div class="meta-v">Basic Agency</div></div>
+      <div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Direction</div></div>
+      <div class="rv"><div class="meta-k">Year</div><div class="meta-v">2024</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE IDEA -->
+<section class="wrap">
+  <div class="split">
+    <div class="split-sticky">
+      <h2 class="sec-h clip"><span class="ci">The idea</span></h2>
+      <p class="lead stag">The identity is built entirely from flowers. Each bloom is a soft gradient shape pulled across the full spectrum, and each one carries a piece of Pride history.</p>
+      <p class="lead stag">One drawing language held the whole program together, from the in-store screens to the glass on the street.</p>
+    </div>
+    <div class="split-media">
+      <figure class="frame" data-alt="Entrance / Welcome All">
+        <div class="mask"><div class="par"><img src="images/pride-2024/pride-window-2-7b65fa.jpg" alt="Entrance, Welcome All"></div></div>
+        <figcaption class="cap-on">Entrance / Welcome All</figcaption>
+      </figure>
+      <figure class="frame tall" data-alt="Storefront / Google Store">
+        <div class="mask"><div class="par"><img src="images/pride-2024/pride-window-1-38221a.jpg" alt="Storefront, Google Store"></div></div>
+        <figcaption class="cap-on">Storefront / Google Store</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section class="quote">
+  <div class="wrap">
+    <p id="quoteP">
+      <span class="clip scrub"><span class="ci">Most Pride retail</span></span>
+      <span class="clip scrub"><span class="ci">reaches for the flag.</span></span>
+      <span class="clip scrub"><span class="ci"><em>We went to the garden.</em></span></span>
+    </p>
+  </div>
+</section>
+
+<!-- STOREFRONT bleed -->
+<figure class="frame bleed" data-alt="Full-facade window application">
+  <div class="mask"><div class="par"><img src="images/index/pride-hero-71d1b1.jpg" alt="Google Store flagship, full-facade window application"></div></div>
+  <figcaption class="cap-on">Google Store flagship / full-facade window application</figcaption>
+</figure>
+
+<section class="wrap">
+  <div class="split">
+    <div class="split-sticky">
+      <h2 class="sec-h clip"><span class="ci">Storefront</span></h2>
+      <p class="lead stag">Applied as window graphics across Google Store locations, the system filled glass facades from sidewalk to ceiling.</p>
+      <p class="lead stag">Same language at every store, from the flagship to the neighborhood shop.</p>
+    </div>
+    <div class="split-media">
+      <figure class="frame" data-alt="Window graphic detail">
+        <div class="mask"><div class="par"><img src="images/pride-2024/pride-window-1-38221a.jpg" alt="Window graphic detail"></div></div>
+      </figure>
+      <figure class="frame tall" data-alt="Window graphic, entrance">
+        <div class="mask"><div class="par"><img src="images/pride-2024/pride-window-2-7b65fa.jpg" alt="Window graphic, entrance"></div></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- DOOR SCREEN -->
+<section class="door-track" id="doorTrack">
+  <div class="door-pin">
+    <div class="door-media" id="doorMedia">
+      <video autoplay muted loop playsinline>
+        <source src="images/pride-2024/welcome-all-4d8638.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="door-copy" id="doorCopy">
+      <h2>Welcome All</h2>
+      <p>Door screen &middot; in-store motion &middot; 13s loop</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLOWER FILMS -->
+<section class="wrap" style="padding-top:clamp(56px,9vh,120px)">
+  <h2 class="sec-h clip"><span class="ci">Flower stories</span></h2>
+  <p class="lead stag">Five short films, one per bloom, each pairing the gradient flower with the Pride history behind it. Quiet, looping, no sound.</p>
+</section>
+
+<section class="films-track" id="filmsTrack">
+  <div class="films-pin">
+    <div class="films-head">Five blooms, five histories</div>
+    <div class="films-row" id="filmsRow">
+      <div class="film">
+        <figure class="frame" data-alt="Violets"><div class="mask"><video autoplay muted loop playsinline><source src="images/pride-2024/flower-violets-db656b.mp4" type="video/mp4"></video></div></figure>
+        <h4>Violets</h4><p>A token of love between women since Sappho.</p>
+      </div>
+      <div class="film">
+        <figure class="frame" data-alt="Lavender"><div class="mask"><video autoplay muted loop playsinline><source src="images/pride-2024/flower-lavender-92f916.mp4" type="video/mp4"></video></div></figure>
+        <h4>Lavender</h4><p>Shorthand for queer identity for over a century.</p>
+      </div>
+      <div class="film">
+        <figure class="frame" data-alt="Pansies"><div class="mask"><video autoplay muted loop playsinline><source src="images/pride-2024/flower-pansies-cd962a.mp4" type="video/mp4"></video></div></figure>
+        <h4>Pansies</h4><p>A slur, reclaimed into a symbol.</p>
+      </div>
+      <div class="film">
+        <figure class="frame" data-alt="Carnations"><div class="mask"><video autoplay muted loop playsinline><source src="images/pride-2024/flower-carnations-ee6b3c.mp4" type="video/mp4"></video></div></figure>
+        <h4>Carnations</h4><p>Oscar Wilde's green carnation, worn as a signal.</p>
+      </div>
+      <div class="film">
+        <figure class="frame" data-alt="Roses"><div class="mask"><video autoplay muted loop playsinline><source src="images/pride-2024/flower-roses-9c01d5.mp4" type="video/mp4"></video></div></figure>
+        <h4>Roses</h4><p>The oldest language of love, meant for everyone.</p>
+      </div>
+    </div>
+    <div class="films-count" id="filmsCount">01 / 05</div>
+  </div>
+</section>
+
+<!-- CREDITS -->
+<section class="wrap" style="padding-top:clamp(56px,9vh,130px)">
+  <div class="credits">
+    <div class="rv"><div class="meta-k">Client</div><div class="meta-v">Google</div></div>
+    <div class="rv"><div class="meta-k">Design</div><div class="meta-v">Basic Agency</div></div>
+    <div class="rv"><div class="meta-k">Copywriter</div><div class="meta-v">Andrew Couch</div></div>
+    <div class="rv"><div class="meta-k">Creative Direction</div><div class="meta-v">Noah Charnow</div></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="pager">
+    <a href="stonewall-case-study.html"><small>&larr; Previous in Big Campaigns</small><h3>Google x McLaren</h3></a>
+    <a class="r" href="chrome-industries-case-study.html"><small>Next in Big Campaigns &rarr;</small><h3>Stonewall Powered by Google</h3></a>
+  </div>
+  <div class="foot">
+    <div>&copy; Noah Charnow 2026</div>
+    <div><a href="https://www.linkedin.com/in/noah-charnow/">LinkedIn</a> &nbsp; <a href="mailto:noahcharnow@gmail.com">Email</a> &nbsp; San Diego / Available</div>
+  </div>
+</div>
+
+<script>
+var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+function cl(v){return v<0?0:v>1?1:v;}
+function ease(t){return 1-(1-t)*(1-t);}
+function pad2(n){return (n<10?'0':'')+n;}
+
+document.querySelectorAll('.frame img, .frame video').forEach(function(m){
+  m.addEventListener('error',function(){var f=m.closest('.frame'); if(f) f.classList.add('noimg');});
+});
+document.querySelectorAll('.stag').forEach(function(p){
+  p.innerHTML=p.textContent.trim().split(/\s+/).map(function(w,i){
+    return '<w style="transition-delay:'+(i*0.026).toFixed(3)+'s">'+w+'</w>';}).join(' ');
+});
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.08,rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.clip:not(.scrub),.rv,.stag,.frame').forEach(function(el){ io.observe(el); });
+})();
+window.addEventListener('load',function(){
+  document.querySelectorAll('#heroH .clip').forEach(function(el,i){
+    el.querySelector('.ci').style.transitionDelay=(0.2+i*0.1)+'s'; el.classList.add('in');});
+});
+
+function fitLines(el,maxGrow){
+  if(!el) return;
+  el.style.fontSize='';
+  var base=parseFloat(getComputedStyle(el).fontSize), avail=el.clientWidth;
+  if(!avail||!base) return;
+  function widest(){
+    var lines=el.querySelectorAll('.ci'), nat=0;
+    for(var i=0;i<lines.length;i++){
+      var l=lines[i], ws=l.style.whiteSpace, dp=l.style.display;
+      l.style.whiteSpace='nowrap'; l.style.display='inline-block';
+      nat=Math.max(nat,l.getBoundingClientRect().width);
+      l.style.whiteSpace=ws; l.style.display=dp;
+    }
+    return nat;
+  }
+  var nat=widest(); if(!nat) return;
+  var cur=base*Math.min(maxGrow,(avail*0.975)/nat);
+  el.style.fontSize=cur+'px';
+  /* iterate: font metrics are not perfectly linear, so correct until it truly fits */
+  for(var pass=0;pass<4;pass++){
+    nat=widest();
+    if(!nat||nat<=avail*0.99) break;
+    cur=cur*(avail*0.972)/nat;
+    el.style.fontSize=cur+'px';
+  }
+}
+function fitAll(){
+  fitLines(document.getElementById('heroH'),1.06);
+  fitLines(document.getElementById('quoteP'),1.02);
+  document.querySelectorAll('.sec-h').forEach(function(el){ fitLines(el,0.99); });
+}
+function prog(t){var m=t.offsetHeight-window.innerHeight;return m>0?cl((window.scrollY-t.offsetTop)/m):0;}
+
+var heroTrack=document.getElementById('heroTrack'),heroMedia=document.getElementById('heroMedia'),heroCopy=document.getElementById('heroCopy'),
+    doorTrack=document.getElementById('doorTrack'),doorMedia=document.getElementById('doorMedia'),doorCopy=document.getElementById('doorCopy'),
+    filmsTrack=document.getElementById('filmsTrack'),filmsRow=document.getElementById('filmsRow'),filmsCount=document.getElementById('filmsCount'),
+    rail=document.getElementById('rail'),S={};
+
+function setup(){
+  fitAll();
+  S.copyTravel=heroCopy.offsetHeight+110;
+  S.filmsShift=Math.max(0,filmsRow.scrollWidth-window.innerWidth);
+}
+var rHero=0,rDoor=0,rFilms=0;
+function frame(){
+  if(!reduce){
+    var doc=document.documentElement;
+    rail.style.width=(window.scrollY/(doc.scrollHeight-window.innerHeight)*100)+'%';
+
+    var p=prog(heroTrack); rHero+=(p-rHero)*0.12;
+    heroMedia.style.transform='scale('+(1+0.06*rHero)+')';
+    heroCopy.style.transform='translateY('+(-S.copyTravel*ease(cl(rHero/0.85)))+'px)';
+
+    var d=prog(doorTrack); rDoor+=(d-rDoor)*0.12;
+    doorMedia.style.transform='scale('+(1+0.10*rDoor)+')';
+    doorCopy.style.transform='translateY('+(-70*ease(rDoor))+'px)';
+
+    var f=prog(filmsTrack); rFilms+=(f-rFilms)*0.12;
+    filmsRow.style.transform='translateX('+(-(S.filmsShift||0)*rFilms)+'px)';
+    filmsCount.textContent=pad2(Math.min(5,Math.floor(rFilms*4.999)+1))+' / 05';
+
+    var qp=document.getElementById('quoteP');
+    if(qp){
+      var qr=qp.getBoundingClientRect();
+      var q=cl((window.innerHeight-qr.top)/(window.innerHeight+qr.height));
+      var qs=qp.querySelectorAll('.scrub>.ci');
+      for(var qi=0;qi<qs.length;qi++){
+        var lo=ease(cl((q-0.16-qi*0.07)/0.26));
+        qs[qi].style.transform='translateY('+((1-lo)*112).toFixed(2)+'%)';
+      }
+    }
+    document.querySelectorAll('.frame .par').forEach(function(el){
+      var r=el.parentElement.parentElement.getBoundingClientRect();
+      if(r.bottom<-100||r.top>window.innerHeight+100) return;
+      var t=(r.top+r.height/2-window.innerHeight/2)/window.innerHeight;
+      el.style.transform='translateY('+(t*-8).toFixed(2)+'%)';
+    });
+  }
+  requestAnimationFrame(frame);
+}
+window.addEventListener('resize',setup);
+window.addEventListener('load',setup);
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(setup);}
+setup(); requestAnimationFrame(frame);
+
+/* ===== ratio-aware media (retrofit) ==================================== */
+(function(){
+  function box(img){ return img.closest('.frame') || img.closest('.stack-item') || img.closest('.cell'); }
+  function apply(img){
+    if(!img.naturalWidth || !img.naturalHeight) return;
+    var ar = img.naturalWidth / img.naturalHeight, el = box(img);
+    if(!el) return;
+    el.style.setProperty('--ar', ar.toFixed(5));
+    var item = img.closest('.hs-item');
+    if(item) item.style.setProperty('--ar', ar.toFixed(5));
+  }
+  function sweep(){
+    document.querySelectorAll('img').forEach(function(img){
+      if(img.complete) apply(img);
+      else img.addEventListener('load', function(){ apply(img); stageFit(); heroFit(); }, {once:true});
+    });
+  }
+
+  /* the pinned stack: give the stage the median shape of its own art */
+  function stageFit(){
+    document.querySelectorAll('.stack-stage').forEach(function(stage){
+      var rs = [];
+      stage.querySelectorAll('.stack-item img').forEach(function(i){
+        if(i.naturalWidth) rs.push(i.naturalWidth / i.naturalHeight);
+      });
+      if(!rs.length) return;
+      rs.sort(function(a,b){return a-b;});
+      var med = rs[Math.floor(rs.length/2)];
+      stage.style.setProperty('--stage-ar', med.toFixed(5));
+      /* fit a box of that shape inside the stage, centred */
+      var r = stage.getBoundingClientRect();
+      if(r.width > 2 && r.height > 2){
+        var bw = Math.min(r.width, r.height * med), bh = bw / med;
+        stage.style.setProperty('--sw', bw.toFixed(1) + 'px');
+        stage.style.setProperty('--sh', bh.toFixed(1) + 'px');
+      }
+      /* letterbox rather than crop when the set is genuinely mixed */
+      var mixed = (rs[rs.length-1] / rs[0]) > 1.35;
+      stage.querySelectorAll('.stack-item img').forEach(function(i){
+        i.style.objectFit = mixed ? 'contain' : 'cover';
+      });
+    });
+  }
+
+  function heroFit(){
+    var track = document.getElementById('heroTrack');
+    if(!track) return;
+    /* the hero may be a still or a video, so measure whichever is there */
+    var el = track.querySelector('.hero-media img, .hero-media video');
+    if(!el) return;
+    var w = el.naturalWidth || el.videoWidth, h = el.naturalHeight || el.videoHeight;
+    if(!w || !h) return;
+    var ar = w / h;
+    track.style.setProperty('--heroar', ar.toFixed(5));
+    var vp = window.innerWidth / window.innerHeight;
+    var loss = ar > vp ? (1 - vp / ar) : (1 - ar / vp);
+    var stack = loss > 0.12 || window.innerWidth <= 760;
+    track.classList.toggle('stacked', stack);
+    if(stack){
+      var m = track.querySelector('.hero-media'), c = track.querySelector('.hero-copy');
+      if(m) m.style.transform = '';
+      if(c){ c.style.transform = ''; c.style.opacity = ''; }
+    }
+  }
+
+  function all(){ sweep(); stageFit(); heroFit(); }
+  all();
+  /* video heroes report their size on metadata, not on load */
+  document.querySelectorAll('.hero-media video').forEach(function(v){
+    v.addEventListener('loadedmetadata', heroFit);
+    if(v.readyState >= 1) heroFit();
+  });
+  window.addEventListener('load', function(){ all(); setTimeout(all, 400); });
+  window.addEventListener('resize', function(){ stageFit(); heroFit(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+  window.__ratioAll = all;
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+<script>
+/* ===== pinned scroller cost cap =======================================
+   The older pages hard-coded how much page height a horizontal scroller
+   consumes (style="height:422vh"), authored by eye rather than derived from
+   the content. Newer pages compute it and cap the spend at two viewports.
+   This brings the older ones onto the same rule: the row still travels its
+   full width, it just does so over less page. */
+(function(){
+  var CAP = 2.0;                       // extra viewports a scroller may cost
+  var tracks = [];
+  document.querySelectorAll('.hs-track[style*="height"], .sheets-track[style*="height"]')
+    .forEach(function(t){ tracks.push(t); t.removeAttribute('style'); });
+  if(!tracks.length) return;
+
+  function size(){
+    var vh = window.innerHeight;
+    var small = window.innerWidth <= 760 ||
+                window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    tracks.forEach(function(t){
+      if(small){ t.style.height = ''; return; }
+      var row = t.querySelector('.hs-row, .sheets-row');
+      if(!row) return;
+      var shift = Math.max(0, row.scrollWidth - window.innerWidth);
+      t.style.height = (vh + Math.min(shift, vh * CAP)) + 'px';
+    });
+  }
+  size();
+  window.addEventListener('resize', size);
+  window.addEventListener('load', function(){ size(); setTimeout(size, 500); });
+  document.querySelectorAll('.hs-row img, .sheets-row img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', size, {once:true});
+  });
+})();
+</script>
+
+<script>
+/* ===== never display an image larger than its pixels support ===========
+   A photo shown at 1970 CSS px needs 3940 real pixels to look sharp on a
+   retina screen. Almost nothing in this library has that, which is why the
+   site looked soft. Rather than upscale, each large frame is capped to the
+   width its own file can actually carry.
+
+   Target is 1.5x. Nothing shrinks below 55% of its slot, so layout holds.
+   This is self-healing: drop in a higher-resolution file and the frame is
+   allowed to grow back on its own. No code change needed. */
+(function(){
+  var TARGET = 1.5, FLOOR = 0.55;
+
+  function cap(el, img){
+    if(!img || !img.naturalWidth) return;
+    var parent = el.parentElement;
+    if(!parent) return;
+    var slot = parent.getBoundingClientRect().width;
+    if(slot < 2) return;
+    var supports = img.naturalWidth / TARGET;
+    var limit = Math.max(supports, slot * FLOOR);
+    if(limit < slot){
+      el.style.maxWidth = Math.round(limit) + 'px';
+      el.style.marginLeft = 'auto';
+      el.style.marginRight = 'auto';
+    } else {
+      el.style.maxWidth = '';
+    }
+  }
+
+  function run(){
+    document.querySelectorAll('.frame.band').forEach(function(f){
+      cap(f, f.querySelector('img'));
+    });
+    document.querySelectorAll('.win').forEach(function(w){
+      cap(w, w.querySelector('.win-view img'));
+    });
+  }
+
+  run();
+  window.addEventListener('resize', run);
+  window.addEventListener('load', function(){ run(); setTimeout(run, 400); });
+  document.querySelectorAll('.frame.band img, .win-view img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', run, {once:true});
+  });
+})();
+</script>
+</body>
+</html>

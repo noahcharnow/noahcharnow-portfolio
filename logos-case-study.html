@@ -1,0 +1,596 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logos / Noah Charnow</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root{--w-display:600;
+    --dark:#0B0907;--cream:#F0ECE4;--cream-2:#9C948A;--accent:#EE4D1B;
+    --ease:cubic-bezier(0.19,1,0.22,1);--gutter:clamp(24px,4.4vw,88px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:'General Sans',system-ui,sans-serif;background:var(--dark);color:var(--cream);line-height:1.45;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1660px;margin:0 auto;padding:0 var(--gutter)}
+
+  /* ---------- ratio-aware media ---------------------------------------- */
+  /* A frame's shape is the image's shape. --ar is set from real pixel
+     dimensions at build time, and corrected from naturalWidth at runtime
+     for any image whose dimensions weren't known up front. */
+  img,video{display:block;width:100%;height:100%;object-fit:cover}
+  .frame{position:relative;overflow:hidden;background:#161010;aspect-ratio:var(--ar,1.5)}
+  .frame .mask{position:absolute;inset:0;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.15s var(--ease)}
+  .frame.in .mask{clip-path:inset(0 0 0 0)}
+  .frame .par{position:absolute;inset:-6% 0;will-change:transform}
+  /* letterbox escape hatch, only for art that must not lose a pixel */
+  .frame.contain img{object-fit:contain;background:#0F0C0A}
+  .frame.contain .par{position:absolute;inset:0;transform:none!important}
+
+  /* ---------- justified row: shared height, no cropping ---------------- */
+  /* basis and grow both scale with the ratio, so every cell in a row lands
+     on the same height while keeping its true proportions. */
+  .jrow{display:flex;flex-wrap:wrap;gap:var(--jgap,clamp(14px,1.6vw,32px));align-items:flex-start}
+  .jrow>.cell{flex-grow:var(--ar,1.5);flex-shrink:1;
+        flex-basis:calc(var(--ar,1.5) * var(--jrowh,300px));
+        min-width:0;max-width:calc(var(--ar,1.5) * var(--jmaxh,66vh))}
+  .jrow>.cell.solo{flex-grow:0}
+  @media(max-width:600px){
+    .jrow{display:block}
+    .jrow>.cell{margin-bottom:clamp(14px,3vw,26px)}
+  }
+  .cap{margin-top:clamp(9px,0.8vw,18px);font-size:clamp(13px,0.85vw,20px);font-weight:500;color:var(--cream-2);line-height:1.4}
+  .cap b{color:var(--cream);font-weight:600}
+
+  /* ---------- browser window with scroll-scrubbed long page ------------ */
+  .win-track{position:relative}
+  .win-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+           align-items:center;justify-content:center;gap:clamp(11px,1.2vw,22px);padding:clamp(58px,8vh,96px) var(--gutter) clamp(22px,3.4vh,46px)}
+  .win{width:min(100%,1280px,calc((100vh - clamp(150px,20vh,250px)) * var(--winar,1.6)));
+        border-radius:8px;overflow:hidden;background:#0F0B09;
+        border:1px solid rgba(240,236,228,.14);box-shadow:0 40px 90px -40px rgba(0,0,0,.8)}
+  .win-bar{display:flex;align-items:center;gap:clamp(10px,1vw,18px);padding:clamp(9px,0.8vw,15px) clamp(12px,1.1vw,20px);
+           background:#17110E;border-bottom:1px solid rgba(240,236,228,.09)}
+  .win-dots{display:flex;gap:6px;flex:none}
+  .win-dots i{width:clamp(8px,0.6vw,11px);aspect-ratio:1;border-radius:50%;background:rgba(240,236,228,.20)}
+  .win-url{font-size:clamp(12px,0.8vw,18px);font-weight:600;color:var(--cream-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .win-len{margin-left:auto;flex:none;font-size:clamp(11px,0.72vw,16px);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+  .win-view{position:relative;overflow:hidden;aspect-ratio:var(--winar,1.6);background:#0B0907}
+  .win-view img{position:absolute;top:0;left:0;width:100%;height:auto;object-fit:fill;will-change:transform}
+  .win-cap{max-width:62ch;text-align:center;margin-top:0;font-size:clamp(13px,0.85vw,20px);font-weight:500;color:var(--cream-2);line-height:1.45}
+  .win-cap b{color:var(--cream);font-weight:600}
+  /* scroll hint, fades once the scrub starts */
+  .win-hint{position:absolute;right:clamp(14px,1.2vw,26px);bottom:clamp(14px,1.2vw,26px);z-index:4;
+            font-size:clamp(11px,0.72vw,16px);font-weight:600;color:#fff;background:rgba(11,9,7,.72);
+            border:1px solid rgba(240,236,228,.18);border-radius:100px;padding:7px 14px;
+            transition:opacity .45s var(--ease);pointer-events:none}
+  .win-track.scrubbing .win-hint{opacity:0}
+
+  /* ---------- honest full-bleed hero -----------------------------------
+     A viewport-filling hero forces the picture into the viewport's shape.
+     That is fine when the two shapes are close, and it is the single worst
+     crop on the site when they are not (a 1.71 wide image in a 390x900
+     phone viewport loses three quarters of its width).
+     So: full bleed only while the crop stays under about 12%. Past that the
+     hero stacks. Type on black, picture underneath at its true ratio. */
+  .hero-track.stacked{height:auto}
+  .hero-track.stacked .hero-pin{position:static;height:auto;overflow:visible;padding:clamp(104px,17vh,200px) 0 0}
+  .hero-track.stacked .hero-copy{position:static;left:auto;right:auto;bottom:auto;
+        padding:0 var(--gutter);transform:none!important;opacity:1!important}
+  .hero-track.stacked .hero-media{position:relative;inset:auto;aspect-ratio:var(--heroar,1.6);
+        margin-top:clamp(26px,4.5vh,60px);transform:none!important}
+  .hero-track.stacked .hero-media::after{display:none}
+
+  /* no pin on small screens or reduced motion: scroll the page by hand */
+  @media(max-width:760px){
+    .win-track{height:auto!important}
+    .win-pin{position:static;height:auto;padding:clamp(24px,5vh,44px) var(--gutter)}
+    .win{width:100%}
+    .win-view{overflow-y:auto;-webkit-overflow-scrolling:touch}
+    .win-view img{position:relative;transform:none!important}
+    .win-hint{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .win-track{height:auto!important}
+    .win-pin{position:static;height:auto}
+    .win-view{overflow-y:auto}
+    .win-view img{position:relative;transform:none!important}
+  }
+
+  /* ---------- reveals -------------------------------------------------- */
+  .clip{overflow:hidden;padding-bottom:.14em}
+  .clip>.ci{display:block;transform:translateY(112%);will-change:transform}
+  .clip.in>.ci{transform:translateY(0);transition:transform 1.05s var(--ease)}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ---------- chrome --------------------------------------------------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:20px var(--gutter);mix-blend-mode:difference}
+  .wordmark{font-weight:var(--w-display);font-size:clamp(19px,1.7vw,42px);letter-spacing:-.03em;color:#fff}
+  .back{font-size:clamp(14px,0.78vw,21px);font-weight:600;color:#fff}
+  .rail{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:95;width:0}
+
+  /* ---------- hero ----------------------------------------------------- */
+  .hero-track{position:relative;height:185vh}
+  .hero-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .hero-media{position:absolute;inset:0;will-change:transform}
+  .hero-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,.18) 38%,rgba(11,9,7,.95) 100%)}
+  .hero-copy{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(40px,7vh,90px);z-index:2;will-change:transform}
+  .hero-kicker{font-size:clamp(14px,0.95vw,24px);font-weight:600;color:var(--accent);margin-bottom:clamp(12px,1.1vw,22px)}
+  .hero-h{font-weight:var(--w-display);font-size:clamp(40px,8.6vw,220px);line-height:.9;letter-spacing:-.065em;color:#fff;text-wrap:balance}
+  .hero-sub{margin-top:clamp(16px,1.6vw,32px);max-width:42ch;font-size:clamp(16px,1.25vw,28px);line-height:1.4;color:#D9D3C9}
+
+  /* ---------- meta ----------------------------------------------------- */
+  .meta{padding:clamp(44px,6vh,86px) 0 clamp(36px,5vh,70px)}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(20px,2.4vw,48px);border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.4vw,44px)}
+  .meta-k{font-size:clamp(14px,0.95vw,23px);font-weight:600;color:var(--accent);margin-bottom:clamp(8px,0.6vw,14px)}
+  .meta-v{font-size:clamp(16px,1.15vw,27px);font-weight:500;line-height:1.3}
+
+  /* ---------- split ---------------------------------------------------- */
+  .split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,3vw,70px);align-items:start;padding:clamp(30px,5vh,70px) 0 clamp(50px,8vh,110px)}
+  @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}}
+  .split-sticky{position:sticky;top:clamp(90px,16vh,190px)}
+  @media(max-width:900px){.split-sticky{position:static}}
+  .sec-h{font-weight:var(--w-display);font-size:clamp(30px,5.2vw,124px);line-height:.9;letter-spacing:-.06em;margin-bottom:clamp(18px,1.8vw,34px);text-wrap:balance}
+  .lead{font-weight:500;font-size:clamp(18px,1.7vw,38px);line-height:1.16;letter-spacing:-.025em;max-width:28ch}
+  .lead + .lead{margin-top:clamp(16px,1.4vw,30px)}
+
+  /* ---------- quote ---------------------------------------------------- */
+  .quote{padding:clamp(56px,10vh,130px) 0}
+  .quote p{font-weight:var(--w-display);font-size:clamp(30px,6.4vw,164px);line-height:.95;letter-spacing:-.065em;text-wrap:balance}
+  .quote p em{font-style:normal;color:var(--accent)}
+
+  /* ---------- chapter head --------------------------------------------- */
+  .chap{padding:clamp(40px,7vh,96px) 0 clamp(20px,3vh,44px)}
+  .chap-grid{display:grid;grid-template-columns:clamp(56px,7vw,130px) 1fr;gap:clamp(18px,2.4vw,52px);align-items:start;border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.6vw,46px)}
+  @media(max-width:700px){.chap-grid{grid-template-columns:1fr;gap:14px}}
+  .chap-num{font-weight:var(--w-display);font-size:clamp(28px,3.4vw,80px);letter-spacing:-.05em;color:var(--accent);line-height:.9;font-variant-numeric:tabular-nums}
+  .chap-t{font-weight:var(--w-display);font-size:clamp(30px,5.2vw,124px);line-height:.9;letter-spacing:-.06em;text-wrap:balance}
+  .chap-lab{margin-top:clamp(10px,1vw,20px);font-size:clamp(14px,0.9vw,22px);font-weight:600;color:var(--accent)}
+  .chap-p{margin-top:clamp(16px,1.6vw,32px);max-width:52ch;font-size:clamp(16px,1.2vw,28px);line-height:1.5;color:#D9D3C9}
+
+  .year{font-weight:var(--w-display);font-size:clamp(40px,7vw,170px);letter-spacing:-.07em;line-height:.9;color:rgba(240,236,228,.16);
+        padding:clamp(30px,5vh,72px) 0 clamp(8px,1vh,18px);font-variant-numeric:tabular-nums}
+
+  .pairsplit{display:grid;grid-template-columns:auto minmax(240px,1fr);gap:clamp(24px,4vw,90px);align-items:end}
+  @media(max-width:900px){.pairsplit{grid-template-columns:1fr;gap:clamp(24px,4vh,44px)}}
+  .press-col{padding-bottom:clamp(4px,1vh,16px)}
+  .press-k{font-size:clamp(14px,0.9vw,22px);font-weight:600;color:var(--accent)}
+  .press-v{font-size:clamp(16px,1.15vw,27px);font-weight:500;line-height:1.4;max-width:56ch}
+  .press-v a{border-bottom:1.5px solid var(--accent);transition:color .3s var(--ease)}
+  .press-v a:hover{color:var(--accent)}
+  .press-k{margin-bottom:clamp(8px,0.8vw,16px)}
+
+  /* ---------- square film --------------------------------------------- */
+  .film{width:min(100%,620px);margin-top:clamp(30px,5vh,66px)}
+  .film .frame{aspect-ratio:1}
+
+  /* ---------- horizontal pinned scroller ------------------------------ */
+  .hs-track{position:relative}
+  .hs-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+  .hs-row{display:flex;gap:clamp(14px,1.8vw,36px);padding:0 var(--gutter);will-change:transform;align-items:flex-start}
+  /* item width derives from the asset ratio at a shared height, so spreads
+     keep their true shape and every card still lines up */
+  .hs-item{flex:none;width:calc(var(--ar,1.5) * var(--hsh));--hsh:clamp(170px,42vh,520px)}
+  .hs-item h4{margin-top:clamp(10px,0.9vw,20px);font-weight:700;font-size:clamp(17px,1.5vw,34px);letter-spacing:-.04em}
+  .hs-item p{margin-top:clamp(4px,0.4vw,9px);font-size:clamp(13px,0.88vw,20px);color:var(--cream-2);font-weight:500;line-height:1.35;max-width:24ch}
+  .hs-head{position:absolute;top:clamp(72px,11vh,124px);left:var(--gutter);z-index:5;font-weight:var(--w-display);font-size:clamp(22px,2.6vw,62px);letter-spacing:-.05em;pointer-events:none;max-width:60vw}
+  .hs-head span{display:block;font-size:clamp(13px,0.88vw,20px);font-weight:500;color:var(--cream-2);letter-spacing:0;margin-top:8px}
+  .hs-count{position:absolute;bottom:clamp(30px,5vh,66px);right:var(--gutter);z-index:5;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+
+  /* ---------- pager / foot -------------------------------------------- */
+  .pager{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.2vw,44px);border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(46px,7vh,104px) 0 clamp(36px,5vh,80px)}
+  @media(max-width:760px){.pager{grid-template-columns:1fr;gap:34px}}
+  .pager a small{display:block;font-size:clamp(13px,0.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:clamp(10px,0.9vw,18px)}
+  .pager a h3{font-weight:var(--w-display);font-size:clamp(24px,3.2vw,74px);line-height:.94;letter-spacing:-.055em;transition:color .4s var(--ease)}
+  .pager a:hover h3{color:var(--accent)}
+  .pager .r{text-align:right}
+  @media(max-width:760px){.pager .r{text-align:left}}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-bottom:50px;font-size:clamp(13px,0.8vw,20px);color:var(--cream-2);font-weight:500}
+  .foot a:hover{color:var(--cream)}
+
+  @media(max-width:760px){
+    .hs-track{height:auto!important}
+    .hs-pin{position:static;height:auto;display:block;padding:clamp(30px,6vh,60px) 0}
+    .hs-row{flex-wrap:wrap;transform:none!important;gap:30px}
+    .hs-item{width:100%}
+    .hs-head{position:static;margin:0 var(--gutter) 22px;max-width:none}
+    .hs-count{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{transition-duration:.001ms!important;animation:none!important}
+    .frame .mask{clip-path:none}.clip>.ci{transform:none}.rv{opacity:1;transform:none}
+    .hero-track{height:auto}.hero-pin{position:static;height:auto}
+  }
+
+  /* full-width band, ratio aware: tall art narrows instead of getting sliced */
+  .bandwrap{margin:clamp(30px,5vh,72px) 0}
+  .frame.band{width:min(100%,calc(92vh * var(--ar,1.7)));margin:0 auto;aspect-ratio:var(--ar,1.7)}
+  .wrap > .cap{margin-top:clamp(10px,1vw,20px)}
+
+  /* ---------- logo index ------------------------------------------------ */
+  .lx{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(30px,5vw,110px);
+      align-items:center;padding:clamp(30px,6vh,80px) 0 clamp(60px,10vh,130px)}
+  @media(max-width:900px){.lx{grid-template-columns:1fr;gap:clamp(24px,4vh,44px)}}
+
+  .lx-list{list-style:none}
+  .lx-row{position:relative;display:flex;align-items:baseline;gap:clamp(10px,1.2vw,22px);
+          padding:clamp(9px,1vw,20px) 0;border-bottom:1px solid rgba(240,236,228,.13);
+          cursor:pointer;background:none;border-left:0;border-right:0;border-top:0;
+          width:100%;text-align:left;font-family:inherit;color:inherit}
+  .lx-row .n{font-weight:var(--w-display);font-size:clamp(24px,3.4vw,76px);letter-spacing:-.055em;line-height:1;
+             transition:color .35s var(--ease),transform .45s var(--ease)}
+  .lx-row .k{margin-left:auto;font-size:clamp(12px,0.82vw,19px);font-weight:600;color:var(--cream-2);
+             opacity:0;transform:translateX(-8px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .lx-row[aria-selected="true"] .n{color:var(--accent);transform:translateX(clamp(8px,1vw,20px))}
+  .lx-row[aria-selected="true"] .k{opacity:1;transform:none}
+  .lx-row:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+  /* the stage. Marks sit on a light plate and are never cropped. */
+  .lx-stage{position:relative;aspect-ratio:4/3;background:var(--cream);border-radius:6px;overflow:hidden}
+  .lx-stage figure{position:absolute;inset:0;opacity:0;transform:scale(.985);
+        transition:opacity .5s var(--ease),transform .7s var(--ease);pointer-events:none}
+  .lx-stage figure.on{opacity:1;transform:none}
+  .lx-stage img{width:100%;height:100%;object-fit:contain;padding:clamp(18px,3vw,60px);background:var(--cream)}
+  .lx-count{position:absolute;right:clamp(12px,1.1vw,22px);bottom:clamp(10px,0.9vw,18px);z-index:3;
+        font-weight:700;font-size:clamp(13px,0.95vw,22px);color:var(--accent);font-variant-numeric:tabular-nums}
+  @media(max-width:900px){.lx-stage{aspect-ratio:3/2}}
+  @media(prefers-reduced-motion:reduce){.lx-stage figure{transition-duration:.001ms}}
+
+
+
+
+
+
+  /* ===== mobile hardening ==============================================
+     Placed last on purpose. Longhand padding here beats the `padding`
+     shorthand that section classes like .quote and .chap set for their
+     vertical rhythm, which was cancelling the horizontal gutter. */
+  .wrap{padding-left:var(--gutter);padding-right:var(--gutter)}
+
+  /* 44px minimum on anything you tap */
+  .nav .wordmark,.nav .back{display:inline-flex;align-items:center;min-height:44px}
+  .foot a,.pager a{display:inline-flex;align-items:center;min-height:44px}
+  .pager a{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+  .pager .r{align-items:flex-end}
+  @media(max-width:760px){.pager .r{align-items:flex-start}}
+  .foot{align-items:center}
+
+  /* readable floor for small text */
+  .cap,.win-cap,.hs-item p,.foot,.stack-cap{font-size:max(14px,var(--fs,14px))}
+  .cap,.win-cap{font-size:clamp(14px,0.85vw,20px)}
+  .hs-item p{font-size:clamp(14px,0.88vw,20px)}
+  .foot{font-size:clamp(14px,0.8vw,20px)}
+
+  /* emails and URLs must never force a container wider than the screen */
+  .foot a,.press-v,.win-url{overflow-wrap:anywhere}
+
+  /* The reveal animation needs overflow:hidden, which was slicing the tail off
+     glyphs that overhang their advance width, the y in Huckberry being the one
+     that showed. There was bottom padding for descenders but nothing
+     horizontal. Room on both sides, pulled back so nothing shifts. */
+  .clip{padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
+        margin-right:-.10em;margin-left:-.04em}
+
+  /* McLaren's graphics-sheet scroller carried its own hardcoded 3/4 slot,
+     which the first retrofit pass missed. Same rule as everywhere else:
+     shared card height, width from the asset's real shape. */
+  .sheets-row .frame{aspect-ratio:var(--ar,1.5)!important;
+        width:calc(var(--ar,1.5) * var(--sheeth))!important;--sheeth:clamp(180px,46vh,560px)}
+
+  /* Pride's flower captions sit in .film blocks, not .hs-item */
+  .film p,.film h4 + p{font-size:clamp(14px,0.88vw,20px)}
+
+  /* footer links need width as well as height to clear the 44px target */
+  .foot a{min-width:44px;justify-content:center;padding:0 2px}
+  .pager a{min-height:48px}
+  .lx-row{min-height:48px}
+
+  @media(max-width:520px){
+    /* the nav sits over artwork, so keep it compact but still tappable */
+    .nav{padding-top:10px;padding-bottom:10px}
+  }
+</style></head><body>
+<!-- build: grid-v3 -->
+<div class="rail" id="rail"></div>
+<nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
+<section class="hero-track" id="heroTrack" style="--heroar:1.333"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/index/07_Low_Bar-49c8e6.jpg" alt="Low Bar logo"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Marks</div><h1 class="hero-h"><span class="clip"><span class="ci">Nine logos,</span></span><span class="clip"><span class="ci">nine problems</span></span></h1><p class="hero-sub rv">Restaurants, bars, sub-brands, and monograms. A mark is the smallest a brand ever gets.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Designer</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Logos / Monograms<br>Wordmarks</div></div><div class="rv"><div class="meta-k">Count</div><div class="meta-v">Nine marks</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">The smallest</span></span><span class="clip"><span class="ci">version of</span></span><span class="clip"><span class="ci">the argument.</span></span></h2></div><div><p class="lead rv">A logo is not a brand. It is the part of the brand you can print at ten millimetres and still recognise upside down.</p><p class="lead rv">Pick a name to see the mark.</p></div></div></section><section class="wrap"><div class="lx"><ul class="lx-list" role="tablist"><li><button class="lx-row" role="tab" data-i="0" aria-selected="true"><span class="n">Chancho's</span><span class="k">Restaurant</span></button></li><li><button class="lx-row" role="tab" data-i="1" aria-selected="false"><span class="n">CH / AH</span><span class="k">Monogram</span></button></li><li><button class="lx-row" role="tab" data-i="2" aria-selected="false"><span class="n">Wills</span><span class="k">Huckberry sub-brand</span></button></li><li><button class="lx-row" role="tab" data-i="3" aria-selected="false"><span class="n">Upstate</span><span class="k">Huckberry sub-brand</span></button></li><li><button class="lx-row" role="tab" data-i="4" aria-selected="false"><span class="n">Forty Five</span><span class="k">Wordmark</span></button></li><li><button class="lx-row" role="tab" data-i="5" aria-selected="false"><span class="n">Low Bar</span><span class="k">Oakland bar</span></button></li><li><button class="lx-row" role="tab" data-i="6" aria-selected="false"><span class="n">Engage</span><span class="k">Wordmark</span></button></li><li><button class="lx-row" role="tab" data-i="7" aria-selected="false"><span class="n">HCS</span><span class="k">Monogram</span></button></li><li><button class="lx-row" role="tab" data-i="8" aria-selected="false"><span class="n">JP</span><span class="k">Monogram</span></button></li></ul><div class="lx-stage" id="lxStage"><figure class="on"><img src="images/logos/01_Chanchos-d5f7df.jpg" alt="Chancho's logo"></figure><figure class=""><img src="images/logos/02_CH_AH-099eb5.jpg" alt="CH / AH logo"></figure><figure class=""><img src="images/logos/03_Wills-543d1b.jpg" alt="Wills logo"></figure><figure class=""><img src="images/logos/04_Upstate-ea264b.jpg" alt="Upstate logo"></figure><figure class=""><img src="images/logos/05_Forty_Five-71f076.jpg" alt="Forty Five logo"></figure><figure class=""><img src="images/index/07_Low_Bar-49c8e6.jpg" alt="Low Bar logo"></figure><figure class=""><img src="images/logos/09_Engage-6f06f8.jpg" alt="Engage logo"></figure><figure class=""><img src="images/logos/11_HCS-e05843.jpg" alt="HCS logo"></figure><figure class=""><img src="images/logos/12_JP-f330d3.jpg" alt="JP logo"></figure><span class="lx-count" id="lxCount">01 / 09</span></div></div></section><div class="wrap"><div class="pager"><a href="sol-republic-case-study.html"><small>Previous</small><h3>Sol Republic</h3></a><a class="r" href="mclaren-case-study.html"><small>Next</small><h3>Google x McLaren</h3></a></div><div class="foot"><span>&copy; 2026 Noah Charnow</span><a href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a></div></div>
+<script>
+(function(){
+  var rows=[].slice.call(document.querySelectorAll('.lx-row')),
+      figs=[].slice.call(document.querySelectorAll('#lxStage figure')),
+      count=document.getElementById('lxCount'),
+      cur=0, timer=null, idle=true;
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function show(i){
+    if(i===cur) return;
+    figs[cur].classList.remove('on'); rows[cur].setAttribute('aria-selected','false');
+    cur=i;
+    figs[cur].classList.add('on'); rows[cur].setAttribute('aria-selected','true');
+    count.textContent=('0'+(i+1)).slice(-2)+' / '+('0'+figs.length).slice(-2);
+  }
+  function stop(){ idle=false; clearInterval(timer); }
+  rows.forEach(function(r,i){
+    r.addEventListener('mouseenter',function(){ stop(); show(i); });
+    r.addEventListener('focus',function(){ stop(); show(i); });
+    r.addEventListener('click',function(){ stop(); show(i); });
+  });
+  /* advance on its own until someone takes over */
+  if(!reduce){
+    var stage=document.getElementById('lxStage');
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting && idle && !timer){
+          timer=setInterval(function(){ show((cur+1)%figs.length); }, 2100);
+        } else if(!e.isIntersecting && timer){ clearInterval(timer); timer=null; }
+      });
+    },{threshold:0.4});
+    io.observe(stage);
+  }
+})();
+</script>
+<script>
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ---------- ratio correction ------------------------------------------
+     Any image that reached the page without known dimensions gets its
+     frame's --ar set from the real file once it loads. This is what keeps
+     a horizontal photo out of a vertical hole. */
+  function applyRatio(img){
+    if(!img.naturalWidth || !img.naturalHeight) return;
+    var ar = img.naturalWidth / img.naturalHeight;
+    var box = img.closest('.frame') || img.closest('.cell') || img.closest('.ratio');
+    if(!box) return;
+    var declared = parseFloat(box.style.getPropertyValue('--ar'));
+    /* trust the real file; only skip if the build value already matches */
+    if(!declared || Math.abs(declared - ar) > 0.01){
+      box.style.setProperty('--ar', ar.toFixed(5));
+      var cell = img.closest('.cell');
+      if(cell && cell !== box) cell.style.setProperty('--ar', ar.toFixed(5));
+    }
+  }
+  function ratioSweep(){
+    document.querySelectorAll('.frame img, .cell img').forEach(function(img){
+      if(img.complete) applyRatio(img);
+      else img.addEventListener('load', function(){applyRatio(img);}, {once:true});
+    });
+  }
+  ratioSweep();
+  window.addEventListener('load', ratioSweep);
+
+  /* ---------- honest hero ---------------------------------------------- */
+  /* Stack the hero whenever full-bleed would crop more than ~12% off the
+     picture. --heroar is the hero image's true ratio. */
+  function heroFit(){
+    var track = document.getElementById('heroTrack');
+    if(!track) return;
+    var img = track.querySelector('.hero-media img');
+    var ar = parseFloat(track.style.getPropertyValue('--heroar'));
+    if(img && img.naturalWidth) ar = img.naturalWidth / img.naturalHeight;
+    if(!ar) return;
+    track.style.setProperty('--heroar', ar.toFixed(5));
+    var vp = window.innerWidth / window.innerHeight;
+    /* how much of the picture a full-bleed hero would throw away, in either
+       direction: a wide image loses its sides, a tall one loses top and bottom */
+    var loss = ar > vp ? (1 - vp / ar) : (1 - ar / vp);
+    track.classList.toggle('stacked', loss > 0.12 || window.innerWidth <= 760);
+  }
+  window.addEventListener('resize', heroFit);
+  (function(){
+    var hi = document.querySelector('#heroTrack .hero-media img');
+    if(hi && !hi.complete) hi.addEventListener('load', heroFit, {once:true});
+  })();
+  heroFit();
+
+  /* ---------- scroll-scrubbed windows ---------------------------------- */
+  var wins = [];
+  function winSetup(){
+    wins = [];
+    var pinned = window.innerWidth > 760 &&
+                 !window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    document.querySelectorAll('.win-track').forEach(function(track){
+      var view = track.querySelector('.win-view');
+      var img  = view.querySelector('img');
+      var len  = track.querySelector('.win-len');
+      if(!pinned){ track.style.height=''; img.style.transform=''; return; }
+      var imgH  = img.offsetHeight;
+      var viewH = view.clientHeight;
+      var over  = Math.max(0, imgH - viewH);
+      /* how many window-heights the real page is, for the badge */
+      if(len && viewH) len.textContent = (imgH / viewH).toFixed(1) + ' screens';
+      /* compress: never spend more than ~0.95 extra viewports on one window.
+         A 3.9-screen landing page then costs under 2 screens of page. */
+      var extra = Math.min(over, window.innerHeight * 0.95);
+      track.style.height = (window.innerHeight + extra) + 'px';
+      wins.push({track:track, img:img, over:over});
+    });
+  }
+  function winFrame(){
+    for(var i=0;i<wins.length;i++){
+      var w = wins[i];
+      var span = w.track.offsetHeight - window.innerHeight;
+      if(span <= 0) continue;
+      var p = (window.scrollY - w.track.offsetTop) / span;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      w.img.style.transform = 'translateY(' + (-w.over * p) + 'px)';
+      if(p > 0.02) w.track.classList.add('scrubbing');
+      else w.track.classList.remove('scrubbing');
+    }
+  }
+  window.addEventListener('resize', winSetup);
+  window.addEventListener('load', winSetup);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(winSetup);
+  /* images arrive late when base64-inlined or CDN-served; re-measure each time */
+  document.querySelectorAll('.win-view img').forEach(function(img){
+    if(img.complete) return;
+    img.addEventListener('load', winSetup, {once:true});
+  });
+  winSetup();
+
+  /* ---------- reveals -------------------------------------------------- */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.14, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.clip,.rv,.frame').forEach(function(el){ io.observe(el); });
+
+  /* backstop: anything already past the fold, or blown past at speed */
+  function sweep(){
+    document.querySelectorAll('.clip:not(.in),.rv:not(.in),.frame:not(.in)').forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if(r.top < window.innerHeight * 0.94) el.classList.add('in');
+    });
+  }
+
+  /* ---------- hero parallax + progress rail --------------------------- */
+  var heroTrack = document.getElementById('heroTrack'),
+      heroMedia = document.getElementById('heroMedia'),
+      heroCopy  = document.getElementById('heroCopy'),
+      rail      = document.getElementById('rail');
+
+  function tick(){
+    if(!reduce && heroTrack && window.innerWidth > 760 && !heroTrack.classList.contains('stacked')){
+      var max = heroTrack.offsetHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      heroMedia.style.transform = 'scale(' + (1 + p * 0.06) + ')';
+      heroCopy.style.transform  = 'translateY(' + (-p * 90) + 'px)';
+      heroCopy.style.opacity    = String(1 - Math.max(0, (p - 0.55) / 0.4));
+    }
+    var doc = document.documentElement.scrollHeight - window.innerHeight;
+    if(rail) rail.style.width = (doc > 0 ? (window.scrollY / doc) * 100 : 0) + '%';
+    winFrame();
+    hsFrame();
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- horizontal scroller ------------------------------------- */
+  var hsList = [];
+  function hsSetup(){
+    hsList = [];
+    document.querySelectorAll('.hs-track').forEach(function(track){
+      var row = track.querySelector('.hs-row');
+      if(window.innerWidth <= 760 || reduce){ track.style.height=''; row.style.transform=''; return; }
+      var dist = Math.max(0, row.scrollWidth - window.innerWidth);
+      track.style.height = (window.innerHeight + Math.min(dist, window.innerHeight*2.0)) + 'px';
+      hsList.push({track:track, row:row, dist:dist, count:track.querySelectorAll('.hs-item').length,
+                   el:track.querySelector('.hs-count')});
+    });
+  }
+  function hsFrame(){
+    for(var i=0;i<hsList.length;i++){
+      var h = hsList[i];
+      var span = h.track.offsetHeight - window.innerHeight;
+      if(span <= 0) continue;
+      var p = (window.scrollY - h.track.offsetTop) / span;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      h.row.style.transform = 'translateX(' + (-h.dist * p) + 'px)';
+      if(h.el){
+        var n = Math.min(h.count, Math.floor(p * h.count) + 1);
+        h.el.textContent = ('0'+n).slice(-2) + ' / ' + ('0'+h.count).slice(-2);
+      }
+    }
+  }
+
+  function setupAll(){ heroFit(); hsSetup(); winSetup(); sweep();
+    if(heroTrack && heroTrack.classList.contains('stacked')){
+      heroMedia.style.transform=''; heroCopy.style.transform=''; heroCopy.style.opacity='';
+    } }
+  window.addEventListener('resize', setupAll);
+  window.addEventListener('load', setupAll);
+  window.addEventListener('scroll', sweep, {passive:true});
+  setupAll();
+  requestAnimationFrame(tick);
+</script>
+
+
+
+
+
+
+
+
+
+
+<script>
+/* ===== pinned scroller cost cap =======================================
+   The older pages hard-coded how much page height a horizontal scroller
+   consumes (style="height:422vh"), authored by eye rather than derived from
+   the content. Newer pages compute it and cap the spend at two viewports.
+   This brings the older ones onto the same rule: the row still travels its
+   full width, it just does so over less page. */
+(function(){
+  var CAP = 2.0;                       // extra viewports a scroller may cost
+  var tracks = [];
+  document.querySelectorAll('.hs-track[style*="height"], .sheets-track[style*="height"]')
+    .forEach(function(t){ tracks.push(t); t.removeAttribute('style'); });
+  if(!tracks.length) return;
+
+  function size(){
+    var vh = window.innerHeight;
+    var small = window.innerWidth <= 760 ||
+                window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    tracks.forEach(function(t){
+      if(small){ t.style.height = ''; return; }
+      var row = t.querySelector('.hs-row, .sheets-row');
+      if(!row) return;
+      var shift = Math.max(0, row.scrollWidth - window.innerWidth);
+      t.style.height = (vh + Math.min(shift, vh * CAP)) + 'px';
+    });
+  }
+  size();
+  window.addEventListener('resize', size);
+  window.addEventListener('load', function(){ size(); setTimeout(size, 500); });
+  document.querySelectorAll('.hs-row img, .sheets-row img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', size, {once:true});
+  });
+})();
+</script>
+
+<script>
+/* ===== never display an image larger than its pixels support ===========
+   A photo shown at 1970 CSS px needs 3940 real pixels to look sharp on a
+   retina screen. Almost nothing in this library has that, which is why the
+   site looked soft. Rather than upscale, each large frame is capped to the
+   width its own file can actually carry.
+
+   Target is 1.5x. Nothing shrinks below 55% of its slot, so layout holds.
+   This is self-healing: drop in a higher-resolution file and the frame is
+   allowed to grow back on its own. No code change needed. */
+(function(){
+  var TARGET = 1.5, FLOOR = 0.55;
+
+  function cap(el, img){
+    if(!img || !img.naturalWidth) return;
+    var parent = el.parentElement;
+    if(!parent) return;
+    var slot = parent.getBoundingClientRect().width;
+    if(slot < 2) return;
+    var supports = img.naturalWidth / TARGET;
+    var limit = Math.max(supports, slot * FLOOR);
+    if(limit < slot){
+      el.style.maxWidth = Math.round(limit) + 'px';
+      el.style.marginLeft = 'auto';
+      el.style.marginRight = 'auto';
+    } else {
+      el.style.maxWidth = '';
+    }
+  }
+
+  function run(){
+    document.querySelectorAll('.frame.band').forEach(function(f){
+      cap(f, f.querySelector('img'));
+    });
+    document.querySelectorAll('.win').forEach(function(w){
+      cap(w, w.querySelector('.win-view img'));
+    });
+  }
+
+  run();
+  window.addEventListener('resize', run);
+  window.addEventListener('load', function(){ run(); setTimeout(run, 400); });
+  document.querySelectorAll('.frame.band img, .win-view img').forEach(function(i){
+    if(!i.complete) i.addEventListener('load', run, {once:true});
+  });
+})();
+</script>
+</body></html>

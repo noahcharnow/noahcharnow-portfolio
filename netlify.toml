@@ -1,9 +1,51 @@
+# Netlify configuration for noahcharnow.com
+#
+# The site is plain HTML with a local images/ folder. Nothing to compile.
+#
+# This project previously built with Next.js. netlify.toml overrides the build
+# settings stored in the Netlify UI, so these three lines are what stop it from
+# trying to run a framework build that no longer exists. The command is an echo
+# rather than an empty string because an empty command reads as "unset" and can
+# fall back to the old detected build.
+
 [build]
-  command = "npm run build"
-  publish = ".next"
+  publish = "."
+  command = "echo 'Static site, nothing to build'"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# ---------------------------------------------------------------- headers
+# Pages: always revalidate. A portfolio changes often enough that serving a
+# stale homepage for a day is worse than one small request per visit.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
 
-[build.environment]
-  NODE_VERSION = "20"
+# Images: one day. Long enough to help repeat visits, short enough that
+# replacing a low-resolution asset shows up the next day without anyone
+# needing to hard-refresh. Worth raising to a year once the asset set settles,
+# because the filenames carry a hash and will not silently go stale.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# ---------------------------------------------------------------- routing
+# Links are written as name-case-study.html and work as-is. These make the
+# extensionless versions work too, so a shared URL can read cleanly.
+[[redirects]]
+  from = "/work/:slug"
+  to = "/:slug-case-study.html"
+  status = 200
+
+[[redirects]]
+  from = "/:slug-case-study"
+  to = "/:slug-case-study.html"
+  status = 200
