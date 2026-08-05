@@ -198,6 +198,11 @@
 
 
 
+
+
+
+
+
   /* ===== mobile hardening ==============================================
      Placed last on purpose. Longhand padding here beats the `padding`
      shorthand that section classes like .quote and .chap set for their
@@ -225,9 +230,16 @@
      glyphs that overhang their advance width, the y in Huckberry being the one
      that showed. There was bottom padding for descenders but nothing
      horizontal. Room on both sides, pulled back so nothing shifts. */
-  .clip{padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
+  .clip{display:block;padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
         margin-right:-.10em;margin-left:-.04em}
 
+
+  /* The hero headline is sized by the original fitter, which measures the
+     line boxes. The negative margins above make those boxes read wider than
+     they are, so the fitter grew the type from 159px to 175px and left only
+     14px between the headline and the media card. The hero keeps the vertical
+     padding for descenders and skips the horizontal part. */
+  .hero-h .clip{padding-left:0;padding-right:0;margin-left:0;margin-right:0}
   /* McLaren's graphics-sheet scroller carried its own hardcoded 3/4 slot,
      which the first retrofit pass missed. Same rule as everywhere else:
      shared card height, width from the asset's real shape. */
@@ -247,7 +259,7 @@
     .nav{padding-top:10px;padding-bottom:10px}
   }
 </style></head><body>
-<!-- build: grid-v3 -->
+<!-- build: hero-v4 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack"><div class="hero-pin">
@@ -502,6 +514,16 @@ setup(); requestAnimationFrame(frame);
   window.__ratioAll = all;
 })();
 </script>
+
+
+
+
+
+
+
+
+
+
 
 
 

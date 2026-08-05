@@ -158,9 +158,20 @@
      The reveal needs overflow:hidden, which was slicing the tail off glyphs
      that overhang their advance width, the y in Huckberry being the one that
      showed. Room on both sides, pulled back so nothing shifts. */
-  .clip{overflow:hidden;padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
-        margin-right:-.10em;margin-left:-.04em}
+  /* display:block matters here. These wrappers hold a block-level inner span,
+     and while they were inline the horizontal padding below inflated the box
+     from 165px to 562px, which pushed the hero headline down into the media
+     card. Block keeps the padding doing only what it is meant to do. */
+  .clip{display:block;overflow:hidden;padding-bottom:.16em;padding-right:.10em;
+        padding-left:.04em;margin-right:-.10em;margin-left:-.04em}
 
+
+  /* The hero headline is sized by the original fitter, which measures the
+     line boxes. The negative margins above make those boxes read wider than
+     they are, so the fitter grew the type from 159px to 175px and left only
+     14px between the headline and the media card. The hero keeps the vertical
+     padding for descenders and skips the horizontal part. */
+  .hero-h .clip{padding-left:0;padding-right:0;margin-left:0;margin-right:0}
   /* ================= hero film ========================================= */
   .hero-media{background:#151311}
   .hero-media video,.hero-media img{display:block;width:100%;height:100%;object-fit:cover}
@@ -244,7 +255,7 @@
 </style>
 </head>
 <body>
-<!-- build: grid-v3 -->
+<!-- build: hero-v4 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
@@ -405,7 +416,7 @@
     el.style.fontSize=(base*k)+'px';
   }
   function fitAll(){
-    fitLines(document.getElementById('heroH'),1.08);
+    fitLines(document.getElementById('heroH'),1.0);
     fitLines(document.getElementById('finaleH'),1.0);
   }
 
@@ -451,41 +462,61 @@
 
   var curtain=document.getElementById('curtain');
 
+
+  /* ---------- hero headline never touches the media card ----------------
+     Belt and braces. The headline is sized by a fitter that knows nothing
+     about the card below it, so any change to weight, font or viewport can
+     close that gap. This shrinks the headline until there is real space,
+     and only while the hero is pinned and the two actually overlap. */
+  (function(){
+    function clear(){
+      var h = document.getElementById('heroH');
+      var m = document.getElementById('heroMedia');
+      var track = document.getElementById('heroTrack');
+      if(!h || !m || !track || track.classList.contains('no-pin')) return;
+      var guard = 0;
+      while(guard++ < 24){
+        var hb = h.getBoundingClientRect(), mb = m.getBoundingClientRect();
+        var apart = mb.top - hb.bottom;
+        var sameColumn = Math.min(mb.right, hb.right) - Math.max(mb.left, hb.left) > 0;
+        if(!sameColumn || apart >= 24) break;
+        h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * 0.96) + 'px';
+      }
+    }
+    window.addEventListener('load', clear);
+    window.addEventListener('resize', function(){ setTimeout(clear, 60); });
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(clear);
+    setTimeout(clear, 200);
+  })();
+
   /* ---------- hero film ------------------------------------------------
-     The slot takes the film's real proportions, read from the file, so it is
-     never squeezed into a shape the footage was not shot for. */
+     The hero card is a designed 5/4 slot that animates out to full bleed.
+     Its shape is part of the layout, not something the asset gets to decide.
+
+     An earlier version read the film's dimensions and reshaped the box to
+     match. That is the right rule for case study media and the wrong one
+     here: the McLaren cut is a vertical clip, so the box grew to 0.56 and
+     ran 824px into the headline. A hero card is a crop by definition. The
+     film covers the slot, and at full bleed the whole frame is back. */
   (function(){
     var box = document.getElementById('heroMedia');
     if(!box) return;
     var v = box.querySelector('video');
     if(!v) return;
-    function setAR(w, h){
-      if(!w || !h) return;
-      box.style.aspectRatio = (w / h).toFixed(5);
-      /* the hero animation caches its start and end geometry */
-      if(typeof measure === 'function'){ try{ measure(); }catch(e){} }
-    }
-    function shape(){
-      if(!v.videoWidth || !v.videoHeight) return;
-      setAR(v.videoWidth, v.videoHeight);
+
+    function ready(){
+      if(!v.videoWidth) return;
       v.classList.add('ready');
     }
-    v.addEventListener('loadedmetadata', shape);
-    if(v.readyState >= 1) shape();
+    v.addEventListener('loadedmetadata', ready);
+    if(v.readyState >= 1) ready();
 
-    /* film will not play: show the still, at the still's own proportions */
+    /* film will not play: fall back to the still, in the same slot */
     function fallback(){
       if(v.classList.contains('ready')) return;
-      var p = box.querySelector('.hero-poster');
       box.classList.add('fallback');
-      if(p){
-        if(p.naturalWidth) setAR(p.naturalWidth, p.naturalHeight);
-        else p.addEventListener('load', function(){ setAR(p.naturalWidth, p.naturalHeight); }, {once:true});
-      }
     }
     v.addEventListener('error', fallback);
-    v.querySelectorAll && v.addEventListener('stalled', function(){});
-    /* an aborted or blocked request does not always fire error, so check back */
     setTimeout(function(){ if(!v.videoWidth) fallback(); }, 2500);
   })();
 

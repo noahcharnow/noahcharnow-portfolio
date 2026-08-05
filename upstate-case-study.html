@@ -214,6 +214,11 @@
 
 
 
+
+
+
+
+
   /* ===== mobile hardening ==============================================
      Placed last on purpose. Longhand padding here beats the `padding`
      shorthand that section classes like .quote and .chap set for their
@@ -241,9 +246,16 @@
      glyphs that overhang their advance width, the y in Huckberry being the one
      that showed. There was bottom padding for descenders but nothing
      horizontal. Room on both sides, pulled back so nothing shifts. */
-  .clip{padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
+  .clip{display:block;padding-bottom:.16em;padding-right:.10em;padding-left:.04em;
         margin-right:-.10em;margin-left:-.04em}
 
+
+  /* The hero headline is sized by the original fitter, which measures the
+     line boxes. The negative margins above make those boxes read wider than
+     they are, so the fitter grew the type from 159px to 175px and left only
+     14px between the headline and the media card. The hero keeps the vertical
+     padding for descenders and skips the horizontal part. */
+  .hero-h .clip{padding-left:0;padding-right:0;margin-left:0;margin-right:0}
   /* McLaren's graphics-sheet scroller carried its own hardcoded 3/4 slot,
      which the first retrofit pass missed. Same rule as everywhere else:
      shared card height, width from the asset's real shape. */
@@ -263,7 +275,7 @@
     .nav{padding-top:10px;padding-bottom:10px}
   }
 </style></head><body>
-<!-- build: grid-v3 -->
+<!-- build: hero-v4 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack" style="--heroar:1.502"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/index/Upstate-9db936.jpg" alt="Upstate bedding"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Upstate</div><h1 class="hero-h"><span class="clip"><span class="ci">Linens for the</span></span><span class="clip"><span class="ci">outdoorsman's</span></span><span class="clip"><span class="ci">indoor life</span></span></h1><p class="hero-sub rv">A Huckberry sub-brand. Identity, packaging, photography, and launch.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Director</div></div><div class="rv"><div class="meta-k">Client</div><div class="meta-v">Upstate</div></div><div class="rv"><div class="meta-k">Parent</div><div class="meta-v">Huckberry</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Identity / Packaging<br>Art direction / Launch</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">They came at me</span></span><span class="clip"><span class="ci">with an idea.</span></span></h2></div><div><p class="lead rv">Even the manliest of men have to dry off once they are done rolling around in the mud. Just try and bushcraft yourself a towel without getting a rash. You cannot.</p><p class="lead rv">Upstate makes high end linens and bedding for the outdoorsman's indoor dwelling quarters.</p></div></div></section><section class="quote wrap"><p class="rv">They came at me with a product. <em>I came at them with packaging.</em></p></section><div class="bandwrap rv"><div class="frame band"><div class="mask"><div class="par"><img src="images/upstate/Upstate_02-de4bb6.jpg" alt="Upstate brand identity"></div></div></div></div><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">01</div><div><h2 class="chap-t"><span class="clip"><span class="ci">Packaging</span></span></h2><div class="chap-lab rv">Structure / Print</div><p class="chap-p rv">The product is a towel. The box had to make it feel like a thing you keep.</p></div></div></section><div class="bandwrap rv"><div class="frame band"><div class="mask"><div class="par"><img src="images/upstate/Upstate_Packaing-c969da.jpg" alt="Upstate packaging"></div></div></div></div><div class="wrap"><div class="cap rv">The packaging system.</div></div><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">02</div><div><h2 class="chap-t"><span class="clip"><span class="ci">The shoot</span></span></h2><div class="chap-lab rv">Art direction</div><p class="chap-p rv">They came at me with some budget. I came at them with art directing a photoshoot and a launch that worked.</p></div></div></section><div class="hs-track"><div class="hs-pin"><div class="hs-head">The launch imagery<span>Art directed for web, email, and paid.</span></div><div class="hs-row"><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_03-5bd9ec.jpg" alt="Upstate launch imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_05-f2507b.jpg" alt="Upstate launch imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_06-288969.jpg" alt="Upstate launch imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_04-f7dea1.jpg" alt="Upstate launch imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_07-449069.jpg" alt="Upstate launch imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/upstate/Upstate_Images_2-ad1f62.gif" alt="Upstate launch animation"></div></div></div></div><div class="hs-count">01 / 06</div></div></div><div class="wrap"><div class="pager"><a href="lowbar-case-study.html"><small>Previous</small><h3>Low Bar</h3></a><a class="r" href="wills-case-study.html"><small>Next</small><h3>Wills</h3></a></div><div class="foot"><span>&copy; 2026 Noah Charnow</span><a href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a></div></div>
@@ -438,6 +450,16 @@
   setupAll();
   requestAnimationFrame(tick);
 </script>
+
+
+
+
+
+
+
+
+
+
 
 
 
