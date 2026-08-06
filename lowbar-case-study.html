@@ -215,6 +215,9 @@
 
 
 
+
+
+
   /* ===== mobile hardening ==============================================
      Placed last on purpose. Longhand padding here beats the `padding`
      shorthand that section classes like .quote and .chap set for their
@@ -246,6 +249,12 @@
         margin-right:-.10em;margin-left:-.04em}
 
 
+  /* Stacked hero: the picture sits above the copy, and the copy carried no
+     top padding, so the kicker landed hard against the image on every page
+     that stacks. This lives here rather than in the generators because the
+     six older pages get their stacked rules from a different place. */
+  .hero-track.stacked .hero-copy{padding-top:clamp(44px,7vh,104px)}
+
   /* The hero headline is sized by the original fitter, which measures the
      line boxes. The negative margins above make those boxes read wider than
      they are, so the fitter grew the type from 159px to 175px and left only
@@ -271,7 +280,7 @@
     .nav{padding-top:10px;padding-bottom:10px}
   }
 </style></head><body>
-<!-- build: grid-equal-v7 -->
+<!-- build: lenis-v8 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack"><div class="hero-pin">
@@ -569,6 +578,12 @@ setup(); requestAnimationFrame(frame);
 
 
 
+
+
+
+
+
+
 <script>
 /* ===== pinned scroller cost cap =======================================
    The older pages hard-coded how much page height a horizontal scroller
@@ -649,6 +664,35 @@ setup(); requestAnimationFrame(frame);
   document.querySelectorAll('.frame.band img, .win-view img').forEach(function(i){
     if(!i.complete) i.addEventListener('load', run, {once:true});
   });
+})();
+</script>
+
+<script src="lenis.min.js"></script>
+<script>
+/* Guarded on purpose. If lenis.min.js is missing the page still works, it
+   just scrolls normally, and no error stops the scripts that follow. Skipped
+   entirely for anyone who has asked for reduced motion. */
+(function(){
+  if(typeof Lenis === 'undefined') return;
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  var lenis = new Lenis({ duration: 0.9, smoothWheel: true, syncTouch: false });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  /* In-page links still work, and now they glide instead of jumping. */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href');
+      if(id.length < 2) return;
+      var el = document.querySelector(id);
+      if(!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el);
+    });
+  });
+
+  window.__lenis = lenis;
 })();
 </script>
 </body></html>

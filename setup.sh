@@ -33,6 +33,12 @@ fi
 # ---------------------------------------------------------------- 1. assets
 say "1 of 3   Downloading images"
 
+# How many there are, so the counter means something. Without a live count
+# this step printed nothing for several minutes and looked frozen.
+expected=$(( $(wc -l < assets-manifest.tsv) - 1 ))
+echo "  $expected images to fetch. Already-downloaded ones are skipped."
+echo
+
 total=0; got=0; skip=0; fail=0
 failed_list=""
 
@@ -45,19 +51,24 @@ while IFS=$'\t' read -r page local url; do
   # already have it, and it is not empty
   if [ -s "$local" ]; then
     skip=$((skip+1))
-    continue
+  else
+    mkdir -p "$(dirname "$local")"
+    # 45s and two tries. The old 120s with three tries meant one unreachable
+    # file could stall for six minutes with nothing on screen.
+    if curl -fsSL --retry 2 --max-time 45 -o "$local" "$url" 2>/dev/null; then
+      got=$((got+1))
+    else
+      rm -f "$local"
+      fail=$((fail+1))
+      if [ "$fail" -le 10 ]; then failed_list="$failed_list
+  $url"; fi
+    fi
   fi
 
-  mkdir -p "$(dirname "$local")"
-  if curl -fsSL --retry 3 --max-time 120 -o "$local" "$url" 2>/dev/null; then
-    got=$((got+1))
-  else
-    rm -f "$local"
-    fail=$((fail+1))
-    if [ "$fail" -le 10 ]; then failed_list="$failed_list
-  $url"; fi
-  fi
+  printf '\r  %4d of %-4d   %d new, %d already here, %d failed   ' \
+         "$total" "$expected" "$got" "$skip" "$fail"
 done < assets-manifest.tsv
+printf '\n\n'
 
 echo "  $total assets: $got downloaded, $skip already here, $fail failed"
 if [ "$fail" != "0" ]; then
@@ -96,6 +107,14 @@ else
   elif [ "$(echo "$ids" | wc -l | tr -d ' ')" != "1" ]; then
     warn "mixed versions in this folder, re-download every file from the chat"
   fi
+fi
+
+say "Smooth scroll"
+if [ -s lenis.min.js ]; then
+  echo "  lenis.min.js is here"
+else
+  warn "lenis.min.js is missing, so scrolling will be the plain browser kind"
+  warn "download it from the chat into this folder to get the smooth version"
 fi
 
 say "Done"

@@ -81,6 +81,10 @@
   .hero-track.stacked .hero-media{position:relative;inset:auto;aspect-ratio:var(--heroar,1.6);
         margin-top:clamp(26px,4.5vh,60px);transform:none!important}
   .hero-track.stacked .hero-media::after{display:none}
+  /* The picture sits above the copy in this state, and the copy had no top
+     padding, so the kicker landed hard against the image. Room to breathe, on
+     the same scale as the section rhythm below it. */
+  .hero-track.stacked .hero-copy{padding-top:clamp(44px,7vh,104px)}
 
   /* no pin on small screens or reduced motion: scroll the page by hand */
   @media(max-width:760px){
@@ -240,6 +244,12 @@
         margin-right:-.10em;margin-left:-.04em}
 
 
+  /* Stacked hero: the picture sits above the copy, and the copy carried no
+     top padding, so the kicker landed hard against the image on every page
+     that stacks. This lives here rather than in the generators because the
+     six older pages get their stacked rules from a different place. */
+  .hero-track.stacked .hero-copy{padding-top:clamp(44px,7vh,104px)}
+
   /* The hero headline is sized by the original fitter, which measures the
      line boxes. The negative margins above make those boxes read wider than
      they are, so the fitter grew the type from 159px to 175px and left only
@@ -265,7 +275,7 @@
     .nav{padding-top:10px;padding-bottom:10px}
   }
 </style></head><body>
-<!-- build: grid-equal-v7 -->
+<!-- build: lenis-v8 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack" style="--heroar:1.502"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/index/Wills-2b18fa.jpg" alt="Wills brand"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Wills</div><h1 class="hero-h"><span class="clip"><span class="ci">A Huckberry brand,</span></span><span class="clip"><span class="ci">start to launch</span></span></h1><p class="hero-sub rv">Creative direction across the whole brand, through to a successful product launch.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Director</div></div><div class="rv"><div class="meta-k">Client</div><div class="meta-v">Wills</div></div><div class="rv"><div class="meta-k">Parent</div><div class="meta-v">Huckberry</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Brand / Art direction<br>Product launch</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">All aspects</span></span><span class="clip"><span class="ci">means all of it.</span></span></h2></div><div><p class="lead rv">Wills is a Huckberry sub-brand. I oversaw every part of it.</p><p class="lead rv">Identity, art direction, the imagery, the launch page. One hand on the whole thing is the only way a small brand reads as a real one.</p></div></div></section><div class="bandwrap rv"><div class="frame band"><div class="mask"><div class="par"><img src="images/wills/Wills_05-5f92d1.jpg" alt="Wills brand imagery"></div></div></div></div><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">01</div><div><h2 class="chap-t"><span class="clip"><span class="ci">The brand</span></span></h2><div class="chap-lab rv">Identity / Art direction</div><p class="chap-p rv">A brand small enough to move fast and specific enough to be worth naming.</p></div></div></section><div class="hs-track"><div class="hs-pin"><div class="hs-head">Brand and campaign<span>Identity, product, and campaign imagery.</span></div><div class="hs-row"><div class="hs-item"><div class="frame"><div class="mask"><img src="images/wills/Wills_04-f9d76c.jpg" alt="Wills brand imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/wills/Wills_02-8a7310.jpg" alt="Wills brand imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/wills/Wills_06-02d231.jpg" alt="Wills brand imagery"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/wills/Wills_03-291c95.jpg" alt="Wills brand imagery"></div></div></div></div><div class="hs-count">01 / 04</div></div></div><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">02</div><div><h2 class="chap-t"><span class="clip"><span class="ci">The launch</span></span></h2><div class="chap-lab rv">Landing page</div><p class="chap-p rv">Everything above, pointed at one page and one button.</p></div></div></section><div class="win-track" style="--winar:1.6"><div class="win-pin"><div class="win rv"><div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-url">huckberry.com/wills</span><span class="win-len"></span></div><div class="win-view"><img src="images/wills/Wills_Landing_Page-fa633d.jpg" alt="Wills landing page"><span class="win-hint">Scroll</span></div></div><div class="win-cap rv">The full launch page, top to bottom.</div></div></div><div class="wrap"><div class="pager"><a href="#"><small>Previous</small><h3>Upstate</h3></a><a class="r" href="#"><small>Next</small><h3>Google New Store Playbook</h3></a></div><div class="foot"><span>&copy; 2026 Noah Charnow</span><a href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a></div></div>
@@ -521,6 +531,35 @@
   document.querySelectorAll('.frame.band img, .win-view img').forEach(function(i){
     if(!i.complete) i.addEventListener('load', run, {once:true});
   });
+})();
+</script>
+
+<script src="lenis.min.js"></script>
+<script>
+/* Guarded on purpose. If lenis.min.js is missing the page still works, it
+   just scrolls normally, and no error stops the scripts that follow. Skipped
+   entirely for anyone who has asked for reduced motion. */
+(function(){
+  if(typeof Lenis === 'undefined') return;
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  var lenis = new Lenis({ duration: 0.9, smoothWheel: true, syncTouch: false });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  /* In-page links still work, and now they glide instead of jumping. */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href');
+      if(id.length < 2) return;
+      var el = document.querySelector(id);
+      if(!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el);
+    });
+  });
+
+  window.__lenis = lenis;
 })();
 </script>
 </body></html>

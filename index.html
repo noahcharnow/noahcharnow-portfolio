@@ -255,7 +255,7 @@
 </style>
 </head>
 <body>
-<!-- build: grid-equal-v7 -->
+<!-- build: lenis-v8 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
@@ -577,6 +577,35 @@
     window.addEventListener('load', all);
     if(document.fonts && document.fonts.ready) document.fonts.ready.then(all);
   })();
+</script>
+
+<script src="lenis.min.js"></script>
+<script>
+/* Guarded on purpose. If lenis.min.js is missing the page still works, it
+   just scrolls normally, and no error stops the scripts that follow. Skipped
+   entirely for anyone who has asked for reduced motion. */
+(function(){
+  if(typeof Lenis === 'undefined') return;
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  var lenis = new Lenis({ duration: 0.9, smoothWheel: true, syncTouch: false });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  /* In-page links still work, and now they glide instead of jumping. */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href');
+      if(id.length < 2) return;
+      var el = document.querySelector(id);
+      if(!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el);
+    });
+  });
+
+  window.__lenis = lenis;
+})();
 
   /* ---------- menu overlay ---------------------------------------------- */
   (function(){
