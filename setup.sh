@@ -109,6 +109,18 @@ else
   fi
 fi
 
+say "Site files"
+miss=""
+for f in favicon.svg favicon-32.png apple-touch-icon.png robots.txt sitemap.xml llms.txt 404.html; do
+  [ -f "$f" ] || miss="$miss $f"
+done
+if [ -z "$miss" ]; then
+  echo "  favicon, robots, sitemap, llms.txt and 404 are all here"
+else
+  warn "missing:$miss"
+  warn "download these from the chat, or link previews and search will suffer"
+fi
+
 say "Smooth scroll"
 if [ -s lenis.min.js ]; then
   echo "  lenis.min.js is here"
