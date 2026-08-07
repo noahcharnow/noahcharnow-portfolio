@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 <style>
-  :root{
+  :root{--w-display:600;
     --white:#FFFFFF;--ink:#0A0A0A;--ink-2:#8A8A87;--accent:#EE4D1B;
     --dark:#0B0907;--cream:#EDEAE3;--cream-2:#A39C92;
     --ease:cubic-bezier(0.19,1,0.22,1);--gutter:clamp(28px,5.5vw,104px);
@@ -42,7 +42,7 @@
   .hero-pin{position:sticky;top:0;height:100vh;overflow:hidden}
 
   .hero-copy{position:absolute;inset:0;z-index:2;pointer-events:none;will-change:transform,opacity}
-  .hero-h{position:absolute;left:var(--gutter);top:clamp(118px,17vh,200px);width:calc(100% - var(--gutter)*2);font-weight:700;font-size:clamp(44px,9.4vw,244px);line-height:.94;letter-spacing:-.065em}
+  .hero-h{position:absolute;left:var(--gutter);top:clamp(118px,17vh,200px);width:calc(100% - var(--gutter)*2);font-weight:var(--w-display);font-size:clamp(44px,9.4vw,244px);line-height:.94;letter-spacing:-.065em}
   .hero-bio{position:absolute;left:calc(var(--gutter) + var(--imgw) + var(--imggap));top:calc(100vh - var(--imgbot) - var(--imgw) * 0.8);font-size:clamp(17px,1.4vw,40px);width:min(34ch,calc(100vw - var(--gutter)*2 - var(--imgw) - var(--imggap)))}
   .hero-bio p{font-size:inherit;line-height:1.5;color:#1C1B19;text-wrap:pretty}
 
@@ -61,7 +61,7 @@
   /* ===== WORK ===== */
   .work{padding:clamp(120px,18vh,220px) 0 clamp(120px,16vh,200px)}
   .work-label{margin-bottom:clamp(40px,6vh,72px)}
-  .work-label h3{font-weight:700;font-size:clamp(30px,4.6vw,118px);letter-spacing:-.05em;line-height:1}
+  .work-label h3{font-weight:var(--w-display);font-size:clamp(30px,4.6vw,118px);letter-spacing:-.05em;line-height:1}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,3.4vw,64px)}
   @media(max-width:760px){.grid{grid-template-columns:1fr;gap:44px}}
   .card{display:block;cursor:pointer}
@@ -69,13 +69,13 @@
   .card .media i{position:absolute;inset:0;transition:transform .9s var(--ease);display:block}
   .card:hover .media i{transform:scale(1.05)}
   .card .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:22px}
-  .card .name{font-weight:700;font-size:clamp(28px,3.6vw,92px);letter-spacing:-.05em;line-height:1}
+  .card .name{font-weight:var(--w-display);font-size:clamp(28px,3.6vw,92px);letter-spacing:-.05em;line-height:1}
   .card .t{font-size:clamp(15px,1.05vw,28px);font-weight:500;letter-spacing:-.01em;color:var(--ink-2);text-align:right}
 
   /* ===== FINALE ===== */
   .finale{position:relative;min-height:96vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:clamp(90px,12vh,150px) 0 60px}
   .finale .wrap{position:relative;z-index:2}
-  .finale h2{font-weight:700;font-size:clamp(58px,11.6vw,300px);line-height:.88;letter-spacing:-.065em}
+  .finale h2{font-weight:var(--w-display);font-size:clamp(58px,11.6vw,300px);line-height:.88;letter-spacing:-.065em}
   .finale a.mail{display:inline-block;margin-top:clamp(36px,3vw,72px);font-weight:500;font-size:clamp(22px,2.6vw,66px);letter-spacing:-.02em;border-bottom:2px solid var(--accent);padding-bottom:4px;transition:color .3s var(--ease)}
   .finale a.mail:hover{color:var(--accent)}
   .finale-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:clamp(80px,14vh,150px);font-size:clamp(14px,0.76vw,21px);font-weight:600;color:var(--ink-2)}
@@ -154,6 +154,18 @@
   .work-count{margin-top:clamp(8px,1vh,20px);font-size:clamp(14px,0.9vw,22px);
         font-weight:500;color:var(--ink-2)}
 
+
+  /* ---------- buttons ---------------------------------------------------
+     The hover fill sits at inset:0, which is the padding box, so the 1.5px
+     border was left uncovered. On the solid button that border is transparent
+     and the element's own black background showed through it: a black ring
+     that appeared only on hover. Covering the border box fixes it for both
+     variants. */
+  .pill::before{inset:-2px}
+  .pill--solid:hover{border-color:var(--accent)}
+  .pill:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .pill.menu{display:inline-flex;align-items:center}
+
   /* ================= glyph clipping ====================================
      The reveal needs overflow:hidden, which was slicing the tail off glyphs
      that overhang their advance width, the y in Huckberry being the one that
@@ -204,7 +216,7 @@
   .about-links a:hover::before{transform:translateY(0)}
   .about-links a:hover{color:#fff;border-color:var(--accent)}
 
-  .about-h{font-weight:700;font-size:clamp(40px,7vw,150px);line-height:.92;
+  .about-h{font-weight:var(--w-display);font-size:clamp(40px,7vw,150px);line-height:.92;
         letter-spacing:-.055em;text-wrap:balance;margin-bottom:clamp(22px,2.4vw,44px)}
   .about-p{max-width:46ch;font-size:clamp(17px,1.35vw,32px);line-height:1.5;
         color:#2A2724;margin-bottom:clamp(16px,1.4vw,26px)}
@@ -226,7 +238,7 @@
         display:flex;flex-direction:column;justify-content:center;padding:0 var(--gutter);
         opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
   .menu-ov.open{opacity:1;visibility:visible}
-  .menu-ov a{display:block;font-weight:700;font-size:clamp(44px,9vw,150px);
+  .menu-ov a{display:block;font-weight:var(--w-display);font-size:clamp(44px,9vw,150px);
         letter-spacing:-.06em;line-height:1.05;padding:clamp(6px,0.8vh,16px) 0;
         transition:color .35s var(--ease)}
   .menu-ov a:hover{color:var(--accent)}
@@ -310,7 +322,7 @@
 <!-- /meta -->
 </head>
 <body>
-<!-- build: logos-years-v10 -->
+<!-- build: weight-button-v11 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
@@ -391,17 +403,7 @@
   </div>
 </section>
 
-
-<div class="menu-ov" id="menuOv" role="dialog" aria-modal="true" aria-label="Menu">
-  <button class="menu-close" id="menuClose">Close</button>
-  <nav>
-    <a href="#work" data-menu-link>Work</a>
-    <a href="#about" data-menu-link>About</a>
-    <a href="mailto:noahcharnow@gmail.com">Let&rsquo;s talk</a>
-  </nav>
-</div>
-
-<section class="finale">
+<section class="finale" id="contact">
   <div class="wrap">
     <h2 id="finaleH">
       <span class="clip"><span class="ci">Let's work</span></span>
@@ -542,6 +544,24 @@
     window.addEventListener('resize', function(){ setTimeout(clear, 60); });
     if(document.fonts && document.fonts.ready) document.fonts.ready.then(clear);
     setTimeout(clear, 200);
+  })();
+
+
+  /* ---------- Let's talk --------------------------------------------------
+     It was a bare mailto. On a machine with no mail client configured that
+     does nothing at all, which is exactly what a visitor experiences as a
+     dead button. It now takes you to the contact block, which always works,
+     and the email there is still a mailto for anyone who wants it. */
+  (function(){
+    var btn = document.querySelector('.pill--solid');
+    var target = document.getElementById('contact');
+    if(!btn || !target) return;
+    btn.setAttribute('href', '#contact');
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      if(window.__lenis) window.__lenis.scrollTo(target);
+      else target.scrollIntoView({behavior:'smooth'});
+    });
   })();
 
   /* ---------- hero film ------------------------------------------------
