@@ -328,13 +328,42 @@
 }
 </script>
 <!-- /meta -->
+
+<style>
+/* ---- cross-page transition: the black wipe, made real (alive-v13) ---- */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root){animation:none}
+  ::view-transition-new(root){animation:vt-wipe .64s cubic-bezier(.77,0,.18,1) both}
+  @keyframes vt-wipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  ::view-transition-group(pf-hero){animation-duration:.64s;animation-timing-function:cubic-bezier(.77,0,.18,1);z-index:2}
+  ::view-transition-old(pf-hero),::view-transition-new(pf-hero){height:100%;width:100%;object-fit:cover;overflow:hidden}
+}
+</style>
+
+<style>
+/* ---- end of a case study pulls you into the next one (alive-v13) ---- */
+.pnav{border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(28px,4vh,56px) 0 0}
+.pnav a{display:inline-flex;flex-direction:column;min-height:48px;justify-content:center}
+.pnav a small{display:block;font-size:clamp(13px,.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:8px}
+.pnav a h3{font-weight:var(--w-display);font-size:clamp(20px,2vw,44px);line-height:.94;letter-spacing:-.045em;transition:color .4s var(--ease)}
+.pnav a:hover h3{color:var(--accent)}
+.peek{display:block;padding-top:clamp(44px,7vh,110px)}
+.peek .wrap{margin-bottom:clamp(22px,3vh,44px)}
+.peek-k{display:block;color:var(--accent);font-weight:600;font-size:clamp(13px,.9vw,22px);margin-bottom:clamp(10px,1vw,20px)}
+.peek-t{font-weight:var(--w-display);font-size:clamp(44px,7.4vw,170px);line-height:.92;letter-spacing:-.055em;color:var(--cream);transition:color .4s var(--ease)}
+.peek:hover .peek-t{color:var(--accent)}
+.peek-media{height:min(58vh,640px);overflow:hidden;transform-origin:center bottom;will-change:transform}
+.peek-media img{width:100%;height:100%;object-fit:cover;display:block}
+@media (prefers-reduced-motion:reduce){.peek-media{transform:none!important;opacity:1!important}}
+</style>
 </head><body>
-<!-- build: weight-button-v11 -->
+<!-- build: alive-v13 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack"><div class="hero-pin">
 <div class="hero-media" id="heroMedia"><img src="images/fitbit/Frame_8-01b175.png" alt="Fitbit"></div>
-<div class="hero-copy" id="heroCopy"><div class="hero-kicker">Fitbit / Google / 2022 to 2023</div>
+<div class="hero-copy" id="heroCopy"><div class="hero-kicker">Fitbit / Google / 2020 to 2025</div>
 <h1 class="hero-h" id="heroH">
 <span class="clip"><span class="ci">Fitbit</span></span>
 <span class="clip"><span class="ci">brand systems</span></span>
@@ -342,7 +371,7 @@
 <section class="meta"><div class="wrap"><div class="meta-grid">
 <div class="rv"><div class="meta-k">Client</div><div class="meta-v">Fitbit / Google</div></div>
 <div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Lead</div></div>
-<div class="rv"><div class="meta-k">Years</div><div class="meta-v">2022 to 2023</div></div>
+<div class="rv"><div class="meta-k">Years</div><div class="meta-v">2020 to 2025</div></div>
 <div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Brand guidelines, style guides, retail, social</div></div>
 </div></div></section>
 <section class="wrap"><div class="split"><div class="split-sticky">
@@ -452,10 +481,17 @@
 <figure class="frame" data-alt="Fitbit social"><div class="mask"><div class="par"><img src="images/fitbit/IMG_2975-fbdef5.png" alt="Fitbit social" loading="lazy"></div></div></figure>
 <figure class="frame" data-alt="Fitbit social"><div class="mask"><div class="par"><img src="images/fitbit/IMG_2972-196ded.png" alt="Fitbit social" loading="lazy"></div></div></figure>
 </div></section>
-<div class="wrap"><div class="pager">
-<a href="mclaren-case-study.html"><small>&larr; Previous</small><h3>Google x McLaren</h3></a>
-<a class="r" href="huckberry-case-study.html"><small>Next &rarr;</small><h3>Low Bar</h3></a>
-</div><div class="foot"><div>&copy; Noah Charnow 2026</div>
+<div class="wrap"><div class="pnav">
+  <a href="mclaren-case-study.html"><small>&larr; Previous</small><h3>Google x McLaren</h3></a>
+</div></div>
+<a class="peek" href="huckberry-case-study.html" aria-label="Next project: Huckberry">
+  <div class="wrap">
+    <small class="peek-k">Next project</small>
+    <h2 class="peek-t">Huckberry</h2>
+  </div>
+  <div class="peek-media"><img src="images/index/huckberry-cover.jpg" alt="Huckberry" loading="lazy"></div>
+</a>
+<div class="wrap"><div class="foot"><div>&copy; Noah Charnow 2026</div>
 <div><a href="https://www.linkedin.com/in/noah-charnow/">LinkedIn</a> &nbsp; <a href="mailto:noahcharnow@gmail.com">Email</a> &nbsp; San Diego / Available</div>
 </div></div>
 <script>
@@ -846,6 +882,67 @@ setup(); requestAnimationFrame(frame);
   });
 
   window.__lenis = lenis;
+})();
+</script>
+
+<script>
+/* alive-v13: hero morph, next-project pull, arrow keys */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  if(!reduce){
+    addEventListener('pagereveal',function(e){
+      if(!e.viewTransition)return;
+      var m=document.getElementById('heroMedia');
+      if(!m)return;
+      m.style.viewTransitionName='pf-hero';
+      e.viewTransition.finished.finally(function(){m.style.viewTransitionName='none'});
+    });
+    addEventListener('pageswap',function(e){
+      if(!e.viewTransition||!e.activation)return;
+      var f;try{f=new URL(e.activation.entry.url).pathname.split('/').pop()}catch(err){return}
+      if(f===''||f==='index.html'){
+        var m=document.getElementById('heroMedia');
+        if(m){var r=m.getBoundingClientRect();
+          if(r.bottom>0&&r.top<innerHeight)m.style.viewTransitionName='pf-hero';}
+      }else{
+        var p=document.querySelector('.peek[href="'+f+'"] .peek-media');
+        if(p){var pr=p.getBoundingClientRect();
+          if(pr.bottom>0&&pr.top<innerHeight)p.style.viewTransitionName='pf-hero';}
+      }
+    });
+  }
+
+  var pk=document.querySelector('.peek-media');
+  if(pk&&!reduce){
+    var ticking=false;
+    function upd(){
+      ticking=false;
+      var r=pk.getBoundingClientRect();
+      var p=Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight*.9)));
+      pk.style.transform='scale('+(.94+.06*p).toFixed(4)+')';
+      pk.style.opacity=(.55+.45*p).toFixed(3);
+    }
+    addEventListener('scroll',function(){
+      if(!ticking){ticking=true;requestAnimationFrame(upd);}
+    },{passive:true});
+    addEventListener('resize',upd);
+    upd();
+  }
+
+  addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey||e.shiftKey)return;
+    var t=e.target&&e.target.tagName;
+    if(t==='INPUT'||t==='TEXTAREA')return;
+    if(e.key==='ArrowLeft'){
+      var a=document.querySelector('.pnav a');
+      if(a)location.href=a.getAttribute('href');
+    }
+    if(e.key==='ArrowRight'){
+      var n=document.querySelector('.peek');
+      if(n)location.href=n.getAttribute('href');
+    }
+  });
 })();
 </script>
 </body></html>

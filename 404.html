@@ -16,7 +16,19 @@
   a:hover{color:var(--accent)}
   .n{display:block;font-size:clamp(13px,0.9vw,22px);font-weight:600;color:var(--accent);
      margin-bottom:clamp(14px,1.4vw,26px);letter-spacing:0}
-</style></head><body>
+</style>
+<style>
+/* ---- cross-page transition: the black wipe, made real (alive-v13) ---- */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root){animation:none}
+  ::view-transition-new(root){animation:vt-wipe .64s cubic-bezier(.77,0,.18,1) both}
+  @keyframes vt-wipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  ::view-transition-group(pf-hero){animation-duration:.64s;animation-timing-function:cubic-bezier(.77,0,.18,1);z-index:2}
+  ::view-transition-old(pf-hero),::view-transition-new(pf-hero){height:100%;width:100%;object-fit:cover;overflow:hidden}
+}
+</style>
+</head><body>
 <main>
   <span class="n">404</span>
   <h1>That page moved,<br>or never existed.</h1>

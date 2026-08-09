@@ -322,11 +322,50 @@
 }
 </script>
 <!-- /meta -->
+
+<style>
+/* ---- cross-page transition: the black wipe, made real (alive-v13) ---- */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root){animation:none}
+  ::view-transition-new(root){animation:vt-wipe .64s cubic-bezier(.77,0,.18,1) both}
+  @keyframes vt-wipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  ::view-transition-group(pf-hero){animation-duration:.64s;animation-timing-function:cubic-bezier(.77,0,.18,1);z-index:2}
+  ::view-transition-old(pf-hero),::view-transition-new(pf-hero){height:100%;width:100%;object-fit:cover;overflow:hidden}
+}
+</style>
+
+<style>
+/* ---- end of a case study pulls you into the next one (alive-v13) ---- */
+.pnav{border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(28px,4vh,56px) 0 0}
+.pnav a{display:inline-flex;flex-direction:column;min-height:48px;justify-content:center}
+.pnav a small{display:block;font-size:clamp(13px,.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:8px}
+.pnav a h3{font-weight:var(--w-display);font-size:clamp(20px,2vw,44px);line-height:.94;letter-spacing:-.045em;transition:color .4s var(--ease)}
+.pnav a:hover h3{color:var(--accent)}
+.peek{display:block;padding-top:clamp(44px,7vh,110px)}
+.peek .wrap{margin-bottom:clamp(22px,3vh,44px)}
+.peek-k{display:block;color:var(--accent);font-weight:600;font-size:clamp(13px,.9vw,22px);margin-bottom:clamp(10px,1vw,20px)}
+.peek-t{font-weight:var(--w-display);font-size:clamp(44px,7.4vw,170px);line-height:.92;letter-spacing:-.055em;color:var(--cream);transition:color .4s var(--ease)}
+.peek:hover .peek-t{color:var(--accent)}
+.peek-media{height:min(58vh,640px);overflow:hidden;transform-origin:center bottom;will-change:transform}
+.peek-media img{width:100%;height:100%;object-fit:cover;display:block}
+@media (prefers-reduced-motion:reduce){.peek-media{transform:none!important;opacity:1!important}}
+</style>
 </head><body>
-<!-- build: weight-button-v11 -->
+<!-- build: alive-v13 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
-<section class="hero-track" id="heroTrack" style="--heroar:1.333"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/google-playbook/IMG_5011-1ba177.JPG" alt="Google retail store"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Google</div><h1 class="hero-h"><span class="clip"><span class="ci">One playbook,</span></span><span class="clip"><span class="ci">every new store</span></span></h1><p class="hero-sub rv">A flexible system for opening Google retail stores anywhere in the world.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Direction</div></div><div class="rv"><div class="meta-k">Client</div><div class="meta-v">Google</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Retail system<br>Playbook</div></div><div class="rv"><div class="meta-k">Team</div><div class="meta-v">One designer<br>One copywriter</div></div><div class="rv"><div class="meta-k">Year</div><div class="meta-v">2024</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">Everyone needs</span></span><span class="clip"><span class="ci">a bit of direction.</span></span></h2></div><div><p class="lead rv">When you are a company like Google planning to open retail stores across the globe, you need a consistent system for doing it.</p><p class="lead rv">I partnered with a designer and a copywriter to build that system. Keep Google's core identity intact. Let every city feel like it belongs to that city.</p></div></div></section><div class="hs-track"><div class="hs-pin"><div class="hs-head">The playbook<span>Fifty-eight spreads in the deck. Twenty-four of them here.</span></div><div class="hs-row"><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0001-101b9d.jpg" alt="Google New Store Playbook spread 0001"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0003-d17585.jpg" alt="Google New Store Playbook spread 0003"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0005-9e6063.jpg" alt="Google New Store Playbook spread 0005"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0008-ebd4b4.jpg" alt="Google New Store Playbook spread 0008"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0010-c9d30a.jpg" alt="Google New Store Playbook spread 0010"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0013-47c26d.jpg" alt="Google New Store Playbook spread 0013"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0015-6c0116.jpg" alt="Google New Store Playbook spread 0015"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0018-67619a.jpg" alt="Google New Store Playbook spread 0018"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0020-bd9a0c.jpg" alt="Google New Store Playbook spread 0020"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0023-799245.jpg" alt="Google New Store Playbook spread 0023"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0025-1c96a8.jpg" alt="Google New Store Playbook spread 0025"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0028-9207b7.jpg" alt="Google New Store Playbook spread 0028"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0030-1d0f5a.jpg" alt="Google New Store Playbook spread 0030"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0033-4ee75c.jpg" alt="Google New Store Playbook spread 0033"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0035-b4c276.jpg" alt="Google New Store Playbook spread 0035"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0038-02a55d.jpg" alt="Google New Store Playbook spread 0038"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0040-c661f8.jpg" alt="Google New Store Playbook spread 0040"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0043-ea5a52.jpg" alt="Google New Store Playbook spread 0043"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0045-887761.jpg" alt="Google New Store Playbook spread 0045"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0048-39d2a3.jpg" alt="Google New Store Playbook spread 0048"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0050-0a8635.jpg" alt="Google New Store Playbook spread 0050"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0053-8e5262.jpg" alt="Google New Store Playbook spread 0053"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0055-704839.jpg" alt="Google New Store Playbook spread 0055"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0058-a865b1.jpg" alt="Google New Store Playbook spread 0058"></div></div></div></div><div class="hs-count">01 / 24</div></div></div><section class="quote wrap"><p class="rv">Badabing <em>badaboom.</em></p></section><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">01</div><div><h2 class="chap-t"><span class="clip"><span class="ci">Then they</span></span><span class="clip"><span class="ci">built it</span></span></h2><div class="chap-lab rv">Retail</div><p class="chap-p rv">The part of a system that matters is whether it survives contact with a real room.</p></div></div></section><section class="wrap"><div class="jrow rv" style="--jrowh:clamp(180px,30vh,400px);--jmaxh:66vh"><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/PXL_20241002_200125883-4cd2a4.jpg" alt="Google retail store interior"></div></div></div><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/PXL_20241002_200154839-0b0077.jpg" alt="Google retail store interior"></div></div></div><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/IMG_5099-54d3f4.jpg" alt="Google retail store interior"></div></div></div></div></section><div class="wrap"><div class="pager"><a href="#"><small>Previous</small><h3>Wills</h3></a><a class="r" href="#"><small>Next</small><h3>Logos</h3></a></div><div class="foot"><span>&copy; 2026 Noah Charnow</span><a href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a></div></div>
+<section class="hero-track" id="heroTrack" style="--heroar:1.333"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/google-playbook/IMG_5011-1ba177.JPG" alt="Google retail store"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Google</div><h1 class="hero-h"><span class="clip"><span class="ci">One playbook,</span></span><span class="clip"><span class="ci">every new store</span></span></h1><p class="hero-sub rv">A flexible system for opening Google retail stores anywhere in the world.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Direction</div></div><div class="rv"><div class="meta-k">Client</div><div class="meta-v">Google</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Retail system<br>Playbook</div></div><div class="rv"><div class="meta-k">Team</div><div class="meta-v">One designer<br>One copywriter</div></div><div class="rv"><div class="meta-k">Year</div><div class="meta-v">2024</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">Everyone needs</span></span><span class="clip"><span class="ci">a bit of direction.</span></span></h2></div><div><p class="lead rv">When you are a company like Google planning to open retail stores across the globe, you need a consistent system for doing it.</p><p class="lead rv">I partnered with a designer and a copywriter to build that system. Keep Google's core identity intact. Let every city feel like it belongs to that city.</p></div></div></section><div class="hs-track"><div class="hs-pin"><div class="hs-head">The playbook<span>Fifty-eight spreads in the deck. Twenty-four of them here.</span></div><div class="hs-row"><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0001-101b9d.jpg" alt="Google New Store Playbook spread 0001"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0003-d17585.jpg" alt="Google New Store Playbook spread 0003"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0005-9e6063.jpg" alt="Google New Store Playbook spread 0005"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0008-ebd4b4.jpg" alt="Google New Store Playbook spread 0008"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0010-c9d30a.jpg" alt="Google New Store Playbook spread 0010"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0013-47c26d.jpg" alt="Google New Store Playbook spread 0013"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0015-6c0116.jpg" alt="Google New Store Playbook spread 0015"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0018-67619a.jpg" alt="Google New Store Playbook spread 0018"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0020-bd9a0c.jpg" alt="Google New Store Playbook spread 0020"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0023-799245.jpg" alt="Google New Store Playbook spread 0023"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0025-1c96a8.jpg" alt="Google New Store Playbook spread 0025"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0028-9207b7.jpg" alt="Google New Store Playbook spread 0028"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0030-1d0f5a.jpg" alt="Google New Store Playbook spread 0030"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0033-4ee75c.jpg" alt="Google New Store Playbook spread 0033"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0035-b4c276.jpg" alt="Google New Store Playbook spread 0035"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0038-02a55d.jpg" alt="Google New Store Playbook spread 0038"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0040-c661f8.jpg" alt="Google New Store Playbook spread 0040"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0043-ea5a52.jpg" alt="Google New Store Playbook spread 0043"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0045-887761.jpg" alt="Google New Store Playbook spread 0045"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0048-39d2a3.jpg" alt="Google New Store Playbook spread 0048"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0050-0a8635.jpg" alt="Google New Store Playbook spread 0050"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0053-8e5262.jpg" alt="Google New Store Playbook spread 0053"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0055-704839.jpg" alt="Google New Store Playbook spread 0055"></div></div></div><div class="hs-item"><div class="frame"><div class="mask"><img src="images/google-playbook/0058-a865b1.jpg" alt="Google New Store Playbook spread 0058"></div></div></div></div><div class="hs-count">01 / 24</div></div></div><section class="quote wrap"><p class="rv">Badabing <em>badaboom.</em></p></section><section class="chap wrap"><div class="chap-grid"><div class="chap-num rv">01</div><div><h2 class="chap-t"><span class="clip"><span class="ci">Then they</span></span><span class="clip"><span class="ci">built it</span></span></h2><div class="chap-lab rv">Retail</div><p class="chap-p rv">The part of a system that matters is whether it survives contact with a real room.</p></div></div></section><section class="wrap"><div class="jrow rv" style="--jrowh:clamp(180px,30vh,400px);--jmaxh:66vh"><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/PXL_20241002_200125883-4cd2a4.jpg" alt="Google retail store interior"></div></div></div><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/PXL_20241002_200154839-0b0077.jpg" alt="Google retail store interior"></div></div></div><div class="cell"><div class="frame"><div class="mask"><img src="images/google-playbook/IMG_5099-54d3f4.jpg" alt="Google retail store interior"></div></div></div></div></section><div class="wrap"><div class="pnav">
+  <a href="huckberry-case-study.html"><small>&larr; Previous</small><h3>Huckberry</h3></a>
+</div></div>
+<a class="peek" href="heath-ceramics-case-study.html" aria-label="Next project: Heath Ceramics">
+  <div class="wrap">
+    <small class="peek-k">Next project</small>
+    <h2 class="peek-t">Heath Ceramics</h2>
+  </div>
+  <div class="peek-media"><img src="images/heath-ceramics/Heath-c76d49.jpg" alt="Heath Ceramics" loading="lazy"></div>
+</a>
+<div class="wrap"><div class="foot"><span>&copy; 2026 Noah Charnow</span><a href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a></div></div>
 <script>
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
@@ -608,6 +647,67 @@
   });
 
   window.__lenis = lenis;
+})();
+</script>
+
+<script>
+/* alive-v13: hero morph, next-project pull, arrow keys */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  if(!reduce){
+    addEventListener('pagereveal',function(e){
+      if(!e.viewTransition)return;
+      var m=document.getElementById('heroMedia');
+      if(!m)return;
+      m.style.viewTransitionName='pf-hero';
+      e.viewTransition.finished.finally(function(){m.style.viewTransitionName='none'});
+    });
+    addEventListener('pageswap',function(e){
+      if(!e.viewTransition||!e.activation)return;
+      var f;try{f=new URL(e.activation.entry.url).pathname.split('/').pop()}catch(err){return}
+      if(f===''||f==='index.html'){
+        var m=document.getElementById('heroMedia');
+        if(m){var r=m.getBoundingClientRect();
+          if(r.bottom>0&&r.top<innerHeight)m.style.viewTransitionName='pf-hero';}
+      }else{
+        var p=document.querySelector('.peek[href="'+f+'"] .peek-media');
+        if(p){var pr=p.getBoundingClientRect();
+          if(pr.bottom>0&&pr.top<innerHeight)p.style.viewTransitionName='pf-hero';}
+      }
+    });
+  }
+
+  var pk=document.querySelector('.peek-media');
+  if(pk&&!reduce){
+    var ticking=false;
+    function upd(){
+      ticking=false;
+      var r=pk.getBoundingClientRect();
+      var p=Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight*.9)));
+      pk.style.transform='scale('+(.94+.06*p).toFixed(4)+')';
+      pk.style.opacity=(.55+.45*p).toFixed(3);
+    }
+    addEventListener('scroll',function(){
+      if(!ticking){ticking=true;requestAnimationFrame(upd);}
+    },{passive:true});
+    addEventListener('resize',upd);
+    upd();
+  }
+
+  addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey||e.shiftKey)return;
+    var t=e.target&&e.target.tagName;
+    if(t==='INPUT'||t==='TEXTAREA')return;
+    if(e.key==='ArrowLeft'){
+      var a=document.querySelector('.pnav a');
+      if(a)location.href=a.getAttribute('href');
+    }
+    if(e.key==='ArrowRight'){
+      var n=document.querySelector('.peek');
+      if(n)location.href=n.getAttribute('href');
+    }
+  });
 })();
 </script>
 </body></html>
