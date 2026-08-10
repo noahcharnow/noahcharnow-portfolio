@@ -357,7 +357,7 @@
 @media (prefers-reduced-motion:reduce){.peek-media{transform:none!important;opacity:1!important}}
 </style>
 </head><body>
-<!-- build: alive-v13 -->
+<!-- build: alive-v14 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack"><div class="hero-pin">
@@ -604,7 +604,7 @@ setup(); requestAnimationFrame(frame);
     track.style.setProperty('--heroar', ar.toFixed(5));
     var vp = window.innerWidth / window.innerHeight;
     var loss = ar > vp ? (1 - vp / ar) : (1 - ar / vp);
-    var stack = loss > 0.12 || window.innerWidth <= 760;
+    var stack = window.innerWidth <= 760; /* alive-v14: always overlay on desktop, never fall back just because of image shape */
     track.classList.toggle('stacked', stack);
     if(stack){
       var m = track.querySelector('.hero-media'), c = track.querySelector('.hero-copy');
@@ -865,4 +865,5 @@ setup(); requestAnimationFrame(frame);
   });
 })();
 </script>
+<script data-goatcounter="https://noahcharnow.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
