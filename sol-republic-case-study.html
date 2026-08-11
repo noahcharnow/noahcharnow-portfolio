@@ -1,8 +1,13 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sol Republic / Noah Charnow</title>
-<link rel="preconnect" href="https://api.fontshare.com">
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+/* General Sans, self-hosted (fonts/ folder). No external font dependency. */
+@font-face{font-family:'General Sans';font-weight:400;font-style:normal;font-display:swap;src:url('fonts/general-sans-400.woff2') format('woff2')}
+@font-face{font-family:'General Sans';font-weight:500;font-style:normal;font-display:swap;src:url('fonts/general-sans-500.woff2') format('woff2')}
+@font-face{font-family:'General Sans';font-weight:600;font-style:normal;font-display:swap;src:url('fonts/general-sans-600.woff2') format('woff2')}
+@font-face{font-family:'General Sans';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/general-sans-700.woff2') format('woff2')}
+</style>
 <style>
   :root{
     --dark:#0B0907;--w-display:600;--cream:#F0ECE4;--cream-2:#9C948A;--accent:#EE4D1B;
@@ -352,7 +357,7 @@
 @media (prefers-reduced-motion:reduce){.peek-media{transform:none!important;opacity:1!important}}
 </style>
 </head><body>
-<!-- build: alive-v14 -->
+<!-- build: fonts-live-v18 -->
 <div class="rail" id="rail"></div>
 <nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
 <section class="hero-track" id="heroTrack" style="--heroar:1.323"><div class="hero-pin"><div class="hero-media" id="heroMedia"><img src="images/index/SR-d79e82.jpg" alt="Sol Republic Relays Sport Wireless"></div><div class="hero-copy" id="heroCopy"><div class="hero-kicker">Sol Republic</div><h1 class="hero-h"><span class="clip"><span class="ci">Nobody buys</span></span><span class="clip"><span class="ci">headphones calmly</span></span></h1><p class="hero-sub rv">Creative direction for the Relays Sport Wireless launch.</p></div></div></section><section class="meta"><div class="wrap"><div class="meta-grid"><div class="rv"><div class="meta-k">Role</div><div class="meta-v">Creative Director</div></div><div class="rv"><div class="meta-k">Client</div><div class="meta-v">Sol Republic</div></div><div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Packaging<br>Product launch</div></div><div class="rv"><div class="meta-k">Years</div><div class="meta-v">2015 to 2016</div></div></div></div></section><section class="wrap"><div class="split"><div class="split-sticky"><h2 class="sec-h"><span class="clip"><span class="ci">The box does</span></span><span class="clip"><span class="ci">the closing.</span></span></h2></div><div><p class="lead rv">You are standing in a big box store with about eleven minutes to spare, and there are nine boxes in front of you shouting the same four words at exactly the same volume.</p><p class="lead rv">So the job was never "design a nice box." The job was win the eleven minutes. Front panel grabs you from six feet out. Back panel closes you once it is actually in your hands.</p></div></div></section><section class="quote wrap"><p class="rv">Front grabs. <em>Back closes.</em> No third panel required.</p></section><section class="wrap"><div class="jrow rv" style="--jrowh:clamp(220px,40vh,520px);--jmaxh:72vh"><div class="cell"><div class="frame"><div class="mask"><img src="images/sol-republic/RSW_Packaging_Front-514d90.jpg" alt="Relays Sport Wireless packaging, front"></div></div><div class="cap">Front.</div></div><div class="cell"><div class="frame"><div class="mask"><img src="images/sol-republic/RSW_Packaging_Back-e73285.jpg" alt="Relays Sport Wireless packaging, back"></div></div><div class="cap">Back.</div></div></div></section><div class="wrap"><div class="pnav">
@@ -410,7 +415,7 @@
     /* how much of the picture a full-bleed hero would throw away, in either
        direction: a wide image loses its sides, a tall one loses top and bottom */
     var loss = ar > vp ? (1 - vp / ar) : (1 - ar / vp);
-    track.classList.toggle('stacked', loss > 0.12 || window.innerWidth <= 760);
+    track.classList.toggle('stacked', window.innerWidth <= 760 /* v14b: overlay on desktop regardless of image shape */);
   }
   window.addEventListener('resize', heroFit);
   (function(){
@@ -708,6 +713,82 @@
       if(n)location.href=n.getAttribute('href');
     }
   });
+})();
+</script>
+
+<script>
+/* alive-v15: scroll into the next project (desktop, escapable) */
+(function(){
+  var peek = document.querySelector('.peek');
+  if(!peek) return;
+
+  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var fine   = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var wide   = function(){ return innerWidth > 760; };
+
+  /* mobile / reduced-motion / touch: leave the peek as a plain tap target */
+  if(reduce || !fine){ return; }
+
+  var href = peek.getAttribute('href');
+  if(!href) return;
+
+  /* only same-document View-Transition navigations can restore scroll and
+     avoid a reload flash. If the browser can't do it, do nothing here and
+     let the normal click-and-wipe handle it. */
+  var canSwap = ('startViewTransition' in document) &&
+                (typeof navigation !== 'undefined') &&
+                navigation.navigate;
+  if(!canSwap) return;
+
+  var lastY = scrollY;
+  var armed = true;      /* becomes false after firing, until we scroll out */
+  var firing = false;
+
+  function progress(){
+    /* how far the peek has entered: 0 when its top hits the bottom of the
+       viewport, 1 when the peek fills the viewport */
+    var r = peek.getBoundingClientRect();
+    var entered = innerHeight - r.top;          /* px of peek past the fold */
+    return Math.min(1, Math.max(0, entered / innerHeight));
+  }
+
+  function onScroll(){
+    var y = scrollY;
+    var down = y > lastY;
+    lastY = y;
+
+    if(!wide()){ return; }
+
+    var p = progress();
+
+    /* re-arm only after the visitor has clearly backed out of the peek,
+       so a fired-then-hovering state never re-triggers */
+    if(p < 0.35){ armed = true; }
+
+    /* THE PULL: 75% in, moving down, armed, not already going */
+    if(armed && !firing && down && p >= 0.75){
+      armed = false;
+      go();
+    }
+  }
+
+  function go(){
+    firing = true;
+    /* tag the peek image so it morphs into the next hero, same as a click */
+    var media = peek.querySelector('.peek-media');
+    if(media) media.style.viewTransitionName = 'pf-hero';
+    /* a real navigation keeps history intact -> back returns to this spot */
+    try{
+      navigation.navigate(href, {history:'push'});
+    }catch(e){
+      /* last-ditch fallback: normal navigation */
+      location.href = href;
+    }
+  }
+
+  addEventListener('scroll', function(){
+    requestAnimationFrame(onScroll);
+  }, {passive:true});
 })();
 </script>
 <script data-goatcounter="https://noahcharnow.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
