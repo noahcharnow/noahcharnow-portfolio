@@ -87,7 +87,8 @@
   .finale-foot a:hover{color:var(--ink)}
 
   /* ===== curtain + case ===== */
-  .curtain{position:fixed;inset:0;background:var(--dark);z-index:200;transform:scaleY(0);transform-origin:bottom;transition:transform .7s var(--ease);pointer-events:none}
+  .curtain{position:fixed;inset:0;background:var(--dark);z-index:200;transform:scaleY(0);transform-origin:bottom;transition:transform .7s var(--ease);pointer-events:none;visibility:hidden}
+  .curtain.up,.curtain.down{visibility:visible}
   .curtain.up{transform:scaleY(1)}.curtain.down{transform-origin:top}
 
   @media(max-width:560px){.pill.menu{display:none}}
@@ -451,7 +452,7 @@ html.intro-on,html.intro-on body{overflow:hidden}
 </div>
 <div class="copied-toast" id="copiedToast" role="status" aria-live="polite">Copied to clipboard</div>
 
-<!-- build: intro-v21 -->
+<!-- build: bar-fix-v22 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
