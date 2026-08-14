@@ -414,7 +414,7 @@
   clip-path:inset(0 100% 0 0);will-change:clip-path}
 #intro .said.write{animation:intro-write .9s cubic-bezier(.4,0,.2,1) .15s forwards}
 @keyframes intro-write{to{clip-path:inset(0 0 0 0)}}
-#intro .scratch{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+#intro .scratch{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:104%;height:auto;aspect-ratio:900/160;overflow:visible;pointer-events:none}
 #intro .scratch path{fill:none;stroke:var(--accent,#EE4D1B);stroke-width:9;
   stroke-linecap:round;stroke-linejoin:round}
 #intro .skip{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
@@ -428,8 +428,8 @@ html.intro-on,html.intro-on body{overflow:hidden}
 <div id="intro" role="presentation" aria-hidden="true">
   <div class="stage">
     <div class="said" id="introSaid">Award-winning thought leader</div>
-    <svg class="scratch" id="introScratch" viewBox="0 0 900 160" preserveAspectRatio="none" aria-hidden="true">
-      <path id="introScratchPath" d="M20,90 q120,-70 240,-8 q120,62 250,-2 q130,-64 250,6 q90,50 120,-10 q40,-80 -80,-52 q-150,36 -60,96 q70,46 180,10" />
+    <svg class="scratch" id="introScratch" viewBox="0 0 900 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path id="introScratchPath" d="M10,86 q150,-30 300,-4 q150,26 300,-2 q140,-24 270,4 q60,14 40,-30 q-16,-34 -70,-14 q-120,44 30,60 q80,8 40,-40" />
     </svg>
   </div>
   <div class="skip">click anywhere to skip</div>
@@ -451,7 +451,7 @@ html.intro-on,html.intro-on body{overflow:hidden}
 </div>
 <div class="copied-toast" id="copiedToast" role="status" aria-live="polite">Copied to clipboard</div>
 
-<!-- build: intro-v20 -->
+<!-- build: intro-v21 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
