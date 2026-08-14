@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html class="intro-on" lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -358,9 +358,100 @@
   .card .media .hovervid{display:none}
 }
 </style>
+
+<style>
+/* v19: menu overlay */
+.menu-ov{position:fixed;inset:0;z-index:200;background:var(--ink);color:var(--white);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--gutter,6vw);
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s var(--ease)}
+.menu-ov.open{opacity:1;visibility:visible}
+.menu-ov ul{list-style:none;margin:0;padding:0}
+.menu-ov li{overflow:hidden}
+.menu-ov a{display:inline-block;color:var(--white);text-decoration:none;
+  font-weight:var(--w-display,600);font-size:clamp(44px,9vw,150px);line-height:1.02;
+  letter-spacing:-.04em;transition:color .35s var(--ease),transform .6s var(--ease);
+  transform:translateY(110%)}
+.menu-ov.open a{transform:translateY(0)}
+.menu-ov li:nth-child(1) a{transition-delay:.06s}
+.menu-ov li:nth-child(2) a{transition-delay:.12s}
+.menu-ov li:nth-child(3) a{transition-delay:.18s}
+.menu-ov a:hover{color:var(--accent)}
+.menu-ov .menu-foot{margin-top:clamp(34px,6vh,70px);display:flex;gap:28px;flex-wrap:wrap;
+  opacity:0;transition:opacity .5s var(--ease) .28s}
+.menu-ov.open .menu-foot{opacity:1}
+.menu-ov .menu-foot a{font-size:clamp(15px,1vw,20px);font-weight:600;letter-spacing:0;
+  transform:none;color:var(--white);opacity:.7}
+.menu-ov .menu-foot a:hover{opacity:1;color:var(--accent)}
+.menu-close{position:absolute;top:clamp(20px,3vh,40px);right:var(--gutter,6vw);
+  background:none;border:0;cursor:pointer;color:var(--white);
+  font-weight:600;font-size:clamp(15px,1vw,20px);padding:12px;min-height:44px}
+.menu-close:hover{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){
+  .menu-ov,.menu-ov a,.menu-ov .menu-foot{transition-duration:.001ms}
+  .menu-ov a{transform:none}
+}
+/* v19: copied toast */
+.copied-toast{position:fixed;left:50%;bottom:36px;transform:translate(-50%,20px);
+  background:var(--ink);color:var(--white);padding:12px 22px;border-radius:100px;
+  font-weight:600;font-size:15px;z-index:300;opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.copied-toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+
+<style>
+/* v20: handwriting font for the intro */
+@font-face{font-family:'Caveat';font-weight:600;font-style:normal;font-display:block;src:url('fonts/caveat-600.woff2') format('woff2')}
+
+/* v20: scribble intro */
+#intro{position:fixed;inset:0;z-index:9999;background:var(--dark,#0B0907);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  transition:transform .7s var(--ease);transform-origin:top;will-change:transform}
+#intro.lift{transform:scaleY(0)}
+#intro .stage{position:relative;width:min(94vw,1050px);text-align:center}
+#intro .said{font-family:'Caveat',cursive;font-weight:600;color:var(--accent,#EE4D1B);
+  font-size:clamp(30px,6vw,86px);line-height:1.05;white-space:nowrap;
+  /* write-on: reveal left to right by animating a clip */
+  clip-path:inset(0 100% 0 0);will-change:clip-path}
+#intro .said.write{animation:intro-write .9s cubic-bezier(.4,0,.2,1) .15s forwards}
+@keyframes intro-write{to{clip-path:inset(0 0 0 0)}}
+#intro .scratch{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+#intro .scratch path{fill:none;stroke:var(--accent,#EE4D1B);stroke-width:9;
+  stroke-linecap:round;stroke-linejoin:round}
+#intro .skip{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  color:#fff;opacity:.35;font-weight:600;font-size:13px;letter-spacing:.02em;font-family:'General Sans',sans-serif}
+html.intro-on,html.intro-on body{overflow:hidden}
+@media (prefers-reduced-motion:reduce){#intro{display:none!important}}
+</style>
 </head>
 <body>
-<!-- build: fonts-live-v18 -->
+
+<div id="intro" role="presentation" aria-hidden="true">
+  <div class="stage">
+    <div class="said" id="introSaid">Award-winning thought leader</div>
+    <svg class="scratch" id="introScratch" viewBox="0 0 900 160" preserveAspectRatio="none" aria-hidden="true">
+      <path id="introScratchPath" d="M20,90 q120,-70 240,-8 q120,62 250,-2 q130,-64 250,6 q90,50 120,-10 q40,-80 -80,-52 q-150,36 -60,96 q70,46 180,10" />
+    </svg>
+  </div>
+  <div class="skip">click anywhere to skip</div>
+</div>
+
+
+<div class="menu-ov" id="menuOv" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">Close</button>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="menu-foot">
+    <a href="https://www.linkedin.com/in/noahcharnow">LinkedIn</a>
+    <a href="https://www.etsy.com/shop/ipfreelyart">Etsy</a>
+    <a href="mailto:noahcharnow@gmail.com" class="mail-copy" data-email="noahcharnow@gmail.com">noahcharnow@gmail.com</a>
+  </div>
+</div>
+<div class="copied-toast" id="copiedToast" role="status" aria-live="polite">Copied to clipboard</div>
+
+<!-- build: intro-v20 -->
 
 <nav class="nav" id="nav">
   <div class="wordmark">Noah Charnow</div>
@@ -447,7 +538,7 @@
       <span class="clip"><span class="ci">Let's work</span></span>
       <span class="clip"><span class="ci">together.</span></span>
     </h2>
-    <a class="mail rv" href="mailto:noahcharnow@gmail.com">noahcharnow@gmail.com</a>
+    <a class="mail rv mail-copy" href="mailto:noahcharnow@gmail.com" data-email="noahcharnow@gmail.com">noahcharnow@gmail.com</a>
     <div class="finale-foot">
       <div>© 2026 Noah Charnow</div>
       <div class="foot-links"><a href="https://www.linkedin.com/in/noah-charnow/" target="_blank" rel="noopener">LinkedIn</a><a href="https://loosecannon.co/" target="_blank" rel="noopener">Loose Cannon Co.</a><a href="https://www.etsy.com/shop/ipfreelyart" target="_blank" rel="noopener">IP Freely Art</a></div>
@@ -799,5 +890,99 @@
 })();
 </script>
 <script data-goatcounter="https://noahcharnow.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<script>
+/* v19: menu open/close + copy-email */
+(function(){
+  var ov = document.getElementById('menuOv');
+  var btn = document.querySelector('.pill.menu');
+  var closeBtn = document.getElementById('menuClose');
+  var toast = document.getElementById('copiedToast');
+
+  function openMenu(e){ if(e)e.preventDefault(); ov.classList.add('open');
+    ov.setAttribute('aria-hidden','false'); if(btn)btn.setAttribute('aria-expanded','true');
+    document.body.style.overflow='hidden'; }
+  function closeMenu(){ ov.classList.remove('open');
+    ov.setAttribute('aria-hidden','true'); if(btn)btn.setAttribute('aria-expanded','false');
+    document.body.style.overflow=''; }
+
+  if(btn) btn.addEventListener('click', openMenu);
+  if(closeBtn) closeBtn.addEventListener('click', closeMenu);
+  // click any menu link -> close, let the anchor jump happen
+  ov.querySelectorAll('ul a').forEach(function(a){
+    a.addEventListener('click', function(){ setTimeout(closeMenu, 10); });
+  });
+  // Escape closes
+  addEventListener('keydown', function(e){ if(e.key==='Escape' && ov.classList.contains('open')) closeMenu(); });
+
+  /* copy-email: keep the mailto working for those who have mail, but ALSO
+     copy the address and confirm, so the click always does something */
+  var toastTimer;
+  function showToast(){ if(!toast)return; toast.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){toast.classList.remove('show');},1800); }
+  document.querySelectorAll('.mail-copy').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var email = a.getAttribute('data-email');
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(email).then(showToast, function(){});
+      }
+      /* we do NOT preventDefault: if they have a mail app, it still opens.
+         if they don't, the copy + toast is the useful fallback. */
+    });
+  });
+})();
+</script>
+
+<script>
+/* v20: scribble intro controller */
+(function(){
+  var intro = document.getElementById('intro');
+  if(!intro) return;
+
+  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var seen = false;
+  try { seen = sessionStorage.getItem('introSeen') === '1'; } catch(e){}
+
+  function clearLock(){ document.documentElement.classList.remove('intro-on'); }
+  function remove(){ if(intro && intro.parentNode) intro.parentNode.removeChild(intro); clearLock(); }
+
+  if(reduce || seen){ remove(); return; }
+  try { sessionStorage.setItem('introSeen','1'); } catch(e){}
+
+  var said = document.getElementById('introSaid');
+  var path = document.getElementById('introScratchPath');
+  var done = false;
+
+  // prep the scratch-out stroke draw
+  var len = path.getTotalLength();
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = len;
+  path.getBoundingClientRect();
+
+  function finish(){
+    if(done) return; done = true;
+    intro.classList.add('lift');
+    var gone = false; function go(){ if(gone)return; gone=true; remove(); }
+    intro.addEventListener('transitionend', go, {once:true});
+    setTimeout(go, 900);
+  }
+
+  ['click','wheel','touchstart','keydown'].forEach(function(ev){
+    addEventListener(ev, finish, {once:true, passive:true});
+  });
+
+  // sequence: write the line on, then scratch it out, then lift
+  requestAnimationFrame(function(){
+    said.classList.add('write');               // 0.15s delay + 0.9s write
+    setTimeout(function(){                      // once written, scratch it out
+      path.style.transition = 'stroke-dashoffset .55s cubic-bezier(.5,0,.4,1)';
+      path.style.strokeDashoffset = '0';
+    }, 1050);
+    setTimeout(finish, 1650);                   // lift to the real site
+  });
+
+  setTimeout(remove, 4000);                     // absolute safety net
+})();
+</script>
 </body>
 </html>
