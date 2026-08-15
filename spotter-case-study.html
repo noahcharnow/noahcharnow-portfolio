@@ -1,6 +1,9 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Low Bar / Noah Charnow</title>
+<title>Spotter / Noah Charnow</title>
 <style>
 /* General Sans, self-hosted (fonts/ folder). No external font dependency. */
 @font-face{font-family:'General Sans';font-weight:400;font-style:normal;font-display:swap;src:url('fonts/general-sans-400.woff2') format('woff2')}
@@ -21,12 +24,13 @@
   img,video{display:block;width:100%;height:100%;object-fit:cover}
   .wrap{max-width:1660px;margin:0 auto;padding:0 var(--gutter)}
 
+  /* ---------- reveal system ----------
+     .frame is NEVER clipped (so the observer can see it).
+     .frame > .mask does the clipping. */
   .frame{position:relative;overflow:hidden;background:#161010}
   .frame .mask{position:absolute;inset:0;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.15s var(--ease)}
   .frame.in .mask{clip-path:inset(0 0 0 0)}
   .frame .par{position:absolute;inset:-9% 0;will-change:transform}
-  .frame.contain img{object-fit:contain;background:#0F0C0A}
-  .frame.contain .par{position:absolute;inset:0;transform:none!important}
   .frame.noimg::after{content:attr(data-alt);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     background:repeating-linear-gradient(45deg,#1b1412,#1b1412 12px,#221916 12px,#221916 24px);
     color:var(--accent);font-weight:600;font-size:15px;text-align:center;padding:20px;z-index:3}
@@ -40,113 +44,103 @@
   .stag w{display:inline-block;opacity:0;transform:translateY(.5em);transition:opacity .6s var(--ease),transform .6s var(--ease)}
   .stag.in w{opacity:1;transform:none}
 
+  /* ---------- nav ---------- */
   .nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:20px var(--gutter);mix-blend-mode:difference}
   .wordmark{font-weight:var(--w-display);font-size:clamp(19px,1.7vw,42px);letter-spacing:-.03em;color:#fff}
   .back{font-size:clamp(14px,0.78vw,21px);font-weight:600;color:#fff}
   .rail{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:95;width:0}
 
+  /* ---------- HERO ---------- */
   .hero-track{position:relative;height:185vh}
   .hero-pin{position:sticky;top:0;height:100vh;overflow:hidden}
   .hero-media{position:absolute;inset:0;will-change:transform}
   .hero-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,9,7,.5) 0%,rgba(11,9,7,.15) 38%,rgba(11,9,7,.95) 100%)}
   .hero-copy{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(40px,7vh,90px);z-index:2;will-change:transform}
   .hero-kicker{font-size:clamp(14px,0.95vw,24px);font-weight:600;color:var(--accent);margin-bottom:clamp(12px,1.1vw,22px)}
-  .hero-h{font-weight:var(--w-display);font-size:clamp(40px,8.6vw,220px);line-height:.9;letter-spacing:-.065em;color:#fff}
-  .hero-sub{margin-top:clamp(16px,1.6vw,32px);max-width:40ch;font-size:clamp(16px,1.25vw,28px);line-height:1.4;color:#D9D3C9}
+  .hero-h{font-weight:var(--w-display);font-size:clamp(44px,9.4vw,240px);line-height:.9;letter-spacing:-.065em;color:#fff}
+  .hero-sub{margin-top:clamp(16px,1.6vw,32px);max-width:36ch;font-size:clamp(16px,1.25vw,28px);line-height:1.4;color:#D9D3C9}
 
+  /* ---------- META ---------- */
   .meta{padding:clamp(44px,6vh,86px) 0 clamp(36px,5vh,70px)}
-  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(20px,2.4vw,48px);border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.4vw,44px)}
+  .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,48px);border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(22px,2.4vw,44px)}
+  @media(max-width:820px){.meta-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
   .meta-k{font-size:clamp(14px,0.95vw,23px);font-weight:600;color:var(--accent);margin-bottom:clamp(8px,0.6vw,14px)}
   .meta-v{font-size:clamp(16px,1.15vw,27px);font-weight:500;line-height:1.3}
 
+  /* ---------- SPLIT: sticky copy + scrolling images ---------- */
   .split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,3vw,70px);align-items:start;padding:clamp(30px,5vh,70px) 0 clamp(50px,8vh,110px)}
   @media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}}
   .split-sticky{position:sticky;top:clamp(90px,16vh,190px)}
   @media(max-width:900px){.split-sticky{position:static}}
-  .sec-h{font-weight:var(--w-display);font-size:clamp(30px,5.2vw,124px);line-height:.9;letter-spacing:-.06em;margin-bottom:clamp(18px,1.8vw,34px)}
-  .lead{font-weight:500;font-size:clamp(18px,1.7vw,38px);line-height:1.16;letter-spacing:-.025em;max-width:26ch}
+  .sec-h{font-weight:var(--w-display);font-size:clamp(32px,5.6vw,132px);line-height:.9;letter-spacing:-.06em;margin-bottom:clamp(18px,1.8vw,34px)}
+  .lead{font-weight:500;font-size:clamp(19px,1.85vw,42px);line-height:1.14;letter-spacing:-.025em;max-width:22ch}
   .lead + .lead{margin-top:clamp(16px,1.4vw,30px)}
   .split-media{display:grid;gap:clamp(14px,1.6vw,32px)}
   
   
-  .cap-on{position:absolute;left:clamp(16px,1.4vw,30px);bottom:clamp(14px,1.2vw,26px);z-index:4;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7)}
 
+  /* caption sits ON the image */
+  .cap-on{position:absolute;left:clamp(16px,1.4vw,30px);bottom:clamp(14px,1.2vw,26px);z-index:4;
+    font-size:clamp(13px,0.85vw,20px);font-weight:600;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+
+  /* ---------- COUNTDOWN over image ---------- */
+  .count-track{position:relative;height:160vh}
+  .count-pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .count-bg{position:absolute;inset:0}
+  .count-bg::after{content:'';position:absolute;inset:0;background:rgba(11,9,7,.62)}
+  .count-inner{position:absolute;inset:0;z-index:2;display:flex;align-items:center;padding:0 var(--gutter)}
+  .count-row{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:clamp(20px,4vw,70px)}
+  @media(max-width:860px){.count-row{grid-template-columns:1fr;gap:14px}}
+  .count-num{font-weight:var(--w-display);font-size:clamp(150px,31vw,660px);line-height:.74;letter-spacing:-.085em;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 20px 70px rgba(0,0,0,.5)}
+  .count-lab{font-weight:var(--w-display);font-size:clamp(26px,4.2vw,104px);line-height:.94;letter-spacing:-.05em;color:var(--accent);text-align:right}
+  @media(max-width:860px){.count-lab{text-align:left}}
+  .count-bar{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(34px,6vh,74px);height:2px;background:rgba(255,255,255,.22);z-index:3}
+  .count-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent)}
+  .count-stamp{position:absolute;left:var(--gutter);bottom:clamp(48px,8vh,100px);z-index:3;font-size:clamp(12px,0.8vw,19px);color:rgba(255,255,255,.75);font-weight:600}
+
+  /* ---------- full bleed ---------- */
   
 
+  /* ---------- SHEETS horizontal ---------- */
+  .sheets-track{position:relative;height:300vh}
+  .sheets-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+  .sheets-row{display:flex;gap:clamp(14px,1.8vw,36px);padding:0 var(--gutter);will-change:transform}
+  .sheets-row .frame{flex:none;width:clamp(240px,34vw,640px);aspect-ratio:3/4}
+  .sheets-head{position:absolute;top:clamp(80px,13vh,140px);left:var(--gutter);z-index:5;font-weight:var(--w-display);font-size:clamp(22px,2.6vw,62px);letter-spacing:-.05em;pointer-events:none}
+  .sheets-count{position:absolute;bottom:clamp(34px,6vh,74px);right:var(--gutter);z-index:5;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+
+  /* ---------- QUOTE ---------- */
   .quote{padding:clamp(56px,10vh,130px) 0}
-  .quote p{font-weight:var(--w-display);font-size:clamp(30px,6.4vw,164px);line-height:.95;letter-spacing:-.065em}
+  .quote p{font-weight:var(--w-display);font-size:clamp(34px,7.6vw,196px);line-height:.94;letter-spacing:-.065em}
   .quote p em{font-style:normal;color:var(--accent)}
 
-  /* horizontal pinned scroller */
-  .hs-track{position:relative}
-  .hs-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
-  .hs-row{display:flex;gap:clamp(14px,1.8vw,36px);padding:0 var(--gutter);will-change:transform;align-items:flex-start}
-  .hs-item{flex:none;width:clamp(230px,30vw,560px)}
-  
-  
-  .hs-item h4{margin-top:clamp(10px,0.9vw,20px);font-weight:700;font-size:clamp(17px,1.5vw,34px);letter-spacing:-.04em}
-  .hs-item p{margin-top:clamp(4px,0.4vw,9px);font-size:clamp(13px,0.88vw,20px);color:var(--cream-2);font-weight:500;line-height:1.35;max-width:24ch}
-  .hs-head{position:absolute;top:clamp(72px,11vh,124px);left:var(--gutter);z-index:5;font-weight:var(--w-display);font-size:clamp(22px,2.6vw,62px);letter-spacing:-.05em;pointer-events:none;max-width:60vw}
-  .hs-head span{display:block;font-size:clamp(13px,0.88vw,20px);font-weight:500;color:var(--cream-2);letter-spacing:0;margin-top:8px}
-  .hs-count{position:absolute;bottom:clamp(30px,5vh,66px);right:var(--gutter);z-index:5;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
-
-  /* pinned stack */
+  /* ---------- ON TRACK: pinned stack ---------- */
   .stack-track{position:relative;height:290vh}
   .stack-pin{position:sticky;top:0;height:100vh;overflow:hidden}
-  .stack-head{position:absolute;top:clamp(76px,12vh,132px);left:var(--gutter);z-index:6;font-weight:var(--w-display);font-size:clamp(28px,4.6vw,110px);letter-spacing:-.06em;line-height:.9;pointer-events:none}
-  .stack-stage{position:absolute;left:var(--gutter);right:var(--gutter);top:clamp(146px,23vh,280px);bottom:clamp(68px,10vh,124px)}
+  .stack-head{position:absolute;top:clamp(80px,13vh,140px);left:var(--gutter);z-index:6;font-weight:var(--w-display);font-size:clamp(30px,5.2vw,124px);letter-spacing:-.06em;line-height:.9;pointer-events:none}
+  .stack-stage{position:absolute;left:var(--gutter);right:var(--gutter);top:clamp(150px,24vh,290px);bottom:clamp(70px,11vh,130px)}
   .stack-item{position:absolute;inset:0;overflow:hidden;border-radius:4px;clip-path:inset(100% 0 0 0);will-change:clip-path,transform}
-  .stack-cap{position:absolute;left:var(--gutter);bottom:clamp(28px,4.6vh,58px);z-index:6;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:var(--cream-2)}
-  .stack-idx{position:absolute;right:var(--gutter);bottom:clamp(28px,4.6vh,58px);z-index:6;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
+  .stack-item img{width:100%;height:100%;object-fit:cover}
+  .stack-cap{position:absolute;left:var(--gutter);bottom:clamp(30px,5vh,62px);z-index:6;font-size:clamp(13px,0.85vw,20px);font-weight:600;color:var(--cream-2)}
+  .stack-idx{position:absolute;right:var(--gutter);bottom:clamp(30px,5vh,62px);z-index:6;font-weight:700;font-size:clamp(16px,1.2vw,28px);color:var(--accent);font-variant-numeric:tabular-nums}
 
-  /* big number device */
-  .num-track{position:relative;height:170vh}
-  .num-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
-  .num-bg{position:absolute;inset:0}
-  .num-bg::after{content:'';position:absolute;inset:0;background:rgba(11,9,7,.66)}
-  .num-inner{position:relative;z-index:3;width:100%;padding:0 var(--gutter)}
-  .num-big{font-weight:var(--w-display);font-size:clamp(90px,19vw,400px);line-height:.8;letter-spacing:-.08em;color:#fff;font-variant-numeric:tabular-nums}
-  .num-big i{font-style:normal;color:var(--accent)}
-  .num-lab{margin-top:clamp(14px,1.6vw,34px);font-weight:var(--w-display);font-size:clamp(20px,2.6vw,64px);letter-spacing:-.045em;color:var(--cream);max-width:22ch;line-height:.98}
-
-  /* plain grid */
-  .grid{display:grid;gap:clamp(14px,1.6vw,32px)}
-  .grid.c2{grid-template-columns:repeat(2,1fr)}
-  .grid.c3{grid-template-columns:repeat(3,1fr)}
-  @media(max-width:900px){.grid.c3{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){.grid.c2,.grid.c3{grid-template-columns:1fr}}
-  
-
-  .pager{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.2vw,44px);border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px);padding:clamp(46px,7vh,104px) 0 clamp(36px,5vh,80px)}
-  @media(max-width:760px){.pager{grid-template-columns:1fr;gap:34px}}
-  .pager a small{display:block;font-size:clamp(13px,0.9vw,22px);font-weight:600;color:var(--accent);margin-bottom:clamp(10px,0.9vw,18px)}
-  .pager a h3{font-weight:var(--w-display);font-size:clamp(24px,3.2vw,74px);line-height:.94;letter-spacing:-.055em;transition:color .4s var(--ease)}
-  .pager a:hover h3{color:var(--accent)}
-  .pager .r{text-align:right}
-  @media(max-width:760px){.pager .r{text-align:left}}
+  /* ---------- credits / next ---------- */
+  .credits{border-top:1px solid rgba(240,236,228,.16);padding-top:clamp(24px,2.4vw,48px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.2vw,44px)}
+  @media(max-width:820px){.credits{grid-template-columns:repeat(2,1fr);gap:26px}}
+  .next{display:block;padding:clamp(56px,9vh,130px) 0 clamp(40px,6vh,90px);border-top:1px solid rgba(240,236,228,.16);margin-top:clamp(50px,8vh,110px)}
+  .next small{display:block;font-size:clamp(14px,0.95vw,23px);font-weight:600;color:var(--accent);margin-bottom:clamp(12px,1.1vw,22px)}
+  .next h3{font-weight:var(--w-display);font-size:clamp(38px,7.4vw,176px);line-height:.9;letter-spacing:-.065em;transition:color .4s var(--ease)}
+  .next:hover h3{color:var(--accent)}
   .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-bottom:50px;font-size:clamp(13px,0.8vw,20px);color:var(--cream-2);font-weight:500}
   .foot a:hover{color:var(--cream)}
 
-  @media(max-width:760px){
-    .hs-track{height:auto!important}
-    .hs-pin{position:static;height:auto;display:block;padding:clamp(30px,6vh,60px) 0}
-    .hs-row{flex-wrap:wrap;transform:none!important;gap:30px}
-    .hs-item{width:100%}
-    .hs-head{position:static;margin:0 var(--gutter) 22px;max-width:none}
-    .hs-count{display:none}
-    .stack-track{height:auto}
-    .stack-pin{position:static;height:auto;padding:clamp(30px,6vh,60px) 0}
-    .stack-head{position:static;margin:0 var(--gutter) 20px}
-    .stack-stage{position:static;height:auto}
-    .stack-item{position:relative;inset:auto;clip-path:none!important;transform:none!important;margin-bottom:16px}
-    .stack-cap,.stack-idx{position:static;margin:0 var(--gutter)}
-    .num-track{height:auto}
-    .num-pin{position:static;height:auto;padding:clamp(50px,9vh,110px) 0}
-  }
   @media(prefers-reduced-motion:reduce){
     *{transition-duration:.001ms!important;animation:none!important}
-    .frame .mask{clip-path:none}.clip>.ci{transform:none}.rv{opacity:1;transform:none}.stag w{opacity:1;transform:none}
-    .hero-track{height:auto}.hero-pin{position:static;height:auto}
+    .frame .mask{clip-path:none}.stack-item{clip-path:none;position:relative;margin-bottom:16px}
+    .clip>.ci{transform:none}.rv{opacity:1;transform:none}.stag w{opacity:1;transform:none}
+    .hero-track,.count-track,.sheets-track,.stack-track{height:auto}
+    .hero-pin,.count-pin,.sheets-pin,.stack-pin{position:static;height:auto}
+    .stack-stage{position:static}.sheets-row{flex-wrap:wrap}
   }
 
   /* ===== ratio-aware media (retrofit) ================================== */
@@ -293,25 +287,26 @@
     /* the nav sits over artwork, so keep it compact but still tappable */
     .nav{padding-top:10px;padding-bottom:10px}
   }
-</style><!-- meta:generated -->
-<meta name="description" content="Brand identity for Oakland's upscale dive. Identity, menus, neon and signage for a bar with a high-class attitude about all of it.">
-<link rel="canonical" href="https://noahcharnow-portfolio.netlify.app/lowbar-case-study.html">
+</style>
+<!-- meta:generated -->
+<meta name="description" content="Spotter, a coaching app I took from a blank page to a shipped product. Idea, brand, UX, UI, and build, all mine.">
+<link rel="canonical" href="https://noahcharnow.com/spotter-case-study.html">
 <meta name="author" content="Noah Charnow">
 <meta name="theme-color" content="#0B0907">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Noah Charnow">
-<meta property="og:title" content="Low Bar / Noah Charnow">
-<meta property="og:description" content="Brand identity for Oakland's upscale dive. Identity, menus, neon and signage for a bar with a high-class attitude about all of it.">
-<meta property="og:url" content="https://noahcharnow-portfolio.netlify.app/lowbar-case-study.html">
-<meta property="og:image" content="https://noahcharnow-portfolio.netlify.app/images/lowbar/image000000-fd076f.jpg">
-<meta property="og:image:alt" content="Low Bar">
+<meta property="og:title" content="Spotter / Noah Charnow">
+<meta property="og:description" content="A coaching app I took from a blank page to a shipped product. Idea, brand, UX, UI, and build, all mine.">
+<meta property="og:url" content="https://noahcharnow.com/spotter-case-study.html">
+<meta property="og:image" content="https://noahcharnow.com/images/spotter/og.jpg">
+<meta property="og:image:alt" content="Spotter, a coaching app by Noah Charnow">
 <meta property="og:locale" content="en_US">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Low Bar / Noah Charnow">
-<meta name="twitter:description" content="Brand identity for Oakland's upscale dive. Identity, menus, neon and signage for a bar with a high-class attitude about all of it.">
-<meta name="twitter:image" content="https://noahcharnow-portfolio.netlify.app/images/lowbar/image000000-fd076f.jpg">
+<meta name="twitter:title" content="Spotter / Noah Charnow">
+<meta name="twitter:description" content="A coaching app I took from a blank page to a shipped product. Idea, brand, UX, UI, and build, all mine.">
+<meta name="twitter:image" content="https://noahcharnow.com/images/spotter/og.jpg">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -321,12 +316,13 @@
 {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
-  "name": "Low Bar",
-  "headline": "Low Bar",
-  "description": "Brand identity for Oakland's upscale dive. Identity, menus, neon and signage for a bar with a high-class attitude about all of it.",
-  "url": "https://noahcharnow-portfolio.netlify.app/lowbar-case-study.html",
-  "image": "https://noahcharnow-portfolio.netlify.app/images/lowbar/image000000-fd076f.jpg",
-  "creator": { "@type": "Organization", "name": "Low Bar, Oakland" },
+  "name": "Spotter",
+  "headline": "Spotter",
+  "description": "A coaching app taken from concept to shipped product by Noah Charnow.",
+  "url": "https://noahcharnow.com/spotter-case-study.html",
+  "image": "https://noahcharnow.com/images/spotter/og.jpg",
+  "creator": { "@type": "Organization", "name": "Google" },
+  "dateCreated": "2024",
   "author": { "@type": "Person", "name": "Noah Charnow", "jobTitle": "Creative Director", "url": "https://noahcharnow-portfolio.netlify.app/" },
   "isPartOf": { "@type": "WebSite", "name": "Noah Charnow", "url": "https://noahcharnow-portfolio.netlify.app/" }
 }
@@ -364,166 +360,323 @@
 </head><body>
 <!-- build: spotter-v23 -->
 <div class="rail" id="rail"></div>
-<nav class="nav"><a class="wordmark" href="index.html">Noah Charnow</a><a class="back" href="index.html#work">&larr; All work</a></nav>
-<section class="hero-track" id="heroTrack"><div class="hero-pin">
-<div class="hero-media" id="heroMedia"><img src="images/index/361611695_18012656551737144_326588598104159611_n-ddffae.jpg" alt="Low Bar"></div>
-<div class="hero-copy" id="heroCopy"><div class="hero-kicker">Low Bar / Oakland / Brand identity</div>
-<h1 class="hero-h" id="heroH">
-<span class="clip"><span class="ci">Low Bar</span></span>
-</h1><p class="hero-sub">Brand identity for Oakland’s upscale dive. Killer cocktails, Chef Matt’s Mexican food, and a high-class attitude about all of it.</p></div></div></section>
-<section class="meta"><div class="wrap"><div class="meta-grid">
-<div class="rv"><div class="meta-k">Client</div><div class="meta-v">Low Bar, Oakland</div></div>
-<div class="rv"><div class="meta-k">Role</div><div class="meta-v">Brand Identity &amp; Design</div></div>
-<div class="rv"><div class="meta-k">Partners</div><div class="meta-v">Daniel &amp; Matt, owners</div></div><div class="rv"><div class="meta-k">Years</div><div class="meta-v">2018 to 2020</div></div>
-<div class="rv"><div class="meta-k">Scope</div><div class="meta-v">Identity, menus, neon, signage</div></div>
-</div></div></section>
-<section class="wrap"><div class="split"><div class="split-sticky">
-<h2 class="sec-h clip"><span class="ci">The place</span></h2>
-<p class="lead stag">Low Bar slings killer cocktails and drool-worthy Mexican eats with a high-class dive bar attitude.</p>
-<p class="lead stag">It is the kind of place that makes putting on pants feel good.</p>
-</div><div class="split-media">
-<figure class="frame" data-alt="Low Bar interior"><div class="mask"><div class="par"><img src="images/lowbar/317099794_683459036758535_2268801203122973050_n-0a3e6c.jpg" alt="Low Bar interior" loading="lazy"></div></div><figcaption class="cap-on">Neon and signage</figcaption></figure>
-<figure class="frame tall" data-alt="Low Bar detail"><div class="mask"><div class="par"><img src="images/lowbar/241345704_280246503584018_7314737480408934963_n_-3d9fc7.jpg" alt="Low Bar detail" loading="lazy"></div></div></figure>
-</div></div></section>
-<section class="quote"><div class="wrap"><p>
-<span class="clip scrub"><span class="ci">Come for the food and drinks.</span></span>
-<span class="clip scrub"><span class="ci"><em>Stay for the food and drinks.</em></span></span>
-</p></div></section>
-<figure class="frame bleed" data-alt="Low Bar, Oakland"><div class="mask"><div class="par"><img src="images/lowbar/317550689_122869267297776_9108669775489804345_n_-8ef3b7.jpg" alt="Low Bar, Oakland" loading="lazy"></div></div><figcaption class="cap-on">Low Bar, Oakland</figcaption></figure>
-<section class="wrap"><div class="split"><div class="split-sticky">
-<h2 class="sec-h clip"><span class="ci">The system</span></h2>
-<p class="lead stag">Friendly neighborhood vibes with a refined edge. Bold sans serif, and a design system flexible enough to survive a bar.</p>
-<p class="lead stag">From menus to neon, a look that is almost as good as those friggin corn fritters.</p>
-</div><div class="split-media">
-<figure class="frame" data-alt="Menu system"><div class="mask"><div class="par"><img src="images/lowbar/Menu_MOCK_01-2d2932.jpg" alt="Menu system" loading="lazy"></div></div><figcaption class="cap-on">Menu system</figcaption></figure>
-<figure class="frame tall" data-alt="Low Bar print"><div class="mask"><div class="par"><img src="images/lowbar/image000000-fd076f.jpg" alt="Low Bar print" loading="lazy"></div></div></figure>
-</div></div></section>
-<figure class="frame bleed" data-alt="Low Bar signage"><div class="mask"><div class="par"><img src="images/lowbar/152013676_2745533662366188_2043515722785266851_n-959f58.jpg" alt="Low Bar signage" loading="lazy"></div></div></figure>
+<nav class="nav">
+  <a class="wordmark" href="index.html">Noah Charnow</a>
+  <a class="back" href="index.html#work">&larr; All work</a>
+</nav><!-- ===================== SPOTTER CASE STUDY BODY ===================== -->
+<style>
+/* Spotter-specific styles, scoped so they can't touch other pages */
+.sp-hero{min-height:100vh;display:grid;grid-template-columns:1.05fr 0.95fr;gap:clamp(24px,4vw,80px);
+  align-items:center;padding:clamp(90px,14vh,150px) 0 clamp(50px,8vh,90px)}
+.sp-hero-copy .kicker{color:var(--accent);font-weight:600;font-size:clamp(13px,.95vw,22px);
+  letter-spacing:.02em;margin-bottom:clamp(16px,1.6vw,28px)}
+.sp-hero-copy h1{font-weight:var(--w-display);font-size:clamp(46px,7vw,150px);line-height:.9;
+  letter-spacing:-.055em;margin-bottom:clamp(20px,2vw,36px)}
+.sp-hero-copy .sub{font-weight:500;font-size:clamp(18px,1.5vw,32px);line-height:1.2;
+  letter-spacing:-.02em;color:var(--cream);max-width:20ch;margin-bottom:clamp(22px,2vw,38px)}
+.sp-try{display:inline-flex;align-items:center;gap:10px;color:var(--cream);opacity:.6;
+  font-weight:600;font-size:clamp(13px,.9vw,18px)}
+.sp-try .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
+  animation:sp-pulse 1.8s var(--ease) infinite}
+@keyframes sp-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.4}}
+
+/* the live phone */
+.sp-phone-wrap{display:flex;justify-content:center;align-items:center;perspective:1600px}
+.sp-phone{position:relative;width:min(370px,82vw);aspect-ratio:390/844;
+  border-radius:54px;background:#0a0a0a;padding:13px;
+  box-shadow:0 2px 4px rgba(0,0,0,.4),0 30px 70px -20px rgba(0,0,0,.7),
+    0 0 0 2px rgba(255,255,255,.05);
+  transition:transform .9s var(--ease)}
+.sp-phone::after{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  width:34%;height:26px;background:#0a0a0a;border-radius:0 0 18px 18px;z-index:3;pointer-events:none}
+.sp-screen{position:relative;width:100%;height:100%;border-radius:42px;overflow:hidden;background:#fff}
+.sp-screen iframe{width:100%;height:100%;border:0;display:block}
+/* a gentle idle float, killed on hover so tapping feels precise */
+.sp-phone.idle{animation:sp-float 6s var(--ease) infinite}
+@keyframes sp-float{0%,100%{transform:translateY(0) rotateY(-4deg)}50%{transform:translateY(-14px) rotateY(4deg)}}
+.sp-phone:hover{animation:none;transform:translateY(-6px) rotateY(0deg)}
+
+@media (max-width:900px){
+  .sp-hero{grid-template-columns:1fr;text-align:center;gap:clamp(30px,6vh,60px);min-height:auto}
+  .sp-hero-copy .sub{margin-left:auto;margin-right:auto}
+  .sp-hero-copy h1{margin-inline:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .sp-phone.idle{animation:none;transform:none}
+  .sp-try .dot{animation:none}
+}
+
+/* authored-the-whole-thing strip */
+.sp-authored{padding:clamp(60px,10vh,140px) 0}
+.sp-authored .lead-in{font-weight:500;font-size:clamp(22px,2.6vw,58px);line-height:1.1;
+  letter-spacing:-.03em;max-width:20ch;margin-bottom:clamp(40px,6vh,90px)}
+.sp-authored .lead-in b{color:var(--accent);font-weight:600}
+.sp-roles{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(12px,1.4vw,26px)}
+.sp-role{border-top:1px solid rgba(240,236,228,.18);padding-top:clamp(14px,1.4vw,22px)}
+.sp-role .n{color:var(--accent);font-weight:600;font-size:clamp(12px,.8vw,16px);
+  margin-bottom:8px;font-variant-numeric:tabular-nums}
+.sp-role .l{font-weight:var(--w-display);font-size:clamp(17px,1.5vw,30px);
+  line-height:.98;letter-spacing:-.03em}
+.sp-role .d{margin-top:8px;font-size:clamp(12px,.85vw,16px);line-height:1.3;
+  color:var(--cream);opacity:.62}
+@media (max-width:900px){.sp-roles{grid-template-columns:repeat(2,1fr)}}
+
+/* moments */
+.sp-moment{display:grid;grid-template-columns:0.9fr 1.1fr;gap:clamp(30px,5vw,90px);
+  align-items:center;padding:clamp(50px,9vh,130px) 0}
+.sp-moment.flip{grid-template-columns:1.1fr 0.9fr}
+.sp-moment.flip .sp-moment-copy{order:2}
+.sp-moment.flip .sp-moment-media{order:1}
+.sp-moment-copy .m-k{color:var(--accent);font-weight:600;font-size:clamp(13px,.9vw,20px);
+  margin-bottom:clamp(14px,1.4vw,24px)}
+.sp-moment-copy h3{font-weight:var(--w-display);font-size:clamp(30px,4.4vw,92px);
+  line-height:.92;letter-spacing:-.05em;margin-bottom:clamp(16px,1.6vw,28px)}
+.sp-moment-copy p{font-weight:400;font-size:clamp(16px,1.15vw,24px);line-height:1.4;
+  color:var(--cream);opacity:.8;max-width:34ch}
+.sp-moment-media{display:flex;justify-content:center}
+.sp-moment-media .shot{width:min(320px,72vw);aspect-ratio:390/844;border-radius:40px;
+  overflow:hidden;background:#161010;box-shadow:0 24px 60px -24px rgba(0,0,0,.7);
+  border:1px solid rgba(255,255,255,.06)}
+.sp-moment-media .shot img{width:100%;height:100%;object-fit:cover;display:block}
+.sp-moment-media .shot.empty{display:flex;align-items:center;justify-content:center;
+  color:var(--cream);opacity:.3;font-weight:600;font-size:14px;text-align:center;padding:20px}
+@media (max-width:900px){
+  .sp-moment,.sp-moment.flip{grid-template-columns:1fr;gap:clamp(24px,5vh,50px)}
+  .sp-moment.flip .sp-moment-copy{order:1}.sp-moment.flip .sp-moment-media{order:2}
+  .sp-moment-copy p{max-width:none}
+}
+
+/* close */
+.sp-close{padding:clamp(70px,12vh,180px) 0 clamp(50px,8vh,110px)}
+.sp-close h2{font-weight:var(--w-display);font-size:clamp(34px,5.4vw,128px);
+  line-height:.9;letter-spacing:-.055em;margin-bottom:clamp(28px,3vw,50px);max-width:16ch}
+.sp-close p{font-weight:400;font-size:clamp(17px,1.35vw,28px);line-height:1.45;
+  color:var(--cream);opacity:.82;max-width:52ch;margin-bottom:clamp(18px,1.6vw,28px)}
+.sp-close .sp-link{display:inline-flex;align-items:center;gap:10px;color:var(--accent);
+  font-weight:600;font-size:clamp(15px,1.1vw,22px);text-decoration:none;
+  border-bottom:1.5px solid transparent;transition:border-color .3s var(--ease)}
+.sp-close .sp-link:hover{border-color:var(--accent)}
+</style>
+
+<!-- ===== LIVE APP HERO ===== -->
+<section class="sp-hero wrap">
+  <div class="sp-hero-copy">
+    <div class="kicker rv">Spotter / Solo build / 2026</div>
+    <h1 class="rv">Spotter</h1>
+    <div class="sub rv">A coaching app I took from a blank page to a working product.</div>
+    <div class="sp-try rv"><span class="dot"></span>It's live. Tap the phone and use it.</div>
+  </div>
+  <div class="sp-phone-wrap rv">
+    <div class="sp-phone idle" id="spPhone">
+      <div class="sp-screen">
+        <iframe src="https://spotterfit.netlify.app/" title="Spotter, live app"
+                loading="lazy" allow="clipboard-write"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== I AUTHORED THE WHOLE THING ===== -->
+<section class="sp-authored wrap">
+  <div class="lead-in rv">Most creative directors art-direct a product. <b>I authored this one</b> — every layer, start to finish.</div>
+  <div class="sp-roles">
+    <div class="sp-role rv"><div class="n">01</div><div class="l">The idea</div><div class="d">The concept, the problem, who it's for.</div></div>
+    <div class="sp-role rv"><div class="n">02</div><div class="l">The name</div><div class="d">Spotter. Your coach in your pocket.</div></div>
+    <div class="sp-role rv"><div class="n">03</div><div class="l">The brand</div><div class="d">Logo, color, type, the whole identity.</div></div>
+    <div class="sp-role rv"><div class="n">04</div><div class="l">The UX</div><div class="d">Every flow, screen and state.</div></div>
+    <div class="sp-role rv"><div class="n">05</div><div class="l">The UI</div><div class="d">Designed down to the last pixel.</div></div>
+    <div class="sp-role rv"><div class="n">06</div><div class="l">The build</div><div class="d">Shipped as a working PWA.</div></div>
+  </div>
+</section>
+
+<!-- ===== MOMENTS ===== -->
+<section class="wrap">
+  <div class="sp-moment">
+    <div class="sp-moment-copy rv">
+      <div class="m-k">The coach</div>
+      <h3>A coach, not a&nbsp;dashboard.</h3>
+      <p>Most fitness apps hand you charts and walk away. Spotter talks to you like a coach would — reads your week, tells you what moved the scale, and what to do next. The voice was the first design decision, before a single screen.</p>
+    </div>
+    <div class="sp-moment-media rv">
+      <div class="shot empty">Coach screen<br>(add image)</div>
+    </div>
+  </div>
+
+  <div class="sp-moment flip">
+    <div class="sp-moment-copy rv">
+      <div class="m-k">Food logging</div>
+      <h3>Search, scan, or&nbsp;snap.</h3>
+      <p>Logging food is where every diet app dies. So I made it three taps at most — search it, scan the barcode, or snap a photo of the plate. And a "rough-log it" escape hatch for when you ate out, because a guess beats a blank day.</p>
+    </div>
+    <div class="sp-moment-media rv">
+      <div class="shot empty">Food logging screen<br>(add image)</div>
+    </div>
+  </div>
+
+  <div class="sp-moment">
+    <div class="sp-moment-copy rv">
+      <div class="m-k">Training</div>
+      <h3>Built on the&nbsp;OPT model.</h3>
+      <p>The training isn't made up. It follows NASM's five-phase OPT model — you move up as your body is ready. Real methodology, structured into something a person can actually follow on a Tuesday night.</p>
+    </div>
+    <div class="sp-moment-media rv">
+      <div class="shot empty">Training phases screen<br>(add image)</div>
+    </div>
+  </div>
+
+  <div class="sp-moment flip">
+    <div class="sp-moment-copy rv">
+      <div class="m-k">Check-ins</div>
+      <h3>The scale doesn't&nbsp;lie.</h3>
+      <p>Weekly check-in: step on the scale, add the tape and photos when you can, same time, same conditions. Then Spotter reads the trend and tells you the truth. Progress you can see next to numbers that explain it.</p>
+    </div>
+    <div class="sp-moment-media rv">
+      <div class="shot empty">Check-in screen<br>(add image)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLOSE ===== -->
+<section class="sp-close wrap">
+  <h2 class="rv">One person can build the whole thing now.</h2>
+  <p class="rv">Spotter is proof of where creative direction is heading. I didn't hand this off — I thought it up, named it, branded it, designed every screen, and shipped it as a working app. The line between "designer" and "product" is gone, and this is what's on the other side of it.</p>
+  <p class="rv"><a class="sp-link" href="https://spotterfit.netlify.app/" target="_blank" rel="noopener">Open the live app &rarr;</a></p>
+</section>
+
 <div class="wrap"><div class="pnav">
-  <a href="chrome-industries-case-study.html"><small>&larr; Previous</small><h3>Chrome Industries</h3></a>
+  <a href="mclaren-case-study.html"><small>&larr; Previous</small><h3>Google x McLaren</h3></a>
 </div></div>
-<a class="peek" href="upstate-case-study.html" aria-label="Next project: Upstate">
+
+<script>
+/* stop the phone's idle float once someone hovers, so tapping is precise */
+(function(){
+  var p = document.getElementById('spPhone');
+  if(!p) return;
+  p.addEventListener('mouseenter', function(){ p.classList.remove('idle'); }, {once:true});
+})();
+</script>
+<a class="peek" href="fitbit-case-study.html" aria-label="Next project: Fitbit">
   <div class="wrap">
     <small class="peek-k">Next project</small>
-    <h2 class="peek-t">Upstate</h2>
+    <h2 class="peek-t">Fitbit</h2>
   </div>
-  <div class="peek-media"><img src="images/index/Upstate-9db936.jpg" alt="Upstate" loading="lazy"></div>
+  <div class="peek-media"><img src="images/fitbit/Frame_8-01b175.png" alt="Fitbit" loading="lazy"></div>
 </a>
-<div class="wrap"><div class="foot"><div>&copy; Noah Charnow 2026</div>
-<div><a href="https://www.linkedin.com/in/noah-charnow/">LinkedIn</a> &nbsp; <a href="mailto:noahcharnow@gmail.com">Email</a> &nbsp; San Diego / Available</div>
-</div></div>
+<div class="wrap">
+  <div class="foot">
+    <div>&copy; Noah Charnow 2026</div>
+    <div><a href="https://www.linkedin.com/in/noah-charnow/">LinkedIn</a> &nbsp; <a href="mailto:noahcharnow@gmail.com">Email</a> &nbsp; San Diego / Available</div>
+  </div>
+</div>
+
 <script>
 var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 function cl(v){return v<0?0:v>1?1:v;}
 function ease(t){return 1-(1-t)*(1-t);}
 function pad2(n){return (n<10?'0':'')+n;}
 
-document.querySelectorAll('.frame img,.frame video,.stack-item img').forEach(function(m){
-  m.addEventListener('error',function(){var f=m.closest('.frame')||m.closest('.stack-item'); if(f) f.classList.add('noimg');});
+/* flag any image that fails so it never renders as a black void */
+document.querySelectorAll('.frame img, .stack-item img').forEach(function(im){
+  im.addEventListener('error',function(){
+    var f=im.closest('.frame'); if(f) f.classList.add('noimg');
+  });
 });
+
+/* split lead paragraphs into words for a stagger reveal */
 document.querySelectorAll('.stag').forEach(function(p){
-  p.innerHTML=p.textContent.trim().split(/\s+/).map(function(w,i){
-    return '<w style="transition-delay:'+(i*0.024).toFixed(3)+'s">'+w+'</w>';}).join(' ');
+  var words=p.textContent.trim().split(/\s+/);
+  p.innerHTML=words.map(function(w,i){
+    return '<w style="transition-delay:'+(i*0.028).toFixed(3)+'s">'+w+'</w>';
+  }).join(' ');
 });
+
+/* reveal observer. .frame is never self-clipped, so it always intersects */
 (function(){
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:0.08,rootMargin:'0px 0px -5% 0px'});
   document.querySelectorAll('.clip:not(.scrub),.rv,.stag,.frame').forEach(function(el){ io.observe(el); });
 })();
+
 window.addEventListener('load',function(){
   document.querySelectorAll('#heroH .clip').forEach(function(el,i){
-    el.querySelector('.ci').style.transitionDelay=(0.2+i*0.1)+'s'; el.classList.add('in');});
+    el.querySelector('.ci').style.transitionDelay=(0.2+i*0.1)+'s'; el.classList.add('in');
+  });
 });
 
+/* font-proof display fitting */
 function fitLines(el,maxGrow){
   if(!el) return;
   el.style.fontSize='';
   var base=parseFloat(getComputedStyle(el).fontSize), avail=el.clientWidth;
-  if(!avail||!base) return;
-  function widest(){
-    var lines=el.querySelectorAll('.ci'), nat=0;
-    for(var i=0;i<lines.length;i++){
-      var l=lines[i], ws=l.style.whiteSpace, dp=l.style.display;
-      l.style.whiteSpace='nowrap'; l.style.display='inline-block';
-      nat=Math.max(nat,l.getBoundingClientRect().width);
-      l.style.whiteSpace=ws; l.style.display=dp;
-    }
-    return nat;
+  var lines=el.querySelectorAll('.ci'), nat=0;
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i], ws=l.style.whiteSpace, dp=l.style.display;
+    l.style.whiteSpace='nowrap'; l.style.display='inline-block';
+    nat=Math.max(nat,l.getBoundingClientRect().width);
+    l.style.whiteSpace=ws; l.style.display=dp;
   }
-  var nat=widest(); if(!nat) return;
-  var cur=base*Math.min(maxGrow,(avail*0.975)/nat);
-  el.style.fontSize=cur+'px';
-  for(var pass=0;pass<4;pass++){
-    nat=widest();
-    if(!nat||nat<=avail*0.99) break;
-    cur=cur*(avail*0.972)/nat;
-    el.style.fontSize=cur+'px';
-  }
+  if(!nat||!avail) return;
+  el.style.fontSize=(base*Math.max(0.7,Math.min(maxGrow,(avail*0.975)/nat)))+'px';
 }
 function fitAll(){
   fitLines(document.getElementById('heroH'),1.06);
-  document.querySelectorAll('.quote p').forEach(function(el){ fitLines(el,1.02); });
-  document.querySelectorAll('.sec-h').forEach(function(el){ fitLines(el,0.99); });
+  fitLines(document.getElementById('quoteP'),1.02);
+  document.querySelectorAll('.sec-h,.next h3').forEach(function(el){ fitLines(el,0.99); });
 }
+
 function prog(t){var m=t.offsetHeight-window.innerHeight;return m>0?cl((window.scrollY-t.offsetTop)/m):0;}
-function lerp(cur,target){var d=target-cur;return cur+d*(Math.abs(d)>0.25?0.34:0.12);}
-function revealAll(t){var f=t.querySelectorAll('.frame:not(.in)');for(var i=0;i<f.length;i++)f[i].classList.add('in');}
 
 var heroTrack=document.getElementById('heroTrack'),heroMedia=document.getElementById('heroMedia'),heroCopy=document.getElementById('heroCopy'),
-    rail=document.getElementById('rail'),S={},hsList=[],stackList=[],numList=[];
-
-document.querySelectorAll('.hs-track').forEach(function(t){
-  hsList.push({t:t,row:t.querySelector('.hs-row'),count:t.querySelector('.hs-count'),n:t.querySelectorAll('.hs-item').length,r:0,shift:0});
-});
-document.querySelectorAll('.stack-track').forEach(function(t){
-  stackList.push({t:t,items:[].slice.call(t.querySelectorAll('.stack-item')),cap:t.querySelector('.stack-cap'),idx:t.querySelector('.stack-idx'),r:0});
-});
-document.querySelectorAll('.num-track').forEach(function(t){
-  numList.push({t:t,el:t.querySelector('.num-big'),from:parseInt(t.dataset.from,10),to:parseInt(t.dataset.to,10),suffix:t.dataset.suffix||'',r:0});
-});
+    countTrack=document.getElementById('countTrack'),countNum=document.getElementById('countNum'),countBar=document.getElementById('countBar'),
+    sheetsTrack=document.getElementById('sheetsTrack'),sheetsRow=document.getElementById('sheetsRow'),sheetsCount=document.getElementById('sheetsCount'),
+    stackTrack=document.getElementById('stackTrack'),stackItems=[].slice.call(document.querySelectorAll('.stack-item')),
+    stackCap=document.getElementById('stackCap'),stackIdx=document.getElementById('stackIdx'),rail=document.getElementById('rail'),
+    S={};
 
 function setup(){
   fitAll();
-  if(heroCopy) S.copyTravel=heroCopy.offsetHeight+110;
-  hsList.forEach(function(h){ h.shift=Math.max(0,h.row.scrollWidth-window.innerWidth); });
+  if(!heroCopy||!sheetsRow) return; /* spotter-v23: page has no McLaren hero, skip its scroll engine */
+  S.copyTravel=heroCopy.offsetHeight+110;
+  S.sheetsShift=Math.max(0,sheetsRow.scrollWidth-window.innerWidth);
 }
-var rHero=0;
+
+var rHero=0,rCount=0,rSheets=0,rStack=0;
 function frame(){
+  if(!heroCopy){ return; } /* spotter-v23: no McLaren hero on this page */
   if(!reduce){
     var doc=document.documentElement;
     rail.style.width=(window.scrollY/(doc.scrollHeight-window.innerHeight)*100)+'%';
 
-    if(heroTrack){
-      var p=prog(heroTrack); rHero=lerp(rHero,p);
-      heroMedia.style.transform='scale('+(1+0.06*rHero)+')';
-      heroCopy.style.transform='translateY('+(-S.copyTravel*ease(cl(rHero/0.85)))+'px)';
+    var p=prog(heroTrack); rHero+=(p-rHero)*0.12;
+    heroMedia.style.transform='scale('+(1+0.06*rHero)+')';
+    heroCopy.style.transform='translateY('+(-S.copyTravel*ease(cl(rHero/0.85)))+'px)';
+
+    var c=prog(countTrack); rCount+=(c-rCount)*0.12;
+    var e=ease(cl(rCount/0.9));
+    countNum.textContent=pad2(Math.round(24*(1-e)));
+    countBar.style.width=(e*100)+'%';
+
+    var s=prog(sheetsTrack); rSheets+=(s-rSheets)*0.12;
+    sheetsRow.style.transform='translateX('+(-(S.sheetsShift||0)*rSheets)+'px)';
+    sheetsCount.textContent=pad2(Math.min(4,Math.floor(rSheets*3.999)+1))+' / 04';
+
+    /* stacked gallery: each image wipes up over the previous */
+    var st=prog(stackTrack); rStack+=(st-rStack)*0.12;
+    var n=stackItems.length, active=0;
+    for(var i=0;i<n;i++){
+      var local=cl(rStack*n-i);
+      var el=stackItems[i];
+      el.style.zIndex=i+1;
+      el.style.clipPath=i===0?'inset(0 0 0 0)':'inset('+((1-local)*100).toFixed(2)+'% 0 0 0)';
+      el.style.transform='scale('+(1+0.04*(1-local)).toFixed(4)+')';
+      if(local>0.5) active=i;
     }
-    hsList.forEach(function(h){
-      var v=prog(h.t); h.r=lerp(h.r,v);
-      if(v>0.97) revealAll(h.t);
-      h.row.style.transform='translateX('+(-h.shift*h.r)+'px)';
-      if(h.count) h.count.textContent=pad2(Math.min(h.n,Math.floor(h.r*(h.n-0.001))+1))+' / '+pad2(h.n);
-    });
-    stackList.forEach(function(s){
-      var v=prog(s.t); s.r=lerp(s.r,v);
-      var n=s.items.length, active=0;
-      for(var i=0;i<n;i++){
-        var local=cl(s.r*n-i), el=s.items[i];
-        el.style.zIndex=i+1;
-        el.style.clipPath=i===0?'inset(0 0 0 0)':'inset('+((1-local)*100).toFixed(2)+'% 0 0 0)';
-        el.style.transform='scale('+(1+0.04*(1-local)).toFixed(4)+')';
-        if(local>0.5) active=i;
-      }
-      if(s.cap) s.cap.textContent=s.items[active].getAttribute('data-cap')||'';
-      if(s.idx) s.idx.textContent=pad2(active+1)+' / '+pad2(n);
-    });
-    numList.forEach(function(nm){
-      var v=prog(nm.t); nm.r=lerp(nm.r,v);
-      var e=ease(cl(nm.r/0.9));
-      nm.el.innerHTML=Math.round(nm.from+(nm.to-nm.from)*e)+nm.suffix;
-    });
-    document.querySelectorAll('.quote p').forEach(function(qp){
+    stackCap.textContent=stackItems[active].getAttribute('data-cap');
+    stackIdx.textContent=pad2(active+1)+' / '+pad2(n);
+
+    var qp=document.getElementById('quoteP');
+    if(qp){
       var qr=qp.getBoundingClientRect();
       var q=cl((window.innerHeight-qr.top)/(window.innerHeight+qr.height));
       var qs=qp.querySelectorAll('.scrub>.ci');
@@ -531,8 +684,9 @@ function frame(){
         var lo=ease(cl((q-0.16-qi*0.07)/0.26));
         qs[qi].style.transform='translateY('+((1-lo)*112).toFixed(2)+'%)';
       }
-    });
-    document.querySelectorAll('.frame:not(.contain) .par').forEach(function(el){
+    }
+
+    document.querySelectorAll('.frame .par').forEach(function(el){
       var r=el.parentElement.parentElement.getBoundingClientRect();
       if(r.bottom<-100||r.top>window.innerHeight+100) return;
       var t=(r.top+r.height/2-window.innerHeight/2)/window.innerHeight;
@@ -624,6 +778,7 @@ setup(); requestAnimationFrame(frame);
   window.__ratioAll = all;
 })();
 </script>
+
 
 
 
@@ -940,4 +1095,5 @@ setup(); requestAnimationFrame(frame);
 })();
 </script>
 <script data-goatcounter="https://noahcharnow.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-</body></html>
+</body>
+</html>
