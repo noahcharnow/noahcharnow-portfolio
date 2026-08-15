@@ -358,7 +358,7 @@
 @media (prefers-reduced-motion:reduce){.peek-media{transform:none!important;opacity:1!important}}
 </style>
 </head><body>
-<!-- build: spotter-v26 -->
+<!-- build: spotter-v29 -->
 <div class="rail" id="rail"></div>
 <nav class="nav">
   <a class="wordmark" href="index.html">Noah Charnow</a>
@@ -384,6 +384,16 @@
 .sp-try .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
   animation:sp-pulse 1.8s var(--ease) infinite}
 @keyframes sp-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.4}}
+.sp-cta-row{display:flex;align-items:center;gap:clamp(16px,1.6vw,28px);flex-wrap:wrap}
+.sp-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#0a0a0a;
+  font-weight:600;font-size:clamp(15px,1.1vw,20px);padding:clamp(13px,1vw,18px) clamp(24px,2vw,36px);
+  border-radius:100px;text-decoration:none;transition:transform .3s var(--ease),background .3s var(--ease);
+  white-space:nowrap}
+.sp-btn:hover{transform:translateY(-2px);background:#C6F24D;color:#0a0a0a}
+.sp-live{display:inline-flex;align-items:center;gap:9px;color:var(--cream);opacity:.6;
+  font-weight:600;font-size:clamp(13px,.9vw,17px);white-space:nowrap}
+.sp-live .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
+  animation:sp-pulse 1.8s var(--ease) infinite}
 
 /* the live phone */
 .sp-phone-wrap{display:flex;justify-content:center;align-items:center;perspective:1600px}
@@ -395,10 +405,7 @@
 .sp-phone::after{content:"";position:absolute;top:19px;left:50%;transform:translateX(-50%);
   width:32%;height:22px;background:#0a0a0a;border-radius:0 0 16px 16px;z-index:3;pointer-events:none}
 .sp-screen{position:relative;width:100%;height:100%;border-radius:42px;overflow:hidden;background:#000}
-.sp-openfull{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:4;
-  background:#C6F24D;color:#0a0a0a;font-weight:600;font-size:13px;padding:9px 16px;border-radius:100px;
-  text-decoration:none;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4);opacity:.96}
-.sp-openfull:hover{opacity:1}
+.sp-screen-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .sp-screen iframe{width:100%;height:100%;border:0;display:block}
 /* a gentle idle float, killed on hover so tapping feels precise */
 .sp-phone.idle{animation:sp-float 6s var(--ease) infinite}
@@ -412,7 +419,7 @@
 }
 @media (prefers-reduced-motion:reduce){
   .sp-phone.idle{animation:none;transform:none}
-  .sp-try .dot{animation:none}
+  .sp-try .dot,.sp-live .dot{animation:none}
 }
 
 /* authored-the-whole-thing strip */
@@ -443,12 +450,12 @@
 .sp-moment-copy p{font-weight:400;font-size:clamp(16px,1.15vw,24px);line-height:1.4;
   color:var(--cream);opacity:.8;max-width:34ch}
 .sp-moment-media{display:flex;justify-content:center}
-.sp-moment-media .shot{position:relative;width:min(300px,70vw);aspect-ratio:390/844;
-  border-radius:46px;background:#F0ECE4;padding:11px;
+.sp-moment-media .shot{position:relative;width:min(290px,68vw);aspect-ratio:390/844;
+  border-radius:44px;background:#F0ECE4;padding:10px;
   box-shadow:0 2px 4px rgba(0,0,0,.4),0 34px 80px -24px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.1)}
-.sp-moment-media .shot::after{content:"";position:absolute;top:17px;left:50%;transform:translateX(-50%);
-  width:30%;height:19px;background:#0a0a0a;border-radius:0 0 14px 14px;z-index:3;pointer-events:none}
-.sp-moment-media .shot-inner{width:100%;height:100%;border-radius:36px;overflow:hidden;background:#000}
+.sp-moment-media .shot-inner{position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:#000}
+.sp-moment-media .shot-inner::after{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:34%;height:20px;background:#0a0a0a;border-radius:0 0 15px 15px;z-index:3;pointer-events:none}
 .sp-moment-media .shot img{width:100%;height:100%;object-fit:cover;display:block;object-position:center top}
 .sp-moment-media .shot.empty{display:flex;align-items:center;justify-content:center;
   color:var(--cream);opacity:.3;font-weight:600;font-size:14px;text-align:center;padding:20px}
@@ -464,10 +471,9 @@
   line-height:.9;letter-spacing:-.055em;margin-bottom:clamp(28px,3vw,50px);max-width:16ch}
 .sp-close p{font-weight:400;font-size:clamp(17px,1.35vw,28px);line-height:1.45;
   color:var(--cream);opacity:.82;max-width:52ch;margin-bottom:clamp(18px,1.6vw,28px)}
-.sp-close .sp-link{display:inline-flex;align-items:center;gap:10px;color:var(--accent);
-  font-weight:600;font-size:clamp(15px,1.1vw,22px);text-decoration:none;
-  border-bottom:1.5px solid transparent;transition:border-color .3s var(--ease)}
-.sp-close .sp-link:hover{border-color:var(--accent)}
+.sp-close-cta{display:flex;align-items:center;gap:clamp(16px,1.8vw,30px);flex-wrap:wrap;margin-top:clamp(10px,1.5vw,24px)}
+.sp-btn-lg{font-size:clamp(17px,1.4vw,26px);padding:clamp(16px,1.3vw,24px) clamp(30px,2.6vw,50px)}
+.sp-close-note{color:var(--cream);opacity:.55;font-weight:500;font-size:clamp(13px,.95vw,18px)}
 </style>
 
 <!-- ===== LIVE APP HERO ===== -->
@@ -475,16 +481,16 @@
   <div class="sp-hero-copy">
     <div class="kicker rv">Spotter / Solo build / 2026</div>
     <h1 class="rv">Spotter</h1>
-    <div class="sub rv">A coaching app I took from a blank page to a working product.</div>
-    <div class="sp-try rv"><span class="dot"></span>It's live. Browse it here, or open the full app.</div>
+    <div class="sub rv">I had an idea for a coaching app. So I built the whole thing.</div>
+    <div class="sp-cta-row rv">
+      <a class="sp-btn" href="https://spotterfit.netlify.app/" target="_blank" rel="noopener">Use the app &nearr;</a>
+      <span class="sp-live"><span class="dot"></span>Real app. Not a mockup.</span>
+    </div>
   </div>
   <div class="sp-phone-wrap rv">
-    <div class="sp-phone idle" id="spPhone">
+    <div class="sp-phone" id="spPhone">
       <div class="sp-screen">
-        <iframe src="https://spotterfit.netlify.app/" title="Spotter, live app"
-                loading="lazy" allow="clipboard-write"></iframe>
-        <a class="sp-openfull" href="https://spotterfit.netlify.app/" target="_blank" rel="noopener"
-           aria-label="Open the full Spotter app">Open full app &nearr;</a>
+        <img src="images/spotter/home.jpg" alt="Spotter home screen" class="sp-screen-img">
       </div>
     </div>
   </div>
@@ -492,7 +498,7 @@
 
 <!-- ===== I AUTHORED THE WHOLE THING ===== -->
 <section class="sp-authored">
-  <div class="lead-in rv">Most creative directors art-direct a product. <b>I authored this one</b> — every layer, start to finish.</div>
+  <div class="lead-in rv">Most creative directors point at things and say "make it look like that." <b>I made this one myself.</b> Every layer of it.</div>
   <div class="sp-roles">
     <div class="sp-role rv"><div class="n">01</div><div class="l">The idea</div><div class="d">The concept, the problem, who it's for.</div></div>
     <div class="sp-role rv"><div class="n">02</div><div class="l">The name</div><div class="d">Spotter. Your coach in your pocket.</div></div>
@@ -508,8 +514,8 @@
   <div class="sp-moment">
     <div class="sp-moment-copy rv">
       <div class="m-k">The coach</div>
-      <h3>A coach, not a&nbsp;dashboard.</h3>
-      <p>Most fitness apps hand you charts and walk away. Spotter talks to you like a coach would — reads your week, tells you what moved the scale, and what to do next. The voice was the first design decision, before a single screen.</p>
+      <h3>It talks. It doesn't just&nbsp;chart.</h3>
+      <p>Every other app hands you a graph and wishes you luck. Spotter actually talks. It reads your week, tells you why the scale moved, and tells you what to do about it. I designed the voice before I designed a single screen. That was the whole point.</p>
     </div>
     <div class="sp-moment-media rv">
       <div class="shot"><div class="shot-inner"><img src="images/spotter/coach.jpg" alt="Spotter coach screen"></div></div>
@@ -519,8 +525,8 @@
   <div class="sp-moment flip">
     <div class="sp-moment-copy rv">
       <div class="m-k">Food logging</div>
-      <h3>Search, scan, or&nbsp;snap.</h3>
-      <p>Logging food is where every diet app dies. So I made it three taps at most — search it, scan the barcode, or snap a photo of the plate. And a "rough-log it" escape hatch for when you ate out, because a guess beats a blank day.</p>
+      <h3>Logging food that doesn't&nbsp;suck.</h3>
+      <p>Logging food is where every diet app goes to die. Nobody wants to weigh a chicken breast. So I made it three taps, tops. Search it, scan it, or take a photo of your plate. Ate out and have no idea? Rough-log it. A wild guess beats a blank day.</p>
     </div>
     <div class="sp-moment-media rv">
       <div class="shot"><div class="shot-inner"><img src="images/spotter/food.jpg" alt="Spotter food logging screen"></div></div>
@@ -530,8 +536,8 @@
   <div class="sp-moment">
     <div class="sp-moment-copy rv">
       <div class="m-k">Training</div>
-      <h3>Built on the&nbsp;OPT model.</h3>
-      <p>The training isn't made up. It follows NASM's five-phase OPT model — you move up as your body is ready. Real methodology, structured into something a person can actually follow on a Tuesday night.</p>
+      <h3>Actual science. Not&nbsp;vibes.</h3>
+      <p>The training isn't something I made up in a weekend. It runs on NASM's five-phase OPT model, the real one. You level up as your body's ready, not when an app decides to gamify you. 206 exercises, actual method, no nonsense.</p>
     </div>
     <div class="sp-moment-media rv">
       <div class="shot"><div class="shot-inner"><img src="images/spotter/training.jpg" alt="Spotter training screen"></div></div>
@@ -541,8 +547,8 @@
   <div class="sp-moment flip">
     <div class="sp-moment-copy rv">
       <div class="m-k">Check-ins</div>
-      <h3>The scale doesn't&nbsp;lie.</h3>
-      <p>Weekly check-in: step on the scale, add the tape and photos when you can, same time, same conditions. Then Spotter reads the trend and tells you the truth. Progress you can see next to numbers that explain it.</p>
+      <h3>The scale doesn't&nbsp;care about your feelings.</h3>
+      <p>Once a week: step on the scale, grab the tape if you feel like it, take the photos if you're brave. Same time, same conditions, no cheating. Spotter reads the trend and gives it to you straight. The photos show the change, the numbers explain it.</p>
     </div>
     <div class="sp-moment-media rv">
       <div class="shot"><div class="shot-inner"><img src="images/spotter/checkin.jpg" alt="Spotter check-in screen"></div></div>
@@ -552,9 +558,12 @@
 
 <!-- ===== CLOSE ===== -->
 <section class="sp-close">
-  <h2 class="rv">One person can build the whole thing now.</h2>
-  <p class="rv">Spotter is proof of where creative direction is heading. I didn't hand this off — I thought it up, named it, branded it, designed every screen, and shipped it as a working app. The line between "designer" and "product" is gone, and this is what's on the other side of it.</p>
-  <p class="rv"><a class="sp-link" href="https://spotterfit.netlify.app/" target="_blank" rel="noopener">Open the live app &rarr;</a></p>
+  <h2 class="rv">Turns out one guy can build the whole thing.</h2>
+  <p class="rv">This is where creative direction is going, and I'd rather be early than explain it later. I didn't hand Spotter to a team. I thought it up, named it, branded it, designed every screen, and built the thing. The gap between "designer" and "product" closed while everyone was still arguing about it. That's me, waving from the other side.</p>
+  <div class="sp-close-cta rv">
+    <a class="sp-btn sp-btn-lg" href="https://spotterfit.netlify.app/" target="_blank" rel="noopener">Go use Spotter &nearr;</a>
+    <span class="sp-close-note">Free. Takes a second to sign up.</span>
+  </div>
 </section>
 
 <div class="wrap"><div class="pnav">
